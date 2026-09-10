@@ -1,0 +1,35 @@
+doctype html
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(name="viewport" content="width=device-width, initial-scale=1.0")
+        title= pageTitle
+        link(rel="stylesheet" href="/css/style.css")
+
+    body
+        main
+            h1 BIDBASH
+
+            h2 Age Confirmation
+
+            p
+                | BIDBASH is intended for users aged 18 or over.
+
+            if error
+                p= error
+
+            form(method="POST" action="/age-check")
+                label
+                    input(
+                        type="checkbox"
+                        name="ageConfirmed"
+                        value="yes"
+                        required
+                    )
+                    |  I confirm that I am aged 18 or over.
+
+                br
+                br
+
+                button.primary-button(type="submit")
+                    | Continue

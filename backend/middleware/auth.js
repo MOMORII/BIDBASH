@@ -1,4 +1,4 @@
-// i am preventing guests from accessing authenticated routes
+//checks whether a login session exists
 function requireLogin(req, res, next) {
     if (!req.session.user) {
         return res.redirect("/login");
@@ -7,7 +7,7 @@ function requireLogin(req, res, next) {
     next();
 }
 
-// i am preventing non-moderator accounts from accessing moderation routes
+//checks whether the active session belongs to a moderator
 function requireModerator(req, res, next) {
     if (!req.session.user) {
         return res.redirect("/login");
