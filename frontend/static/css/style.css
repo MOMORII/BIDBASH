@@ -1,12 +1,14 @@
+/* i am providing temporary styling until the wireframes are implemented */
+
 body {
     margin: 0;
     font-family: Arial, sans-serif;
-    background-color: #F5F3F0;
+    background: #F5F3F0;
     color: #24202A;
 }
 
 main {
-    max-width: 900px;
+    max-width: 1000px;
     margin: 40px auto;
     padding: 24px;
 }

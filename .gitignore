@@ -2,52 +2,33 @@
 # Structure was inspired by the .gitignore I made for my data engineering internship, though not as a direct copy (security reasons)
 # Updated as of 2026-09-10
 
-# Python cache / runtime
-__pycache__/
-*.py[cod]
-*.pyo
-*.pyd
-.pytest_cache/
+# node dependencies
+node_modules/
 
-# Virtual environments
-.venv/
-venv/
-env/
+# environment variables and secrets
+.env
+*.env
 
-# Flask runtime
-instance/
-
-# SQLite databases
+# sqlite databases
 *.db
 *.sqlite
 *.sqlite3
 
-# Environment variables / secrets
-.env
-*.env
-
-# Logs
+# logs
 *.log
+npm-debug.log*
 
-# Node / frontend dependencies
-node_modules/
-dist/
-
-# Temporary files / backups
+# temporary files
 tmp/
 temp/
-backups/
-*.zip
-*.tar.gz
 
-# Uploaded / generated content
+# generated uploads
 uploads/
-static/uploads/
 
-# =========================
-# Editor / operating system files
-# =========================
+# editor files
 .vscode/
 .idea/
+
+# operating system files
 .DS_Store
 Thumbs.db

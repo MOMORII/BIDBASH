@@ -1,8 +1,0 @@
-# This textfile will document all the required packages/dependencies needed to run this project in full. It is important to keep this file updated as new dependencies are added to the project, so that anyone who wants to run the project can do so without issues.
-# Updated as of 2026-09-10
-
-Python
-Sqliite
-Sqlite3
-SQLAlchemy
-Flask
