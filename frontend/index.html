@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>BIDBASH</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <main>
+        <h1>BIDBASH</h1>
+
+        <p id="status">
+            Connecting to backend...
+        </p>
+
+        <h2>Create Test Listing</h2>
+
+        <form id="listing-form">
+            <input
+                id="listing-title"
+                type="text"
+                placeholder="Enter listing title"
+                required
+            >
+
+            <button type="submit">
+                Save Listing
+            </button>
+        </form>
+
+        <p id="feedback"></p>
+
+        <h2>Saved Listings</h2>
+
+        <ul id="listing-list"></ul>
+    </main>
+
+    <script src="script.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,53 @@
+# The .gitignore file is used to specify all the types of folders/files that should NOT be copied to the git repo
+# Structure was inspired by the .gitignore I made for my data engineering internship, though not as a direct copy (security reasons)
+# Updated as of 2026-09-10
+
+# Python cache / runtime
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.pytest_cache/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Flask runtime
+instance/
+
+# SQLite databases
+*.db
+*.sqlite
+*.sqlite3
+
+# Environment variables / secrets
+.env
+*.env
+
+# Logs
+*.log
+
+# Node / frontend dependencies
+node_modules/
+dist/
+
+# Temporary files / backups
+tmp/
+temp/
+backups/
+*.zip
+*.tar.gz
+
+# Uploaded / generated content
+uploads/
+static/uploads/
+
+# =========================
+# Editor / operating system files
+# =========================
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
