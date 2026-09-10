@@ -1,0 +1,108 @@
+extends layout
+
+block content
+    section.auction-page
+        .auction-main
+            .auction-image-panel
+                .image-placeholder.large Product Image
+
+            .auction-info
+                p.auction-category Electronics
+                h1 Retro Handheld Console
+
+                .product-meta
+                    p
+                        strong Condition:
+                        |  Used - Good
+                    p
+                        strong Brand:
+                        |  Nintendo
+                    p
+                        strong Seller:
+                        |  PixelVault
+
+                p.product-description
+                    | A well-kept retro handheld console with light cosmetic wear.
+                    | Includes the original battery cover and has been tested as working.
+
+                .auction-status-panel
+                    .status-item
+                        span.label Current Bid
+                        strong £85.00
+
+                    .status-item
+                        span.label Minimum Next Bid
+                        strong £90.00
+
+                    .status-item
+                        span.label Time Remaining
+                        strong 2h 14m
+
+                form.bid-panel
+                    label(for="bid-amount") Your Bid
+
+                    .bid-input-row
+                        input#bid-amount(
+                            type="number"
+                            min="90"
+                            step="1"
+                            placeholder="Enter bid amount"
+                        )
+
+                        button.primary-button(
+                            type="button"
+                            id="place-bid-button"
+                        ) Place Bid
+
+                    p.bid-help
+                        | Minimum valid bid: £90.00
+
+                .auction-message
+                    p
+                        strong Status:
+                        |  You are not currently bidding on this auction.
+
+        aside.auction-sidebar
+            section.info-card
+                h2 Delivery
+                p Standard UK delivery available.
+                p Estimated delivery: 3-5 working days.
+
+            section.info-card
+                h2 Returns
+                p Returns accepted within 14 days where applicable.
+
+            section.info-card
+                h2 Auction Activity
+                p 8 bids placed
+                p 4 active bidders
+
+    //- i am keeping the confirmation overlay hidden until the user clicks place bid
+    .modal-overlay#bid-confirmation-modal(hidden)
+        .modal-card
+            h2 Confirm Your Bid
+
+            p
+                | You are about to place a bid on
+                strong  #{auction.title}
+
+            p
+                | Bid amount:
+                strong#confirmation-bid-amount £0.00
+
+            p
+                | Current highest bid:
+                strong  #{auction.currentBid}
+
+            p
+                | Minimum valid bid:
+                strong  #{auction.minimumBid}
+
+            .modal-actions
+                button.primary-button#confirm-bid-button(
+                    type="button"
+                ) Confirm Bid
+
+                button.secondary-button#cancel-bid-button(
+                    type="button"
+                ) Cancel

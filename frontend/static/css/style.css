@@ -1,18 +1,449 @@
-/* i am providing temporary styling until the wireframes are implemented */
+/* i am applying the shared bidbash page styling */
+
+* {
+    box-sizing: border-box;
+}
 
 body {
     margin: 0;
     font-family: Arial, sans-serif;
-    background: #F5F3F0;
+    background:  #DEC9F4;
     color: #24202A;
 }
 
-main {
-    max-width: 1000px;
-    margin: 40px auto;
-    padding: 24px;
+a {
+    color: inherit;
+    text-decoration: none;
 }
 
-h1 {
+/* i am styling the shared header and navigation */
+
+.site-header {
+    background: #B98DE9;
+    border-bottom: 1px solid #ddd;
+}
+
+.topbar {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: bold;
     color: #8E45DD;
+}
+
+.main-nav,
+.account-nav {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+
+}
+
+.button-link {
+    background: #8E45DD;
+    color: white;
+    padding: 10px 16px;
+    border-radius: 8px;
+}
+
+/* i am styling the main page container */
+
+.page-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 32px 24px 60px;
+}
+
+/* i am styling the homepage hero */
+
+.hero {
+    background: #f0e9f8;
+    border-radius: 16px;
+    padding: 48px;
+    margin-bottom: 40px;
+}
+
+.hero h1 {
+    margin-top: 0;
+    font-size: 42px;
+}
+
+.hero p {
+    max-width: 600px;
+    font-size: 18px;
+    line-height: 1.5;
+}
+
+.primary-button,
+.secondary-button {
+    display: inline-block;
+    margin-top: 12px;
+    padding: 10px 16px;
+    border-radius: 8px;
+}
+
+.primary-button {
+    background: #8E45DD;
+    color: white;
+}
+
+.secondary-button {
+    background: #24202A;
+    color: white;
+}
+
+/* i am styling the auction sections and cards */
+
+.home-section {
+    margin-top: 36px;
+}
+
+.section-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.auction-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.auction-card {
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    padding: 16px;
+}
+
+.image-placeholder {
+    height: 180px;
+    background: #eee;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 14px;
+}
+
+/* i am making the card layout responsive */
+
+@media (max-width: 800px) {
+    .auction-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .topbar {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+/* i am styling the browse auctions header */
+
+.browse-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    gap: 24px;
+    margin-bottom: 32px;
+}
+
+.browse-heading h1 {
+    margin-bottom: 8px;
+}
+
+.browse-search {
+    display: flex;
+    gap: 8px;
+}
+
+.browse-search input {
+    min-width: 260px;
+    padding: 10px 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+
+.browse-search button,
+.filter-button {
+    background: #8E45DD;
+    color: white;
+    border: 0;
+    padding: 10px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+/* i am separating the filter controls from the auction results */
+
+.browse-layout {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    gap: 28px;
+}
+
+.filters-panel {
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    padding: 20px;
+    align-self: start;
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 18px;
+}
+
+.filter-group select,
+.filter-group input {
+    padding: 9px;
+    border: 1px solid #ccc;
+    border-radius: 7px;
+}
+
+.results-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 18px;
+}
+
+.results-toolbar select {
+    padding: 9px;
+    border: 1px solid #ccc;
+    border-radius: 7px;
+}
+
+/* i am adjusting the browse page for smaller screens */
+
+@media (max-width: 850px) {
+    .browse-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .browse-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .browse-search input {
+        min-width: 0;
+        width: 100%;
+    }
+}
+
+/* i am styling the main auction details layout */
+
+.auction-page {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 32px;
+}
+
+.auction-main {
+    display: grid;
+    grid-template-columns: minmax(280px, 1fr) minmax(320px, 1fr);
+    gap: 32px;
+}
+
+.auction-image-panel {
+    min-width: 0;
+}
+
+.image-placeholder.large {
+    min-height: 420px;
+    height: 100%;
+}
+
+/* i am styling the product and auction information */
+
+.auction-category {
+    margin-bottom: 8px;
+    color: #666;
+}
+
+.auction-info h1 {
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+
+.product-meta {
+    margin-bottom: 20px;
+}
+
+.product-meta p {
+    margin: 6px 0;
+}
+
+.product-description {
+    line-height: 1.6;
+    margin-bottom: 28px;
+}
+
+.auction-status-panel {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.status-item {
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 16px;
+}
+
+.status-item .label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 14px;
+    color: #666;
+}
+
+/* i am styling the bid entry controls */
+
+.bid-panel {
+    background: #DEC9F4;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.bid-panel label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.bid-input-row {
+    display: flex;
+    gap: 10px;
+}
+
+.bid-input-row input {
+    flex: 1;
+    padding: 11px;
+    border: 1px solid #bbb;
+    border-radius: 8px;
+}
+
+.bid-input-row .primary-button {
+    border: 0;
+    cursor: pointer;
+}
+
+.bid-help {
+    margin-bottom: 0;
+    font-size: 14px;
+}
+
+.auction-message {
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 14px;
+}
+
+/* i am styling the supporting auction information */
+
+.auction-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.info-card {
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    padding: 18px;
+}
+
+.info-card h2 {
+    margin-top: 0;
+}
+
+/* i am making the auction page responsive */
+
+@media (max-width: 1000px) {
+    .auction-page {
+        grid-template-columns: 1fr;
+    }
+
+    .auction-main {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 650px) {
+    .auction-status-panel {
+        grid-template-columns: 1fr;
+    }
+
+    .bid-input-row {
+        flex-direction: column;
+    }
+}
+
+/* i am styling the background shown behind the bid confirmation window */
+
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(36, 32, 42, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    z-index: 1000;
+}
+
+/* i am ensuring the hidden attribute actually removes the modal */
+
+.modal-overlay[hidden] {
+    display: none;
+}
+
+/* i am styling the bid confirmation window */
+
+.modal-card {
+    width: 100%;
+    max-width: 480px;
+    background: white;
+    border-radius: 14px;
+    padding: 28px;
+}
+
+.modal-card h2 {
+    margin-top: 0;
+}
+
+.modal-card p {
+    line-height: 1.5;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+.modal-actions button {
+    border: 0;
+    cursor: pointer;
 }

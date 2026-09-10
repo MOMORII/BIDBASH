@@ -4,9 +4,9 @@
   "description": "(CMP-X301-0) Final Year Project\r # FINAL YEAR PROJECT: BIDBASH\r ### Written by. Keisha Marie Geyrozaga (GEY23581805) [GitHub Profile](https://github.com/MOMORII)",
   "main": "index.js",
   "scripts": {
-  "start": "node backend/app.js",
-  "dev": "nodemon backend/app.js"
-},
+    "start": "node backend/app.js",
+    "dev": "nodemon backend/app.js"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/MOMORII/BIDBASH.git"
@@ -21,6 +21,7 @@
   "homepage": "https://github.com/MOMORII/BIDBASH#readme",
   "dependencies": {
     "express": "^5.2.1",
+    "express-session": "^1.19.0",
     "pug": "^3.0.4"
   },
   "devDependencies": {

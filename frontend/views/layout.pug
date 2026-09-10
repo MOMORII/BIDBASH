@@ -1,0 +1,26 @@
+doctype html
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(name="viewport" content="width=device-width, initial-scale=1.0")
+        title= pageTitle
+        link(rel="stylesheet" href="/css/style.css")
+
+    body
+        header.site-header
+            .topbar
+                a.logo(href="/") BIDBASH
+
+                nav.main-nav
+                    a(href="/") Home
+                    a(href="/browse") Browse
+                    a(href="/sell") Sell
+
+                .account-nav
+                    a(href="/login") Login
+                    a.button-link(href="/register") Register
+
+        main.page-content
+            block content
+
+        script(src="/js/main.js")
