@@ -14,6 +14,7 @@ html(lang="en")
                         type="button"
                         id="sidebar-toggle"
                         aria-label="Open navigation menu"
+                        aria-expanded="false"
                     ) ☰
 
                     a.logo(href="/") BIDBASH
@@ -43,6 +44,30 @@ html(lang="en")
                     else
                         a(href="/login") Login
                         a.button-link(href="/register") Sign Up
+
+        .sidebar-overlay#sidebar-overlay(hidden)
+
+        aside.sidebar-drawer#sidebar-drawer(
+            aria-hidden="true"
+        )
+            .sidebar-header
+                h2 Menu
+
+                button.sidebar-close(
+                    type="button"
+                    id="sidebar-close"
+                    aria-label="Close navigation menu"
+                ) ×
+
+            nav.sidebar-navigation
+                a(href="/") Home
+                a(href="/browse") Browse Auctions
+
+                if user
+                    a(href=`/users/${user.id}/listings`) My Listings
+                    a(href=`/users/${user.id}/bids`) My Bids
+
+            block sidebar
 
         main.page-content
             block content

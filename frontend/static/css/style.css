@@ -236,6 +236,16 @@ a {
 }
 
 /* i am separating the filter controls from the auction results */
+/*allows browse results to use the full content width */
+
+.browse-page {
+    display: block;
+}
+
+.browse-results {
+    width: 100%;
+}
+
 
 .browse-layout {
     display: grid;
@@ -857,4 +867,158 @@ a {
     .browse-header-controls select {
         width: 100%;
     }
+}
+
+/*keeps the global header visible while page content scrolls */
+
+.site-header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background: white;
+}
+
+/*keeps the purple page heading beneath the global header */
+
+.dashboard-top {
+    position: sticky;
+    top: 68px;
+    z-index: 800;
+}
+
+/*keeps the main content beneath the fixed page controls */
+
+.page-content {
+    background: #F3EAFB;
+    min-height: calc(100vh - 68px);
+}
+
+/*darkens the page behind the open sidebar */
+
+.sidebar-overlay {
+    position: fixed;
+    inset: 68px 0 0;
+    background: rgba(36, 32, 42, 0.45);
+    z-index: 900;
+}
+
+.sidebar-overlay[hidden] {
+    display: none;
+}
+
+/*creates the slide-out navigation sidebar */
+
+.sidebar-drawer {
+    position: fixed;
+    top: 68px;
+    left: 0;
+
+    width: 320px;
+    max-width: 88vw;
+    height: calc(100vh - 68px);
+
+    padding: 24px;
+
+    background: white;
+    box-shadow: 8px 0 24px rgba(36, 32, 42, 0.18);
+
+    overflow-y: auto;
+
+    transform: translateX(-100%);
+    transition: transform 0.25s ease;
+
+    z-index: 950;
+}
+
+.sidebar-drawer.open {
+    transform: translateX(0);
+}
+
+/*styles the top of the sidebar */
+
+.sidebar-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-bottom: 24px;
+}
+
+.sidebar-header h2 {
+    margin: 0;
+}
+
+.sidebar-close {
+    border: 0;
+    background: transparent;
+
+    font-size: 28px;
+    line-height: 1;
+
+    cursor: pointer;
+}
+
+/*styles the general sidebar navigation */
+
+.sidebar-navigation {
+    display: flex;
+    flex-direction: column;
+
+    gap: 6px;
+
+    padding-bottom: 24px;
+    margin-bottom: 24px;
+
+    border-bottom: 1px solid #ddd;
+}
+
+.sidebar-navigation a {
+    padding: 10px 12px;
+    border-radius: 7px;
+}
+
+.sidebar-navigation a:hover {
+    background: #F3EAFB;
+    color: #8E45DD;
+}
+
+/*styles browse filters inside the popup sidebar */
+
+.sidebar-filters {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.sidebar-filters h2 {
+    margin: 0;
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.filter-group label {
+    font-weight: 600;
+}
+
+.filter-group select,
+.filter-group input {
+    width: 100%;
+    min-height: 42px;
+
+    padding: 9px 10px;
+
+    border: 1px solid #ccc;
+    border-radius: 7px;
+
+    font: inherit;
+}
+
+.price-filter-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
 }

@@ -1,5 +1,48 @@
 extends layout
 
+block sidebar
+    section.sidebar-filters
+        h2 Filters
+
+        .filter-group
+            label(for="category-filter") Category
+
+            select#category-filter
+                option(value="all") All Categories
+                option(value="electronics") Electronics
+                option(value="collectibles") Collectibles
+                option(value="gaming") Gaming
+                option(value="home") Home
+
+        .filter-group
+            label(for="condition-filter") Condition
+
+            select#condition-filter
+                option(value="all") All Conditions
+                option(value="new") New
+                option(value="very-good") Used - Very Good
+                option(value="good") Used - Good
+
+        .filter-group
+            label Price Range
+
+            .price-filter-row
+                input(
+                    type="number"
+                    placeholder="Min"
+                    min="0"
+                )
+
+                input(
+                    type="number"
+                    placeholder="Max"
+                    min="0"
+                )
+
+        button.primary-button(
+            type="button"
+        ) Apply Filters
+
 block content
     section.dashboard-top.browse-top
         .dashboard-header
@@ -23,48 +66,6 @@ block content
                 option(value="price-high") Price: High to Low
 
     section.browse-page
-        aside.browse-filters
-            h2 Filters
-
-            .filter-group
-                label(for="category-filter") Category
-
-                select#category-filter
-                    option(value="all") All Categories
-                    option(value="electronics") Electronics
-                    option(value="collectibles") Collectibles
-                    option(value="gaming") Gaming
-                    option(value="home") Home
-
-            .filter-group
-                label(for="condition-filter") Condition
-
-                select#condition-filter
-                    option(value="all") All Conditions
-                    option(value="new") New
-                    option(value="very-good") Used - Very Good
-                    option(value="good") Used - Good
-
-            .filter-group
-                label Price Range
-
-                .price-filter-row
-                    input(
-                        type="number"
-                        placeholder="Min"
-                        min="0"
-                    )
-
-                    input(
-                        type="number"
-                        placeholder="Max"
-                        min="0"
-                    )
-
-            button.secondary-button(
-                type="button"
-            ) Apply Filters
-
         section.browse-results
             .browse-results-header
                 p Showing available auctions

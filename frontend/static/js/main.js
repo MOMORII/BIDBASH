@@ -82,3 +82,56 @@ if (dashboardTabs.length && dashboardPanels.length) {
         });
     });
 }
+
+//finds the global sidebar controls
+const sidebarToggle = document.getElementById("sidebar-toggle");
+const sidebarClose = document.getElementById("sidebar-close");
+const sidebarDrawer = document.getElementById("sidebar-drawer");
+const sidebarOverlay = document.getElementById("sidebar-overlay");
+
+//opens the global sidebar
+function openSidebar() {
+    if (!sidebarDrawer || !sidebarOverlay || !sidebarToggle) {
+        return;
+    }
+
+    sidebarDrawer.classList.add("open");
+    sidebarOverlay.hidden = false;
+
+    sidebarDrawer.setAttribute("aria-hidden", "false");
+    sidebarToggle.setAttribute("aria-expanded", "true");
+}
+
+//closes the global sidebar
+function closeSidebar() {
+    if (!sidebarDrawer || !sidebarOverlay || !sidebarToggle) {
+        return;
+    }
+
+    sidebarDrawer.classList.remove("open");
+    sidebarOverlay.hidden = true;
+
+    sidebarDrawer.setAttribute("aria-hidden", "true");
+    sidebarToggle.setAttribute("aria-expanded", "false");
+}
+
+//toggles the global sidebar
+if (sidebarToggle) {
+    sidebarToggle.addEventListener("click", () => {
+        if (sidebarDrawer.classList.contains("open")) {
+            closeSidebar();
+        } else {
+            openSidebar();
+        }
+    });
+}
+
+//closes the sidebar using its close button
+if (sidebarClose) {
+    sidebarClose.addEventListener("click", closeSidebar);
+}
+
+//closes the sidebar when the background is selected
+if (sidebarOverlay) {
+    sidebarOverlay.addEventListener("click", closeSidebar);
+}
