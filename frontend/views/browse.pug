@@ -85,6 +85,10 @@ block content
                 aria-label="Sort auctions"
             )
                 option(
+                    value="default"
+                    selected=activeSort === "default"
+                ) Sort By
+                option(
                     value="featured"
                     selected=activeSort === "featured"
                 ) Featured Auctions

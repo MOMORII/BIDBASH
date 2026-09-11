@@ -29,7 +29,7 @@ function getEndingSoon() {
 
 //filters and sorts auctions using browse query options
 function browse({
-    sort = "ending-soon",
+    sort = "default",
     category = "all"
 } = {}) {
     let results = getAll();

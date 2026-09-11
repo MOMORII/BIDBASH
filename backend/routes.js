@@ -55,7 +55,7 @@ router.get("/", (req, res) => {
 
 //renders filtered and sorted browse auction results
 router.get("/browse", (req, res) => {
-    const sort = req.query.sort || "ending-soon";
+    const sort = req.query.sort || "default";
     const category = req.query.category || "all";
 
     const auctions = auctionService.browse({

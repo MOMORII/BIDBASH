@@ -144,10 +144,15 @@ if (browseSort) {
     browseSort.addEventListener("change", () => {
         const currentUrl = new URL(window.location.href);
 
-        currentUrl.searchParams.set(
-            "sort",
-            browseSort.value
-        );
+        //removes sorting when the default option is selected
+        if (browseSort.value === "default") {
+            currentUrl.searchParams.delete("sort");
+        } else {
+            currentUrl.searchParams.set(
+                "sort",
+                browseSort.value
+            );
+        }
 
         window.location.href = currentUrl.toString();
     });
