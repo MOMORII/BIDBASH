@@ -19,31 +19,32 @@ html(lang="en")
 
                     a.logo(href="/") BIDBASH
 
-                nav.main-nav
-                    a(href="/") Home
-                    a(href="/browse") Browse
+                .header-right
+                    nav.main-nav
+                        a(href="/") Home
+                        a(href="/browse") Browse
 
-                    if user
-                        a(href=`/users/${user.id}/listings`) My Listings
-                        a(href=`/users/${user.id}/bids`) My Bids
-                    else
-                        a(href="/sell") Sell
+                        if user
+                            a(href=`/users/${user.id}/listings`) My Listings
+                            a(href=`/users/${user.id}/bids`) My Bids
+                        else
+                            a(href="/sell") Sell
 
-                .account-nav
-                    if user
-                        span.account-status
-                            | Logged in as 
-                            strong= user.username
+                    .account-nav
+                        if user
+                            span.account-status
+                                | Logged in as 
+                                strong= user.username
 
-                        if user.role === "moderator"
-                            a(href="/moderation") Moderation
+                            if user.role === "moderator"
+                                a(href="/moderation") Moderation
 
-                        form.logout-form(method="POST" action="/logout")
-                            button.logout-button(type="submit") Logout
+                            form.logout-form(method="POST" action="/logout")
+                                button.logout-button(type="submit") Logout
 
-                    else
-                        a(href="/login") Login
-                        a.button-link(href="/register") Sign Up
+                        else
+                            a(href="/login") Login
+                            a.button-link(href="/register") Sign Up
 
         .sidebar-overlay#sidebar-overlay(hidden)
 

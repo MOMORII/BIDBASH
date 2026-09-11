@@ -7,7 +7,7 @@
 body {
     margin: 0;
     font-family: Arial, sans-serif;
-    background:  #DEC9F4;
+    background: #DEC9F4;
     color: #24202A;
 }
 
@@ -27,21 +27,26 @@ a {
     width: 100%;
     max-width: 1400px;
     min-height: 68px;
+
     margin: 0 auto;
     padding: 0 24px;
 
     display: flex;
     align-items: center;
-    justify-content: space-between;
 
     gap: 24px;
+
     white-space: nowrap;
+    box-sizing: border-box;
 }
+
+/*keeps the menu button and branding on the left */
 
 .header-left {
     display: flex;
     align-items: center;
     gap: 12px;
+
     flex-shrink: 0;
 }
 
@@ -49,6 +54,7 @@ a {
     font-size: 24px;
     font-weight: bold;
     color: #8E45DD;
+    text-decoration: none;
 }
 
 .sidebar-toggle {
@@ -59,19 +65,41 @@ a {
     padding: 6px;
 }
 
+/*pushes navigation and account controls to the right */
+
+.header-right {
+    margin-left: auto;
+
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    gap: 22px;
+}
+
+/*groups the primary navigation links */
+
 .main-nav {
     display: flex;
     align-items: center;
-    justify-content: center;
     gap: 20px;
-    flex: 1;
+    flex: none;
 }
+
+.main-nav a {
+    white-space: nowrap;
+}
+
+/*separates account controls from primary navigation */
 
 .account-nav {
     display: flex;
     align-items: center;
-    justify-content: flex-end;
     gap: 14px;
+
+    padding-left: 22px;
+    border-left: 1px solid #D8D3DC;
+
     flex-shrink: 0;
 }
 
@@ -99,16 +127,29 @@ a {
     padding: 0;
 }
 
-/*allows the header to adapt on narrower devices later */
+/*adjusts the global header on smaller displays */
 
-@media (max-width: 800px) {
-    .main-nav {
-        gap: 10px;
+@media (max-width: 900px) {
+    .topbar {
+        padding: 0 14px;
+        gap: 14px;
     }
 
-    .topbar {
-        padding: 0 12px;
+    .header-right {
         gap: 12px;
+    }
+
+    .main-nav {
+        gap: 12px;
+    }
+
+    .account-nav {
+        gap: 10px;
+        padding-left: 12px;
+    }
+
+    .account-status {
+        display: none;
     }
 }
 
@@ -193,12 +234,8 @@ a {
     .auction-grid {
         grid-template-columns: 1fr;
     }
-
-    .topbar {
-        flex-direction: column;
-        align-items: flex-start;
-    }
 }
+
 /* i am styling the browse auctions header */
 
 .browse-header {
@@ -245,7 +282,6 @@ a {
 .browse-results {
     width: 100%;
 }
-
 
 .browse-layout {
     display: grid;
@@ -528,34 +564,18 @@ a {
     color: #666;
 }
 
-/*styles the dashboard category navigation */
-/*
-.dashboard-tabs {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 32px;
-    border-bottom: 1px solid #ddd;
-}
-
-.dashboard-tabs a {
-    padding: 12px 16px;
-    border-bottom: 3px solid transparent;
-}
-
-.dashboard-tabs a:hover,
-.dashboard-tabs a.active {
-    color: #8E45DD;
-    border-bottom-color: #8E45DD;
-}
-*/
-
 /*groups the dashboard title and tabs into one purple section */
+/*aligns purple page headers with the outer page-content edges */
 
 .dashboard-top {
+    width: calc(100% + 48px);
+    margin: -32px -24px 34px;
+    padding: 30px 24px 0;
+
     background: #8E45DD;
-    margin: -32px -32px 34px;
-    padding: 30px 32px 0;
     color: white;
+
+    border-radius: 0;
 }
 
 /*styles the dashboard heading */
@@ -630,55 +650,6 @@ a {
     border-radius: 3px 3px 0 0;
 }
 
-/*styles the dashboard tabs to match the wireframe navigation 
-
-.dashboard-tabs {
-    display: flex;
-    align-items: center;
-    gap: 34px;
-    margin-bottom: 34px;
-    border-bottom: 1px solid rgba(142, 69, 221, 0.18);
-}
-
-.dashboard-tab {
-    position: relative;
-    border: 0;
-    background: transparent;
-    padding: 12px 0 14px;
-    font: inherit;
-    font-size: 16px;
-    color: #24202A;
-    cursor: pointer;
-}
-
-.dashboard-tab:hover {
-    color: #8E45DD;
-}
-
-.dashboard-tab.active {
-    color: #8E45DD;
-    font-weight: 500;
-}
-
-.dashboard-tab.active::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: -1px;
-    height: 3px;
-    background: #8E45DD;
-    border-radius: 3px 3px 0 0;
-}*/
-
-/*
-.dashboard-panel-header {
-    display: flex;
-    justify-content: flex-end;
-    margin-bottom: 16px;
-}
-*/
-
 /*styles each dashboard content section */
 
 .dashboard-section {
@@ -716,8 +687,8 @@ a {
 .dashboard-image {
     height: 90px;
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
     background: #eee;
     border-radius: 8px;
     font-size: 13px;
@@ -886,6 +857,7 @@ a {
     z-index: 800;
 }
 
+
 /*keeps the main content beneath the fixed page controls */
 
 .page-content {
@@ -1023,7 +995,7 @@ a {
     gap: 8px;
 }
 
-/*styles the homepage purple page header */
+/*styles the homepage purple page header and aligns the homepage purple header with the main page content */
 
 .home-top {
     padding-bottom: 24px;
