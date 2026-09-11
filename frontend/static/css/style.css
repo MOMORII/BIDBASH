@@ -1022,3 +1022,113 @@ a {
     grid-template-columns: 1fr 1fr;
     gap: 8px;
 }
+
+/*styles the homepage purple page header */
+
+.home-top {
+    padding-bottom: 24px;
+}
+
+/*keeps the hero visually separate from the sticky purple header */
+
+.hero-section {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 32px;
+
+    margin: 32px 0 48px;
+    padding: 42px;
+
+    background: #DEC9F4;
+
+    border-radius: 0 0 42px 42px;
+}
+
+/*preserves the homepage hero shape */
+
+.hero-content {
+    display: contents;
+}
+
+.hero-copy {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.hero-copy h2 {
+    margin-top: 0;
+    margin-bottom: 14px;
+
+    font-size: 36px;
+    color: #24202A;
+}
+
+.hero-copy p {
+    max-width: 620px;
+    margin-top: 0;
+    margin-bottom: 24px;
+
+    line-height: 1.6;
+}
+
+.hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+/*styles the homepage hero visual */
+
+.hero-visual {
+    min-height: 240px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hero-placeholder {
+    width: 100%;
+    min-height: 220px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: white;
+    border-radius: 24px;
+
+    color: #666;
+}
+
+/*styles homepage auction sections */
+
+.home-section {
+    margin-bottom: 48px;
+}
+
+.home-section-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-bottom: 20px;
+}
+
+.home-section-heading h2 {
+    margin: 0;
+}
+
+/*adjusts the homepage hero for smaller screens */
+
+@media (max-width: 800px) {
+    .hero-section {
+        grid-template-columns: 1fr;
+        padding: 28px;
+    }
+
+    .hero-copy h2 {
+        font-size: 30px;
+    }
+}

@@ -3,81 +3,217 @@ const auctions = {
     1: {
         id: 1,
         title: "Retro Handheld Console",
-        category: "Electronics",
+        category: "electronics",
         condition: "Used - Good",
         brand: "Nintendo",
         seller: "PixelVault",
-        description:
-            "A well-kept retro handheld console with light cosmetic wear.",
+        description: "A well-kept retro handheld console with light cosmetic wear.",
         currentBid: 85,
         minimumBid: 90,
         timeRemaining: "2h 14m",
+        minutesRemaining: 134,
         bidCount: 8,
-        activeBidders: 4
+        activeBidders: 4,
+        featured: true,
+        createdOrder: 5
     },
 
     2: {
         id: 2,
         title: "Vintage Camera",
-        category: "Collectibles",
+        category: "collectibles",
         condition: "Used - Good",
         brand: "Canon",
         seller: "LensMarket",
-        description:
-            "A vintage camera in working condition with minor cosmetic wear.",
+        description: "A vintage camera in working condition with minor cosmetic wear.",
         currentBid: 120,
         minimumBid: 125,
         timeRemaining: "5h 40m",
+        minutesRemaining: 340,
         bidCount: 12,
-        activeBidders: 6
+        activeBidders: 6,
+        featured: true,
+        createdOrder: 7
     },
 
     3: {
         id: 3,
         title: "Mechanical Keyboard",
-        category: "Electronics",
+        category: "electronics",
         condition: "Used - Very Good",
         brand: "Keychron",
         seller: "KeyLab",
-        description:
-            "A mechanical keyboard with tactile switches and minimal wear.",
+        description: "A mechanical keyboard with tactile switches and minimal wear.",
         currentBid: 62,
         minimumBid: 67,
         timeRemaining: "1d 3h",
+        minutesRemaining: 1620,
         bidCount: 5,
-        activeBidders: 3
+        activeBidders: 3,
+        featured: true,
+        createdOrder: 9
     },
 
     4: {
         id: 4,
         title: "Collectible Figure",
-        category: "Collectibles",
+        category: "collectibles",
         condition: "Used - Good",
         brand: "Unknown",
         seller: "RetroShelf",
-        description:
-            "A collectible display figure in good condition.",
+        description: "A collectible display figure in good condition.",
         currentBid: 44,
         minimumBid: 49,
         timeRemaining: "18m",
+        minutesRemaining: 18,
         bidCount: 16,
-        activeBidders: 7
+        activeBidders: 7,
+        featured: false,
+        createdOrder: 1
     },
 
     5: {
         id: 5,
         title: "Wireless Headphones",
-        category: "Electronics",
+        category: "electronics",
         condition: "Used - Very Good",
         brand: "Sony",
         seller: "SoundHub",
-        description:
-            "Wireless headphones with light cosmetic wear and working controls.",
+        description: "Wireless headphones with light cosmetic wear and working controls.",
         currentBid: 71,
         minimumBid: 76,
         timeRemaining: "29m",
+        minutesRemaining: 29,
         bidCount: 6,
-        activeBidders: 4
+        activeBidders: 4,
+        featured: false,
+        createdOrder: 3
+    },
+
+    6: {
+        id: 6,
+        title: "Limited Edition Controller",
+        category: "gaming",
+        condition: "Used - Very Good",
+        brand: "Microsoft",
+        seller: "GameVault",
+        description: "Limited edition wireless controller with original packaging.",
+        currentBid: 58,
+        minimumBid: 63,
+        timeRemaining: "42m",
+        minutesRemaining: 42,
+        bidCount: 11,
+        activeBidders: 5,
+        featured: true,
+        createdOrder: 10
+    },
+
+    7: {
+        id: 7,
+        title: "Vintage Record Player",
+        category: "home",
+        condition: "Used - Good",
+        brand: "Technics",
+        seller: "VinylCorner",
+        description: "Classic record player tested and in working condition.",
+        currentBid: 138,
+        minimumBid: 143,
+        timeRemaining: "1h 10m",
+        minutesRemaining: 70,
+        bidCount: 14,
+        activeBidders: 8,
+        featured: true,
+        createdOrder: 4
+    },
+
+    8: {
+        id: 8,
+        title: "Gaming Graphics Card",
+        category: "electronics",
+        condition: "Used - Very Good",
+        brand: "NVIDIA",
+        seller: "PCPartsHub",
+        description: "Gaming graphics card tested and fully functional.",
+        currentBid: 215,
+        minimumBid: 225,
+        timeRemaining: "3h 25m",
+        minutesRemaining: 205,
+        bidCount: 19,
+        activeBidders: 10,
+        featured: true,
+        createdOrder: 8
+    },
+
+    9: {
+        id: 9,
+        title: "Retro Game Cartridge Set",
+        category: "gaming",
+        condition: "Used - Good",
+        brand: "Nintendo",
+        seller: "RetroPlayer",
+        description: "Collection of classic game cartridges in working condition.",
+        currentBid: 95,
+        minimumBid: 100,
+        timeRemaining: "11m",
+        minutesRemaining: 11,
+        bidCount: 20,
+        activeBidders: 9,
+        featured: false,
+        createdOrder: 2
+    },
+
+    10: {
+        id: 10,
+        title: "Designer Messenger Bag",
+        category: "fashion",
+        condition: "Used - Very Good",
+        brand: "Coach",
+        seller: "StyleArchive",
+        description: "Designer messenger bag with minimal signs of use.",
+        currentBid: 82,
+        minimumBid: 87,
+        timeRemaining: "56m",
+        minutesRemaining: 56,
+        bidCount: 7,
+        activeBidders: 4,
+        featured: true,
+        createdOrder: 11
+    },
+
+    11: {
+        id: 11,
+        title: "Smart Home Speaker",
+        category: "home",
+        condition: "Used - Very Good",
+        brand: "Google",
+        seller: "HomeTech",
+        description: "Smart speaker in full working condition with power adapter.",
+        currentBid: 36,
+        minimumBid: 41,
+        timeRemaining: "7h 20m",
+        minutesRemaining: 440,
+        bidCount: 4,
+        activeBidders: 3,
+        featured: false,
+        createdOrder: 12
+    },
+
+    12: {
+        id: 12,
+        title: "Classic Leather Jacket",
+        category: "fashion",
+        condition: "Used - Good",
+        brand: "AllSaints",
+        seller: "WardrobeVault",
+        description: "Classic leather jacket with light signs of wear.",
+        currentBid: 105,
+        minimumBid: 110,
+        timeRemaining: "24m",
+        minutesRemaining: 24,
+        bidCount: 13,
+        activeBidders: 7,
+        featured: false,
+        createdOrder: 6
     }
 };
 

@@ -1,54 +1,137 @@
 extends layout
 
 block content
-    section.hero
-        .hero-text
-            h1 Find your next auction win
-            p Browse active listings, compare bids, and track auctions as they happen.
-            a.primary-button(href="/browse") Browse Auctions
+    section.dashboard-top.home-top
+        .dashboard-header
+            .dashboard-heading
+                h1 BIDBASH
+                p Discover active auctions, track competitive listings, and bid with confidence.
+
+    section.hero-section
+        .hero-content
+            .hero-copy
+                h2 BID, BATTLE,
+
+                p
+                    | Browse active listings, discover ending-soon auctions, and follow items that interest you.
+
+                .hero-actions
+                    a.primary-button(href="/browse") Browse Auctions
+
+                    if user
+                        a.secondary-button(
+                            href=`/users/${user.id}/bids`
+                        ) View My Bids
+                    else
+                        a.secondary-button(href="/register") Create Account
+
+            .hero-visual
+                .hero-placeholder
+                    | Featured Auction Visual
 
     section.home-section
-        .section-heading
+        .home-section-heading
             h2 Featured Auctions
-            a(href="/browse") View all
+            a(href="/browse") View All
 
         .auction-grid
             article.auction-card
-                .image-placeholder Product Image
-                h3 Retro Handheld Console
-                p Current bid: £85
-                p Time remaining: 2h 14m
-                a.secondary-button(href="/auction") View Auction
+                .auction-card-image
+                    | Product Image
+
+                .auction-card-content
+                    h3 Retro Handheld Console
+
+                    p
+                        strong Current Bid:
+                        |  £85.00
+
+                    p
+                        strong Time Remaining:
+                        |  2h 14m
+
+                    a.secondary-button(
+                        href="/auction/1"
+                    ) View Auction
 
             article.auction-card
-                .image-placeholder Product Image
-                h3 Vintage Camera
-                p Current bid: £120
-                p Time remaining: 5h 40m
-                a.secondary-button(href="/auction") View Auction
+                .auction-card-image
+                    | Product Image
+
+                .auction-card-content
+                    h3 Vintage Camera
+
+                    p
+                        strong Current Bid:
+                        |  £120.00
+
+                    p
+                        strong Time Remaining:
+                        |  5h 40m
+
+                    a.secondary-button(
+                        href="/auction/2"
+                    ) View Auction
 
             article.auction-card
-                .image-placeholder Product Image
-                h3 Mechanical Keyboard
-                p Current bid: £62
-                p Time remaining: 1d 3h
-                a.secondary-button(href="/auction") View Auction
+                .auction-card-image
+                    | Product Image
+
+                .auction-card-content
+                    h3 Mechanical Keyboard
+
+                    p
+                        strong Current Bid:
+                        |  £62.00
+
+                    p
+                        strong Time Remaining:
+                        |  1d 3h
+
+                    a.secondary-button(
+                        href="/auction/3"
+                    ) View Auction
 
     section.home-section
-        .section-heading
+        .home-section-heading
             h2 Ending Soon
+            a(href="/browse") View All
 
         .auction-grid
             article.auction-card
-                .image-placeholder Product Image
-                h3 Collectible Figure
-                p Current bid: £44
-                p Time remaining: 18m
-                a.secondary-button(href="/auction") View Auction
+                .auction-card-image
+                    | Product Image
+
+                .auction-card-content
+                    h3 Collectible Figure
+
+                    p
+                        strong Current Bid:
+                        |  £44.00
+
+                    p
+                        strong Time Remaining:
+                        |  18m
+
+                    a.secondary-button(
+                        href="/auction/4"
+                    ) View Auction
 
             article.auction-card
-                .image-placeholder Product Image
-                h3 Wireless Headphones
-                p Current bid: £71
-                p Time remaining: 29m
-                a.secondary-button(href="/auction") View Auction
+                .auction-card-image
+                    | Product Image
+
+                .auction-card-content
+                    h3 Wireless Headphones
+
+                    p
+                        strong Current Bid:
+                        |  £71.00
+
+                    p
+                        strong Time Remaining:
+                        |  29m
+
+                    a.secondary-button(
+                        href="/auction/5"
+                    ) View Auction

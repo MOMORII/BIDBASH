@@ -13,7 +13,7 @@ html(lang="en")
                     button.sidebar-toggle(
                         type="button"
                         id="sidebar-toggle"
-                        aria-label="Open navigation menu"
+                        aria-label="Open auction explorer"
                         aria-expanded="false"
                     ) ☰
 
@@ -51,21 +51,33 @@ html(lang="en")
             aria-hidden="true"
         )
             .sidebar-header
-                h2 Menu
+                h2 Explore Auctions
 
                 button.sidebar-close(
                     type="button"
                     id="sidebar-close"
-                    aria-label="Close navigation menu"
+                    aria-label="Close auction explorer"
                 ) ×
 
-            nav.sidebar-navigation
-                a(href="/") Home
-                a(href="/browse") Browse Auctions
+            section.sidebar-section
+                h3 Quick Browse
 
-                if user
-                    a(href=`/users/${user.id}/listings`) My Listings
-                    a(href=`/users/${user.id}/bids`) My Bids
+                nav.sidebar-discovery
+                    a(href="/browse?sort=featured") Featured Auctions
+                    a(href="/browse?sort=ending-soon") Ending Soon
+                    a(href="/browse?sort=newest") Newly Listed
+                    a(href="/browse?sort=price-low") Lowest Price
+                    a(href="/browse?sort=price-high") Highest Price
+
+            section.sidebar-section
+                h3 Categories
+
+                nav.sidebar-discovery
+                    a(href="/browse?category=electronics") Electronics
+                    a(href="/browse?category=collectibles") Collectibles
+                    a(href="/browse?category=gaming") Gaming
+                    a(href="/browse?category=home") Home & Living
+                    a(href="/browse?category=fashion") Fashion
 
             block sidebar
 
