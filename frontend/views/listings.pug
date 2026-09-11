@@ -12,20 +12,17 @@ block content
         button.dashboard-tab.active(
             type="button"
             data-dashboard-target="active-listings"
-        )
-            | Active Listings (#{listings.active.length})
+        ) Active Listings
 
         button.dashboard-tab(
             type="button"
             data-dashboard-target="successful-sales"
-        )
-            | Successful Sales (#{listings.successful.length})
+        ) Successful Sales
 
         button.dashboard-tab(
             type="button"
             data-dashboard-target="listing-history"
-        )
-            | Listing History (#{listings.history.length})
+        ) Listing History
 
     section.dashboard-section.dashboard-panel#active-listings
         if listings.active.length
