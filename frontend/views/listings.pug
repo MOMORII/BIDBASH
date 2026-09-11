@@ -5,18 +5,29 @@ block content
         .dashboard-heading
             h1 My Listings
             p Manage your active auctions, successful sales, and listing history.
+
         a.primary-button(href="#") Create Listing
 
     nav.dashboard-tabs
-        a.active(href="#active-listings") Active Listings
-        a(href="#successful-sales") Successful Sales
-        a(href="#listing-history") Listing History
+        button.dashboard-tab.active(
+            type="button"
+            data-dashboard-target="active-listings"
+        )
+            | Active Listings (#{listings.active.length})
 
-    section.dashboard-section#active-listings
-        .section-heading
-            h2 Active Listings
-            span.dashboard-count= listings.active.length
+        button.dashboard-tab(
+            type="button"
+            data-dashboard-target="successful-sales"
+        )
+            | Successful Sales (#{listings.successful.length})
 
+        button.dashboard-tab(
+            type="button"
+            data-dashboard-target="listing-history"
+        )
+            | Listing History (#{listings.history.length})
+
+    section.dashboard-section.dashboard-panel#active-listings
         if listings.active.length
             .dashboard-list
                 each listing in listings.active
@@ -52,11 +63,7 @@ block content
             p.dashboard-empty
                 | You currently have no active listings.
 
-    section.dashboard-section#successful-sales
-        .section-heading
-            h2 Successful Sales
-            span.dashboard-count= listings.successful.length
-
+    section.dashboard-section.dashboard-panel#successful-sales(hidden)
         if listings.successful.length
             .dashboard-list
                 each listing in listings.successful
@@ -88,11 +95,7 @@ block content
             p.dashboard-empty
                 | You currently have no successful sales.
 
-    section.dashboard-section#listing-history
-        .section-heading
-            h2 Listing History
-            span.dashboard-count= listings.history.length
-
+    section.dashboard-section.dashboard-panel#listing-history(hidden)
         if listings.history.length
             .dashboard-list
                 each listing in listings.history

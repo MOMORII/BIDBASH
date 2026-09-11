@@ -46,3 +46,39 @@ if (
         confirmationModal.hidden = true;
     });
 }
+
+//finds the dashboard tabs and content panels
+const dashboardTabs =
+    document.querySelectorAll(".dashboard-tab");
+
+const dashboardPanels =
+    document.querySelectorAll(".dashboard-panel");
+
+//switches between dashboard sections
+if (dashboardTabs.length && dashboardPanels.length) {
+    dashboardTabs.forEach(tab => {
+        tab.addEventListener("click", () => {
+            const targetId =
+                tab.dataset.dashboardTarget;
+
+            //removes the active state from all tabs
+            dashboardTabs.forEach(item => {
+                item.classList.remove("active");
+            });
+
+            //hides all dashboard panels
+            dashboardPanels.forEach(panel => {
+                panel.hidden = true;
+            });
+
+            //shows the selected dashboard panel
+            const selectedPanel =
+                document.getElementById(targetId);
+
+            if (selectedPanel) {
+                selectedPanel.hidden = false;
+                tab.classList.add("active");
+            }
+        });
+    });
+}

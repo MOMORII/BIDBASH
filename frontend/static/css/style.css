@@ -164,13 +164,6 @@ a {
     margin-top: 36px;
 }
 
-.section-heading {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 16px;
-}
-
 .auction-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -526,7 +519,7 @@ a {
 }
 
 /*styles the dashboard category navigation */
-
+/*
 .dashboard-tabs {
     display: flex;
     gap: 8px;
@@ -544,6 +537,26 @@ a {
     color: #8E45DD;
     border-bottom-color: #8E45DD;
 }
+*/
+
+.dashboard-tabs a {
+    padding: 12px 16px;
+    border-bottom: 3px solid transparent;
+}
+
+.dashboard-tabs a:hover,
+.dashboard-tabs a.active {
+    color: #8E45DD;
+    border-bottom-color: #8E45DD;
+}
+
+/*
+.dashboard-panel-header {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 16px;
+}
+*/
 
 /*styles each dashboard content section */
 
