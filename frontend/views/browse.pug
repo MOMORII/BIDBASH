@@ -1,112 +1,206 @@
 extends layout
 
 block content
-    section.browse-header
-        .browse-heading
-            h1 Browse Auctions
-            p Search, filter, and compare active BIDBASH auction listings.
+    section.dashboard-top.browse-top
+        .dashboard-header
+            .dashboard-heading
+                h1 Browse Auctions
+                p Search, filter, and explore active BIDBASH auction listings.
 
-        form.browse-search
-            input(
+        .browse-header-controls
+            input#browse-search(
                 type="search"
-                placeholder="Search auctions..."
+                placeholder="Search auctions"
                 aria-label="Search auctions"
             )
-            button(type="submit") Search
 
-    section.browse-layout
-        aside.filters-panel
+            select#browse-sort(
+                aria-label="Sort auctions"
+            )
+                option(value="ending-soon") Ending Soon
+                option(value="newest") Newest Listings
+                option(value="price-low") Price: Low to High
+                option(value="price-high") Price: High to Low
+
+    section.browse-page
+        aside.browse-filters
             h2 Filters
 
             .filter-group
-                label(for="category") Category
-                select#category
-                    option(value="") All Categories
-                    option Electronics
-                    option Collectibles
-                    option Fashion
-                    option Home
+                label(for="category-filter") Category
+
+                select#category-filter
+                    option(value="all") All Categories
+                    option(value="electronics") Electronics
+                    option(value="collectibles") Collectibles
+                    option(value="gaming") Gaming
+                    option(value="home") Home
 
             .filter-group
-                label(for="condition") Condition
-                select#condition
-                    option(value="") Any Condition
-                    option New
-                    option Used
-                    option Refurbished
+                label(for="condition-filter") Condition
+
+                select#condition-filter
+                    option(value="all") All Conditions
+                    option(value="new") New
+                    option(value="very-good") Used - Very Good
+                    option(value="good") Used - Good
 
             .filter-group
-                label(for="price") Maximum Price
-                input#price(
-                    type="number"
-                    min="0"
-                    placeholder="£"
-                )
+                label Price Range
 
-            .filter-group
-                label(for="duration") Time Remaining
-                select#duration
-                    option(value="") Any Time
-                    option Ending Soon
-                    option Under 1 Hour
-                    option Today
-                    option More Than 1 Day
+                .price-filter-row
+                    input(
+                        type="number"
+                        placeholder="Min"
+                        min="0"
+                    )
 
-            button.filter-button(type="button") Apply Filters
+                    input(
+                        type="number"
+                        placeholder="Max"
+                        min="0"
+                    )
+
+            button.secondary-button(
+                type="button"
+            ) Apply Filters
 
         section.browse-results
-            .results-toolbar
-                p Showing active auctions
-
-                select(aria-label="Sort auctions")
-                    option Most Relevant
-                    option Ending Soonest
-                    option Lowest Price
-                    option Highest Price
-                    option Most Recent
+            .browse-results-header
+                p Showing available auctions
 
             .auction-grid
                 article.auction-card
-                    .image-placeholder Product Image
-                    h3 Retro Handheld Console
-                    p Seller: PixelVault
-                    p Current bid: £85
-                    p 8 bids
-                    p Time remaining: 2h 14m
-                    a.secondary-button(href="/auction/1") View Auction
+                    .auction-card-image
+                        | Product Image
+
+                    .auction-card-content
+                        h2 Retro Handheld Console
+
+                        p
+                            strong Current Bid:
+                            |  £85.00
+
+                        p
+                            strong Bids:
+                            |  8
+
+                        p
+                            strong Seller:
+                            |  PixelVault
+
+                        p
+                            strong Time Remaining:
+                            |  2h 14m
+
+                        a.secondary-button(
+                            href="/auction/1"
+                        ) View Auction
 
                 article.auction-card
-                    .image-placeholder Product Image
-                    h3 Vintage Camera
-                    p Seller: LensMarket
-                    p Current bid: £120
-                    p 12 bids
-                    p Time remaining: 5h 40m
-                    a.secondary-button(href="/auction/2") View Auction
+                    .auction-card-image
+                        | Product Image
+
+                    .auction-card-content
+                        h2 Vintage Camera
+
+                        p
+                            strong Current Bid:
+                            |  £120.00
+
+                        p
+                            strong Bids:
+                            |  12
+
+                        p
+                            strong Seller:
+                            |  LensMarket
+
+                        p
+                            strong Time Remaining:
+                            |  5h 40m
+
+                        a.secondary-button(
+                            href="/auction/2"
+                        ) View Auction
 
                 article.auction-card
-                    .image-placeholder Product Image
-                    h3 Mechanical Keyboard
-                    p Seller: KeyLab
-                    p Current bid: £62
-                    p 5 bids
-                    p Time remaining: 1d 3h
-                    a.secondary-button(href="/auction/3") View Auction
+                    .auction-card-image
+                        | Product Image
+
+                    .auction-card-content
+                        h2 Mechanical Keyboard
+
+                        p
+                            strong Current Bid:
+                            |  £62.00
+
+                        p
+                            strong Bids:
+                            |  5
+
+                        p
+                            strong Seller:
+                            |  KeyLab
+
+                        p
+                            strong Time Remaining:
+                            |  1d 3h
+
+                        a.secondary-button(
+                            href="/auction/3"
+                        ) View Auction
 
                 article.auction-card
-                    .image-placeholder Product Image
-                    h3 Collectible Figure
-                    p Seller: RetroShelf
-                    p Current bid: £44
-                    p 16 bids
-                    p Time remaining: 18m
-                    a.secondary-button(href="/auction/4") View Auction
+                    .auction-card-image
+                        | Product Image
+
+                    .auction-card-content
+                        h2 Collectible Figure
+
+                        p
+                            strong Current Bid:
+                            |  £44.00
+
+                        p
+                            strong Bids:
+                            |  16
+
+                        p
+                            strong Seller:
+                            |  RetroShelf
+
+                        p
+                            strong Time Remaining:
+                            |  18m
+
+                        a.secondary-button(
+                            href="/auction/4"
+                        ) View Auction
 
                 article.auction-card
-                    .image-placeholder Product Image
-                    h3 Wireless Headphones
-                    p Seller: SoundHub
-                    p Current bid: £71
-                    p 6 bids
-                    p Time remaining: 29m
-                    a.secondary-button(href="/auction/5") View Auction
+                    .auction-card-image
+                        | Product Image
+
+                    .auction-card-content
+                        h2 Wireless Headphones
+
+                        p
+                            strong Current Bid:
+                            |  £71.00
+
+                        p
+                            strong Bids:
+                            |  6
+
+                        p
+                            strong Seller:
+                            |  SoundHub
+
+                        p
+                            strong Time Remaining:
+                            |  29m
+
+                        a.secondary-button(
+                            href="/auction/5"
+                        ) View Auction

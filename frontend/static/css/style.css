@@ -539,7 +539,88 @@ a {
 }
 */
 
-/*styles the dashboard tabs to match the wireframe navigation */
+/*groups the dashboard title and tabs into one purple section */
+
+.dashboard-top {
+    background: #8E45DD;
+    margin: -32px -32px 34px;
+    padding: 30px 32px 0;
+    color: white;
+}
+
+/*styles the dashboard heading */
+
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+    margin-bottom: 24px;
+}
+
+.dashboard-heading h1 {
+    margin: 0 0 6px;
+    color: white;
+}
+
+.dashboard-heading p {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.82);
+}
+
+/*styles the create listing action */
+
+.dashboard-top .primary-button {
+    background: white;
+    color: #8E45DD;
+}
+
+.dashboard-top .primary-button:hover {
+    background: #F5F3F0;
+}
+
+/*styles the dashboard tabs inside the purple section */
+
+.dashboard-tabs {
+    display: flex;
+    align-items: center;
+    gap: 34px;
+    margin: 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.28);
+}
+
+.dashboard-tab {
+    position: relative;
+    border: 0;
+    background: transparent;
+    padding: 12px 0 14px;
+    font: inherit;
+    font-size: 16px;
+    color: rgba(255, 255, 255, 0.75);
+    cursor: pointer;
+}
+
+.dashboard-tab:hover {
+    color: white;
+}
+
+.dashboard-tab.active {
+    color: white;
+    font-weight: 600;
+}
+
+.dashboard-tab.active::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -1px;
+    height: 3px;
+    background: white;
+    border-radius: 3px 3px 0 0;
+}
+
+/*styles the dashboard tabs to match the wireframe navigation 
 
 .dashboard-tabs {
     display: flex;
@@ -578,7 +659,7 @@ a {
     height: 3px;
     background: #8E45DD;
     border-radius: 3px 3px 0 0;
-}
+}*/
 
 /*
 .dashboard-panel-header {
@@ -672,6 +753,46 @@ a {
     color: #666;
 }
 
+/*aligns auction titles with their bidding status */
+
+.dashboard-item-title {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.dashboard-item-title h3 {
+    margin: 0;
+}
+
+/*styles bidder status labels without relying on colour alone */
+
+.bid-status {
+    display: inline-flex;
+    align-items: center;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.bid-status-winning {
+    background: #E7F6EC;
+    color: #236B3A;
+}
+
+.bid-status-outbid {
+    background: #FFF3D6;
+    color: #775800;
+}
+
+.bid-status-lost {
+    background: #FBE7E7;
+    color: #8B2929;
+}
+
 /*adjusts dashboard entries for smaller screens */
 
 @media (max-width: 750px) {
@@ -690,5 +811,50 @@ a {
 
     .dashboard-actions {
         flex-direction: row;
+    }
+}
+
+/*styles the browse controls inside the purple page header */
+
+.browse-top {
+    padding-bottom: 24px;
+}
+
+.browse-header-controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+}
+
+.browse-header-controls input,
+.browse-header-controls select {
+    min-height: 42px;
+    border: 0;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font: inherit;
+}
+
+.browse-header-controls input {
+    flex: 1;
+    min-width: 220px;
+}
+
+.browse-header-controls select {
+    min-width: 180px;
+}
+
+/*adjusts browse header controls on smaller displays */
+
+@media (max-width: 700px) {
+    .browse-header-controls {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .browse-header-controls input,
+    .browse-header-controls select {
+        width: 100%;
     }
 }

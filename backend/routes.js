@@ -3,6 +3,7 @@ const express = require("express");
 const auction = require("./controllers/auction");
 const auth = require("./controllers/auth");
 const seller = require("./controllers/seller");
+const bidder = require("./controllers/bidder");
 const moderator = require("./controllers/moderator");
 
 const {
@@ -38,7 +39,7 @@ router.post("/age-check", (req, res) => {
     res.redirect("/");
 });
 
-//protects normal bidbash pages behind the age confirmation
+//protects normal bidbash pages behind age confirmation
 router.use(requireAgeConfirmation);
 
 //renders the homepage
@@ -89,12 +90,20 @@ router.get(
     seller.redirectToDashboard
 );
 
-//renders the seller-specific my listings dashboard
+//renders the user-specific my listings dashboard
 router.get(
     "/users/:id/listings",
     requireLogin,
     requireOwnUser,
     seller.dashboard
+);
+
+//renders the user-specific my bids dashboard
+router.get(
+    "/users/:id/bids",
+    requireLogin,
+    requireOwnUser,
+    bidder.dashboard
 );
 
 //accepts authenticated bid requests

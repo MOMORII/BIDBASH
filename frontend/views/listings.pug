@@ -1,28 +1,29 @@
 extends layout
 
 block content
-    section.dashboard-header
-        .dashboard-heading
-            h1 My Listings
-            p Manage your active auctions, successful sales, and listing history.
+    section.dashboard-top
+        .dashboard-header
+            .dashboard-heading
+                h1 My Listings
+                p Manage your active auctions, successful sales, and listing history.
 
-        a.primary-button(href="#") Create Listing
+            a.primary-button(href="#") Create Listing
 
-    nav.dashboard-tabs
-        button.dashboard-tab.active(
-            type="button"
-            data-dashboard-target="active-listings"
-        ) Active Listings
+        nav.dashboard-tabs
+            button.dashboard-tab.active(
+                type="button"
+                data-dashboard-target="active-listings"
+            ) Active Listings
 
-        button.dashboard-tab(
-            type="button"
-            data-dashboard-target="successful-sales"
-        ) Successful Sales
+            button.dashboard-tab(
+                type="button"
+                data-dashboard-target="successful-sales"
+            ) Successful Sales
 
-        button.dashboard-tab(
-            type="button"
-            data-dashboard-target="listing-history"
-        ) Listing History
+            button.dashboard-tab(
+                type="button"
+                data-dashboard-target="listing-history"
+            ) Listing History
 
     section.dashboard-section.dashboard-panel#active-listings
         if listings.active.length
