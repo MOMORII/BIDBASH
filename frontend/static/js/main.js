@@ -98,6 +98,8 @@ function openSidebar() {
     sidebarDrawer.classList.add("open");
     sidebarOverlay.hidden = false;
 
+    document.body.classList.add("sidebar-open");
+
     sidebarDrawer.setAttribute("aria-hidden", "false");
     sidebarToggle.setAttribute("aria-expanded", "true");
 }
@@ -110,6 +112,8 @@ function closeSidebar() {
 
     sidebarDrawer.classList.remove("open");
     sidebarOverlay.hidden = true;
+
+    document.body.classList.remove("sidebar-open");
 
     sidebarDrawer.setAttribute("aria-hidden", "true");
     sidebarToggle.setAttribute("aria-expanded", "false");

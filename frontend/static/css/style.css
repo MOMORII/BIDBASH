@@ -153,12 +153,18 @@ a {
     }
 }
 
-/* i am styling the main page container */
+/* i am styling the main page container, this allows the main page area to span the full viewport width */
+/*pushes the main page content when the sidebar is open */
 
 .page-content {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 32px 24px 60px;
+    transition:
+        margin-left 0.25s ease,
+        width 0.25s ease;
+}
+
+body.sidebar-open .page-content {
+    margin-left: 320px;
+    width: calc(100% - 320px);
 }
 
 /* i am styling the homepage hero */
@@ -274,11 +280,16 @@ a {
 
 /* i am separating the filter controls from the auction results */
 /*allows browse results to use the full content width */
+/*adds spacing around browse page content without shrinking the purple header */
 
 .browse-page {
     display: block;
+    padding: 0 24px 60px;
 }
 
+.browse-results {
+    width: 100%;
+}
 .browse-results {
     width: 100%;
 }
@@ -567,9 +578,11 @@ a {
 /*groups the dashboard title and tabs into one purple section */
 /*aligns purple page headers with the outer page-content edges */
 
+/*keeps purple page headers full-width inside the page area */
+
 .dashboard-top {
-    width: calc(100% + 48px);
-    margin: -32px -24px 34px;
+    width: 100%;
+    margin: -32px 0 34px;
     padding: 30px 24px 0;
 
     background: #8E45DD;
@@ -866,16 +879,31 @@ a {
 }
 
 /*darkens the page behind the open sidebar */
+/*keeps a transparent click area beside the open sidebar */
 
 .sidebar-overlay {
     position: fixed;
-    inset: 68px 0 0;
-    background: rgba(36, 32, 42, 0.45);
-    z-index: 900;
+    inset: 68px 0 0 320px;
+    background: transparent;
+    z-index: 850;
 }
 
 .sidebar-overlay[hidden] {
     display: none;
+}
+
+/*keeps the sidebar as an overlay on smaller displays */
+
+@media (max-width: 700px) {
+    body.sidebar-open .page-content {
+        margin-left: 0;
+        width: 100%;
+    }
+
+    .sidebar-overlay {
+        inset: 68px 0 0;
+        background: rgba(36, 32, 42, 0.35);
+    }
 }
 
 /*creates the slide-out navigation sidebar */
@@ -997,8 +1025,13 @@ a {
 
 /*styles the homepage purple page header and aligns the homepage purple header with the main page content */
 
+/*adjusts homepage spacing inside the shared purple header */
+
 .home-top {
-    padding-bottom: 24px;
+    width: 100%;
+    margin: -32px 0 32px;
+    padding: 28px 24px 24px;
+    border-radius: 0;
 }
 
 /*keeps the hero visually separate from the sticky purple header */
