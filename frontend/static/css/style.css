@@ -554,6 +554,129 @@ body.sidebar-open .page-content {
     cursor: pointer;
 }
 
+/*sizes the create listing overlay */
+
+.listing-modal-card {
+    max-width: 760px;
+    max-height: calc(100vh - 100px);
+
+    overflow-y: auto;
+}
+
+/*aligns the create listing overlay heading */
+
+.listing-modal-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 24px;
+
+    margin-bottom: 22px;
+}
+
+.listing-modal-header h2 {
+    margin: 0 0 6px;
+}
+
+.listing-modal-header p {
+    margin: 0;
+    color: #666;
+}
+
+/*styles the create listing close control */
+
+.modal-close {
+    border: 0;
+    background: transparent;
+
+    font-size: 28px;
+    line-height: 1;
+
+    cursor: pointer;
+}
+
+/*styles the create listing form */
+
+.listing-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-group label {
+    font-weight: 600;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+
+    padding: 11px 12px;
+
+    border: 1px solid #bbb;
+    border-radius: 8px;
+
+    font: inherit;
+}
+
+.form-group textarea {
+    resize: vertical;
+}
+
+.listing-image-placeholder {
+    padding: 24px;
+
+    border: 1px dashed #aaa;
+    border-radius: 8px;
+
+    background: #F5F3F0;
+    color: #666;
+}
+
+.form-message {
+    padding: 12px 14px;
+    border-radius: 8px;
+}
+
+.form-error {
+    background: #FBE7E7;
+    color: #8B2929;
+}
+
+.form-success {
+    background: #E7F6EC;
+    color: #236B3A;
+}
+
+.listing-modal-card .modal-actions {
+    margin-top: 4px;
+}
+
+/*adjusts the create listing form on smaller displays */
+
+@media (max-width: 700px) {
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+
+    .listing-modal-card {
+        max-height: calc(100vh - 40px);
+    }
+}
+
 /*keeps purple page headers full-width inside the page area */
 
 .dashboard-top {
@@ -1176,4 +1299,148 @@ body.sidebar-open .page-content {
     .carousel-card {
         flex-basis: 240px;
     }
+}
+
+/*styles the create listing form */
+
+.listing-form-container {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.listing-form {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+
+    padding: 28px;
+
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-group label {
+    font-weight: 600;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 11px 12px;
+
+    border: 1px solid #bbb;
+    border-radius: 8px;
+
+    font: inherit;
+}
+
+.form-group textarea {
+    resize: vertical;
+}
+
+.listing-image-placeholder {
+    padding: 28px;
+
+    border: 1px dashed #aaa;
+    border-radius: 8px;
+
+    background: #F5F3F0;
+    color: #666;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 12px;
+}
+
+.form-actions .primary-button,
+.form-actions .secondary-button {
+    margin-top: 0;
+    border: 0;
+    cursor: pointer;
+}
+
+.form-message {
+    padding: 14px 16px;
+    margin-bottom: 18px;
+    border-radius: 8px;
+}
+
+.form-error {
+    background: #FBE7E7;
+    color: #8B2929;
+}
+
+.form-success {
+    background: #E7F6EC;
+    color: #236B3A;
+}
+
+/*adjusts listing forms on smaller displays */
+
+@media (max-width: 700px) {
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+}
+
+/*sizes the bid confirmation overlay */
+
+.bid-modal-card {
+    max-width: 620px;
+}
+
+/*stacks the bid confirmation information vertically */
+
+.bid-confirmation-summary {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+
+    margin: 22px 0;
+}
+
+/*styles individual bid confirmation values */
+
+.bid-confirmation-item {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+
+    padding: 16px;
+
+    background: #F5F3F0;
+    border-radius: 8px;
+}
+
+.bid-confirmation-item span {
+    font-size: 13px;
+    color: #666;
+}
+
+.bid-confirmation-item strong {
+    font-size: 16px;
+}
+
+/*styles the confirmation guidance */
+
+.bid-confirmation-note {
+    margin: 0;
+    color: #666;
 }

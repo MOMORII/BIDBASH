@@ -30,9 +30,30 @@ function getEndingSoon() {
 //filters and sorts auctions using browse query options
 function browse({
     sort = "default",
-    category = "all"
+    category = "all",
+    search = ""
 } = {}) {
     let results = getAll();
+
+    const searchTerm = search.trim().toLowerCase();
+
+    //filters auctions using the entered search text
+    if (searchTerm) {
+        results = results.filter(auction => {
+            const searchableText = [
+                auction.title,
+                auction.seller,
+                auction.brand,
+                auction.category,
+                auction.description
+            ]
+                .filter(Boolean)
+                .join(" ")
+                .toLowerCase();
+
+            return searchableText.includes(searchTerm);
+        });
+    }
 
     //filters auctions by category
     if (category !== "all") {

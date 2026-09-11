@@ -57,17 +57,20 @@ router.get("/", (req, res) => {
 router.get("/browse", (req, res) => {
     const sort = req.query.sort || "default";
     const category = req.query.category || "all";
+    const search = req.query.search || "";
 
     const auctions = auctionService.browse({
         sort,
-        category
+        category,
+        search
     });
 
     res.render("browse", {
         pageTitle: "Browse Auctions - BIDBASH",
         auctions,
         activeSort: sort,
-        activeCategory: category
+        activeCategory: category,
+        activeSearch: search
     });
 });
 
@@ -111,6 +114,13 @@ router.get(
     requireLogin,
     requireOwnUser,
     seller.dashboard
+);
+
+//validates authenticated listing submissions
+router.post(
+    "/listings/new",
+    requireLogin,
+    seller.create
 );
 
 //renders the user-specific my bids dashboard

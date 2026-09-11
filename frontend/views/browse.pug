@@ -79,6 +79,7 @@ block content
                 type="search"
                 placeholder="Search auctions"
                 aria-label="Search auctions"
+                value=activeSearch
             )
 
             select#browse-sort(
@@ -88,6 +89,7 @@ block content
                     value="default"
                     selected=activeSort === "default"
                 ) Sort By
+
                 option(
                     value="featured"
                     selected=activeSort === "featured"
@@ -116,7 +118,11 @@ block content
     section.browse-page
         section.browse-results
             .browse-results-header
-                if activeCategory !== "all"
+                if activeSearch
+                    p
+                        | Search results for "#{activeSearch}"
+
+                else if activeCategory !== "all"
                     p
                         | Showing #{activeCategory} auctions
 
@@ -161,10 +167,6 @@ block content
                                 p
                                     strong Bids:
                                     |  #{auction.bidCount}
-
-                                p
-                                    strong Seller:
-                                    |  #{auction.seller}
 
                                 p
                                     strong Time Remaining:

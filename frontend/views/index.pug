@@ -22,6 +22,7 @@ block content
                         a.secondary-button(
                             href=`/users/${user.id}/bids`
                         ) View My Bids
+
                     else
                         a.secondary-button(
                             href="/register"
@@ -74,10 +75,6 @@ block content
                             |  #{auction.bidCount}
 
                         p
-                            strong Seller:
-                            |  #{auction.seller}
-
-                        p
                             strong Time Remaining:
                             |  #{auction.timeRemaining}
 
@@ -126,10 +123,6 @@ block content
                         p
                             strong Bids:
                             |  #{auction.bidCount}
-
-                        p
-                            strong Seller:
-                            |  #{auction.seller}
 
                         p
                             strong Time Remaining:

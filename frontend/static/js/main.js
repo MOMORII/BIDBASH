@@ -1,15 +1,16 @@
 // i am confirming that browser-side javascript has loaded
 console.log("BIDBASH frontend JavaScript loaded");
 
-// i am finding the bidding controls on the auction page
+//finds the bidding controls on the auction page
 const placeBidButton = document.getElementById("place-bid-button");
 const bidAmountInput = document.getElementById("bid-amount");
 const confirmationModal = document.getElementById("bid-confirmation-modal");
 const confirmationBidAmount = document.getElementById("confirmation-bid-amount");
 const confirmBidButton = document.getElementById("confirm-bid-button");
 const cancelBidButton = document.getElementById("cancel-bid-button");
+const closeBidButton = document.getElementById("bid-confirmation-close");
 
-// i am only running the bidding code when the auction page contains these controls
+//runs bidding controls only when the authenticated controls exist
 if (
     placeBidButton &&
     bidAmountInput &&
@@ -18,32 +19,79 @@ if (
     confirmBidButton &&
     cancelBidButton
 ) {
-    // i am showing the entered bid inside the confirmation overlay
+    //opens the confirmation overlay using the entered bid
     placeBidButton.addEventListener("click", () => {
-        const bidAmount = bidAmountInput.value;
+        const bidAmount = Number(bidAmountInput.value);
 
-        // i am preventing an empty bid from opening the confirmation overlay
-        if (!bidAmount) {
-            alert("Please enter a bid amount.");
+        //rejects empty or invalid bid input
+        if (!Number.isFinite(bidAmount) || bidAmount <= 0) {
+            alert("Please enter a valid bid amount.");
             return;
         }
 
         confirmationBidAmount.textContent =
-            `£${Number(bidAmount).toFixed(2)}`;
+            `£${bidAmount.toFixed(2)}`;
 
         confirmationModal.hidden = false;
     });
 
-    // i am closing the overlay when the user cancels the bid
-    cancelBidButton.addEventListener("click", () => {
+    //closes the bid confirmation overlay
+    function closeBidConfirmation() {
         confirmationModal.hidden = true;
+    }
+
+    //closes the overlay using cancel
+    cancelBidButton.addEventListener(
+        "click",
+        closeBidConfirmation
+    );
+
+    //closes the overlay using the close icon
+    if (closeBidButton) {
+        closeBidButton.addEventListener(
+            "click",
+            closeBidConfirmation
+        );
+    }
+
+    //closes the overlay when its background is selected
+    confirmationModal.addEventListener("click", event => {
+        if (event.target === confirmationModal) {
+            closeBidConfirmation();
+        }
     });
 
-    // i am temporarily confirming the bid without sending it to the backend yet
-    confirmBidButton.addEventListener("click", () => {
-        alert("Bid confirmed. Backend submission will be added later.");
+    //submits the confirmed bid to the protected backend route
+    confirmBidButton.addEventListener("click", async () => {
+        const auctionId =
+            confirmBidButton.dataset.auctionId;
 
-        confirmationModal.hidden = true;
+        const response = await fetch("/api/bids", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                auctionId,
+                amount: bidAmountInput.value
+            })
+        });
+
+        const data = await response.json();
+
+        //shows backend validation errors
+        if (!response.ok) {
+            alert(
+                data.error ||
+                "The bid could not be placed."
+            );
+
+            return;
+        }
+
+        alert(data.message);
+
+        closeBidConfirmation();
     });
 }
 
@@ -209,3 +257,82 @@ carouselButtons.forEach(button => {
         });
     });
 });
+
+//finds the browse search input
+const browseSearch = document.getElementById("browse-search");
+
+//runs the browse search when enter is pressed
+if (browseSearch) {
+    browseSearch.addEventListener("keydown", event => {
+        if (event.key !== "Enter") {
+            return;
+        }
+
+        const currentUrl = new URL(window.location.href);
+        const searchValue = browseSearch.value.trim();
+
+        //removes the search query when the field is empty
+        if (!searchValue) {
+            currentUrl.searchParams.delete("search");
+        } else {
+            currentUrl.searchParams.set(
+                "search",
+                searchValue
+            );
+        }
+
+        window.location.href = currentUrl.toString();
+    });
+}
+
+//finds the create listing overlay controls
+const createListingButton =
+    document.getElementById("create-listing-button");
+
+const createListingModal =
+    document.getElementById("create-listing-modal");
+
+const createListingClose =
+    document.getElementById("create-listing-close");
+
+const createListingCancel =
+    document.getElementById("create-listing-cancel");
+
+//opens the create listing overlay
+if (createListingButton && createListingModal) {
+    createListingButton.addEventListener("click", () => {
+        createListingModal.hidden = false;
+    });
+}
+
+//closes the create listing overlay
+function closeCreateListing() {
+    if (createListingModal) {
+        createListingModal.hidden = true;
+    }
+}
+
+//closes the create listing overlay using the close button
+if (createListingClose) {
+    createListingClose.addEventListener(
+        "click",
+        closeCreateListing
+    );
+}
+
+//closes the create listing overlay using cancel
+if (createListingCancel) {
+    createListingCancel.addEventListener(
+        "click",
+        closeCreateListing
+    );
+}
+
+//closes the overlay when the background is selected
+if (createListingModal) {
+    createListingModal.addEventListener("click", event => {
+        if (event.target === createListingModal) {
+            closeCreateListing();
+        }
+    });
+}

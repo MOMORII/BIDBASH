@@ -7,60 +7,73 @@ block content
                 .image-placeholder.large Product Image
 
             .auction-info
-                p.auction-category Electronics
-                h1 Retro Handheld Console
+                p.auction-category= auction.category
+                h1= auction.title
 
                 .product-meta
                     p
                         strong Condition:
-                        |  Used - Good
+                        |  #{auction.condition}
+
                     p
                         strong Brand:
-                        |  Nintendo
+                        |  #{auction.brand}
+
                     p
                         strong Seller:
-                        |  PixelVault
+                        |  #{auction.seller}
 
-                p.product-description
-                    | A well-kept retro handheld console with light cosmetic wear.
-                    | Includes the original battery cover and has been tested as working.
+                p.product-description= auction.description
 
                 .auction-status-panel
                     .status-item
                         span.label Current Bid
-                        strong £85.00
+                        strong £#{auction.currentBid.toFixed(2)}
 
                     .status-item
                         span.label Minimum Next Bid
-                        strong £90.00
+                        strong £#{auction.minimumBid.toFixed(2)}
 
                     .status-item
                         span.label Time Remaining
-                        strong 2h 14m
+                        strong= auction.timeRemaining
 
-                form.bid-panel
-                    label(for="bid-amount") Your Bid
+                if user
+                    form.bid-panel
+                        label(for="bid-amount") Your Bid
 
-                    .bid-input-row
-                        input#bid-amount(
-                            type="number"
-                            min="90"
-                            step="1"
-                            placeholder="Enter bid amount"
-                        )
+                        .bid-input-row
+                            input#bid-amount(
+                                type="number"
+                                inputmode="decimal"
+                                min=auction.minimumBid
+                                step="1"
+                                placeholder="Enter bid amount"
+                                aria-label="Enter bid amount"
+                            )
 
-                        button.primary-button(
-                            type="button"
-                            id="place-bid-button"
-                        ) Place Bid
+                            button.primary-button(
+                                type="button"
+                                id="place-bid-button"
+                            ) Place Bid
 
-                    p.bid-help
-                        | Minimum valid bid: £90.00
+                        p.bid-help
+                            | Type an amount or use the arrows. Minimum valid bid: £#{auction.minimumBid.toFixed(2)}
 
-                .auction-message
-                    p
-                        strong Status:
-                        |  You are not currently bidding on this auction.
+                    .auction-message
+                        p
+                            strong Status:
+                            |  You are not currently bidding on this auction.
+
+                else
+                    .bid-panel
+                        h3 Want to place a bid?
+
+                        p
+                            | You must be logged into a registered BIDBASH account before placing a bid.
+
+                        a.primary-button(href="/login")
+                            | Login to Bid
 
         aside.auction-sidebar
             section.info-card
@@ -74,35 +87,49 @@ block content
 
             section.info-card
                 h2 Auction Activity
-                p 8 bids placed
-                p 4 active bidders
+                p #{auction.bidCount} bids placed
+                p #{auction.activeBidders} active bidders
 
-    //- i am keeping the confirmation overlay hidden until the user clicks place bid
-    .modal-overlay#bid-confirmation-modal(hidden)
-        .modal-card
-            h2 Confirm Your Bid
+    if user
+        //- displays the bid confirmation overlay for authenticated users
+        .modal-overlay#bid-confirmation-modal(hidden)
+            .modal-card.bid-modal-card
+                .listing-modal-header
+                    div
+                        h2 Confirm Bid
+                        p Review your bid before submitting it.
 
-            p
-                | You are about to place a bid on
-                strong  #{auction.title}
+                    button.modal-close#bid-confirmation-close(
+                        type="button"
+                        aria-label="Close bid confirmation"
+                    ) ×
 
-            p
-                | Bid amount:
-                strong#confirmation-bid-amount £0.00
+                .bid-confirmation-summary
+                    .bid-confirmation-item
+                        span Item
+                        strong= auction.title
 
-            p
-                | Current highest bid:
-                strong  #{auction.currentBid}
+                    .bid-confirmation-item
+                        span Your Bid
+                        strong#confirmation-bid-amount £0.00
 
-            p
-                | Minimum valid bid:
-                strong  #{auction.minimumBid}
+                    .bid-confirmation-item
+                        span Current Highest Bid
+                        strong £#{auction.currentBid.toFixed(2)}
 
-            .modal-actions
-                button.primary-button#confirm-bid-button(
-                    type="button"
-                ) Confirm Bid
+                    .bid-confirmation-item
+                        span Minimum Valid Bid
+                        strong £#{auction.minimumBid.toFixed(2)}
 
-                button.secondary-button#cancel-bid-button(
-                    type="button"
-                ) Cancel
+                p.bid-confirmation-note
+                    | Confirming will submit this bid to the auction.
+
+                .modal-actions
+                    button.secondary-button#cancel-bid-button(
+                        type="button"
+                    ) Cancel
+
+                    button.primary-button#confirm-bid-button(
+                        type="button"
+                        data-auction-id=auction.id
+                    ) Confirm Bid
