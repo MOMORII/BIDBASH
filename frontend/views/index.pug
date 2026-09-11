@@ -10,10 +10,10 @@ block content
     section.hero-section
         .hero-content
             .hero-copy
-                h2 BID, BATTLE,
+                h2 Find your next auction win
 
                 p
-                    | Browse active listings, discover ending-soon auctions, and follow items that interest you.
+                    | Browse active listings, discover ending-soon auctions, and find items that interest you.
 
                 .hero-actions
                     a.primary-button(href="/browse") Browse Auctions
@@ -23,7 +23,9 @@ block content
                             href=`/users/${user.id}/bids`
                         ) View My Bids
                     else
-                        a.secondary-button(href="/register") Create Account
+                        a.secondary-button(
+                            href="/register"
+                        ) Create Account
 
             .hero-visual
                 .hero-placeholder
@@ -31,107 +33,108 @@ block content
 
     section.home-section
         .home-section-heading
-            h2 Featured Auctions
-            a(href="/browse") View All
+            .home-section-title
+                h2 Featured Auctions
+                p Selected auctions currently highlighted on BIDBASH.
 
-        .auction-grid
-            article.auction-card
-                .auction-card-image
-                    | Product Image
+            .home-section-actions
+                a.home-view-all(
+                    href="/browse?sort=featured"
+                ) View All
 
-                .auction-card-content
-                    h3 Retro Handheld Console
+                button.carousel-button(
+                    type="button"
+                    data-carousel="featured-carousel"
+                    data-direction="left"
+                    aria-label="Scroll featured auctions left"
+                ) ‹
 
-                    p
-                        strong Current Bid:
-                        |  £85.00
+                button.carousel-button(
+                    type="button"
+                    data-carousel="featured-carousel"
+                    data-direction="right"
+                    aria-label="Scroll featured auctions right"
+                ) ›
 
-                    p
-                        strong Time Remaining:
-                        |  2h 14m
+        .auction-carousel#featured-carousel
+            each auction in featuredAuctions
+                article.auction-card.carousel-card
+                    .auction-card-image
+                        | Product Image
 
-                    a.secondary-button(
-                        href="/auction/1"
-                    ) View Auction
+                    .auction-card-content
+                        h3= auction.title
 
-            article.auction-card
-                .auction-card-image
-                    | Product Image
+                        p
+                            strong Current Bid:
+                            |  £#{auction.currentBid.toFixed(2)}
 
-                .auction-card-content
-                    h3 Vintage Camera
+                        p
+                            strong Bids:
+                            |  #{auction.bidCount}
 
-                    p
-                        strong Current Bid:
-                        |  £120.00
+                        p
+                            strong Seller:
+                            |  #{auction.seller}
 
-                    p
-                        strong Time Remaining:
-                        |  5h 40m
+                        p
+                            strong Time Remaining:
+                            |  #{auction.timeRemaining}
 
-                    a.secondary-button(
-                        href="/auction/2"
-                    ) View Auction
-
-            article.auction-card
-                .auction-card-image
-                    | Product Image
-
-                .auction-card-content
-                    h3 Mechanical Keyboard
-
-                    p
-                        strong Current Bid:
-                        |  £62.00
-
-                    p
-                        strong Time Remaining:
-                        |  1d 3h
-
-                    a.secondary-button(
-                        href="/auction/3"
-                    ) View Auction
+                        a.secondary-button(
+                            href=`/auction/${auction.id}`
+                        ) View Auction
 
     section.home-section
         .home-section-heading
-            h2 Ending Soon
-            a(href="/browse") View All
+            .home-section-title
+                h2 Ending Soon
+                p Auctions with the shortest remaining time.
 
-        .auction-grid
-            article.auction-card
-                .auction-card-image
-                    | Product Image
+            .home-section-actions
+                a.home-view-all(
+                    href="/browse?sort=ending-soon"
+                ) View All
 
-                .auction-card-content
-                    h3 Collectible Figure
+                button.carousel-button(
+                    type="button"
+                    data-carousel="ending-soon-carousel"
+                    data-direction="left"
+                    aria-label="Scroll ending-soon auctions left"
+                ) ‹
 
-                    p
-                        strong Current Bid:
-                        |  £44.00
+                button.carousel-button(
+                    type="button"
+                    data-carousel="ending-soon-carousel"
+                    data-direction="right"
+                    aria-label="Scroll ending-soon auctions right"
+                ) ›
 
-                    p
-                        strong Time Remaining:
-                        |  18m
+        .auction-carousel#ending-soon-carousel
+            each auction in endingSoonAuctions
+                article.auction-card.carousel-card
+                    .auction-card-image
+                        | Product Image
 
-                    a.secondary-button(
-                        href="/auction/4"
-                    ) View Auction
+                    .auction-card-content
+                        h3= auction.title
 
-            article.auction-card
-                .auction-card-image
-                    | Product Image
+                        p
+                            strong Current Bid:
+                            |  £#{auction.currentBid.toFixed(2)}
 
-                .auction-card-content
-                    h3 Wireless Headphones
+                        p
+                            strong Bids:
+                            |  #{auction.bidCount}
 
-                    p
-                        strong Current Bid:
-                        |  £71.00
+                        p
+                            strong Seller:
+                            |  #{auction.seller}
 
-                    p
-                        strong Time Remaining:
-                        |  29m
+                        p
+                            strong Time Remaining:
+                            |  #{auction.timeRemaining}
 
-                    a.secondary-button(
-                        href="/auction/5"
-                    ) View Auction
+                        a.secondary-button(
+                            href=`/auction/${auction.id}`
+                        ) View Auction

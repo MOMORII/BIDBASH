@@ -135,3 +135,68 @@ if (sidebarClose) {
 if (sidebarOverlay) {
     sidebarOverlay.addEventListener("click", closeSidebar);
 }
+
+//finds the browse sorting control
+const browseSort = document.getElementById("browse-sort");
+
+//reloads browse results using the selected sort option
+if (browseSort) {
+    browseSort.addEventListener("change", () => {
+        const currentUrl = new URL(window.location.href);
+
+        currentUrl.searchParams.set(
+            "sort",
+            browseSort.value
+        );
+
+        window.location.href = currentUrl.toString();
+    });
+}
+
+//finds the browse category filter
+const categoryFilter =
+    document.getElementById("category-filter");
+
+//reloads browse results using the selected category
+if (categoryFilter) {
+    categoryFilter.addEventListener("change", () => {
+        const currentUrl = new URL(window.location.href);
+
+        currentUrl.searchParams.set(
+            "category",
+            categoryFilter.value
+        );
+
+        window.location.href = currentUrl.toString();
+    });
+}
+
+//finds the homepage carousel navigation buttons
+const carouselButtons =
+    document.querySelectorAll(".carousel-button");
+
+//scrolls the selected auction carousel left or right
+carouselButtons.forEach(button => {
+    button.addEventListener("click", () => {
+        const carouselId = button.dataset.carousel;
+        const direction = button.dataset.direction;
+
+        const carousel =
+            document.getElementById(carouselId);
+
+        if (!carousel) {
+            return;
+        }
+
+        const scrollDistance =
+            Math.max(carousel.clientWidth * 0.75, 280);
+
+        carousel.scrollBy({
+            left:
+                direction === "left"
+                    ? -scrollDistance
+                    : scrollDistance,
+            behavior: "smooth"
+        });
+    });
+});

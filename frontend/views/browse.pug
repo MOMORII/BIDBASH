@@ -8,11 +8,35 @@ block sidebar
             label(for="category-filter") Category
 
             select#category-filter
-                option(value="all") All Categories
-                option(value="electronics") Electronics
-                option(value="collectibles") Collectibles
-                option(value="gaming") Gaming
-                option(value="home") Home
+                option(
+                    value="all"
+                    selected=activeCategory === "all"
+                ) All Categories
+
+                option(
+                    value="electronics"
+                    selected=activeCategory === "electronics"
+                ) Electronics
+
+                option(
+                    value="collectibles"
+                    selected=activeCategory === "collectibles"
+                ) Collectibles
+
+                option(
+                    value="gaming"
+                    selected=activeCategory === "gaming"
+                ) Gaming
+
+                option(
+                    value="home"
+                    selected=activeCategory === "home"
+                ) Home & Living
+
+                option(
+                    value="fashion"
+                    selected=activeCategory === "fashion"
+                ) Fashion
 
         .filter-group
             label(for="condition-filter") Condition
@@ -60,148 +84,92 @@ block content
             select#browse-sort(
                 aria-label="Sort auctions"
             )
-                option(value="ending-soon") Ending Soon
-                option(value="newest") Newest Listings
-                option(value="price-low") Price: Low to High
-                option(value="price-high") Price: High to Low
+                option(
+                    value="featured"
+                    selected=activeSort === "featured"
+                ) Featured Auctions
+
+                option(
+                    value="ending-soon"
+                    selected=activeSort === "ending-soon"
+                ) Ending Soon
+
+                option(
+                    value="newest"
+                    selected=activeSort === "newest"
+                ) Newly Listed
+
+                option(
+                    value="price-low"
+                    selected=activeSort === "price-low"
+                ) Price: Low to High
+
+                option(
+                    value="price-high"
+                    selected=activeSort === "price-high"
+                ) Price: High to Low
 
     section.browse-page
         section.browse-results
             .browse-results-header
-                p Showing available auctions
+                if activeCategory !== "all"
+                    p
+                        | Showing #{activeCategory} auctions
+
+                else if activeSort === "featured"
+                    p
+                        | Showing featured auctions
+
+                else if activeSort === "ending-soon"
+                    p
+                        | Showing auctions ending soon
+
+                else if activeSort === "newest"
+                    p
+                        | Showing newly listed auctions
+
+                else if activeSort === "price-low"
+                    p
+                        | Showing auctions from lowest to highest current bid
+
+                else if activeSort === "price-high"
+                    p
+                        | Showing auctions from highest to lowest current bid
+
+                else
+                    p
+                        | Showing available auctions
 
             .auction-grid
-                article.auction-card
-                    .auction-card-image
-                        | Product Image
+                if auctions.length
+                    each auction in auctions
+                        article.auction-card
+                            .auction-card-image
+                                | Product Image
 
-                    .auction-card-content
-                        h2 Retro Handheld Console
+                            .auction-card-content
+                                h2= auction.title
 
-                        p
-                            strong Current Bid:
-                            |  £85.00
+                                p
+                                    strong Current Bid:
+                                    |  £#{auction.currentBid.toFixed(2)}
 
-                        p
-                            strong Bids:
-                            |  8
+                                p
+                                    strong Bids:
+                                    |  #{auction.bidCount}
 
-                        p
-                            strong Seller:
-                            |  PixelVault
+                                p
+                                    strong Seller:
+                                    |  #{auction.seller}
 
-                        p
-                            strong Time Remaining:
-                            |  2h 14m
+                                p
+                                    strong Time Remaining:
+                                    |  #{auction.timeRemaining}
 
-                        a.secondary-button(
-                            href="/auction/1"
-                        ) View Auction
+                                a.secondary-button(
+                                    href=`/auction/${auction.id}`
+                                ) View Auction
 
-                article.auction-card
-                    .auction-card-image
-                        | Product Image
-
-                    .auction-card-content
-                        h2 Vintage Camera
-
-                        p
-                            strong Current Bid:
-                            |  £120.00
-
-                        p
-                            strong Bids:
-                            |  12
-
-                        p
-                            strong Seller:
-                            |  LensMarket
-
-                        p
-                            strong Time Remaining:
-                            |  5h 40m
-
-                        a.secondary-button(
-                            href="/auction/2"
-                        ) View Auction
-
-                article.auction-card
-                    .auction-card-image
-                        | Product Image
-
-                    .auction-card-content
-                        h2 Mechanical Keyboard
-
-                        p
-                            strong Current Bid:
-                            |  £62.00
-
-                        p
-                            strong Bids:
-                            |  5
-
-                        p
-                            strong Seller:
-                            |  KeyLab
-
-                        p
-                            strong Time Remaining:
-                            |  1d 3h
-
-                        a.secondary-button(
-                            href="/auction/3"
-                        ) View Auction
-
-                article.auction-card
-                    .auction-card-image
-                        | Product Image
-
-                    .auction-card-content
-                        h2 Collectible Figure
-
-                        p
-                            strong Current Bid:
-                            |  £44.00
-
-                        p
-                            strong Bids:
-                            |  16
-
-                        p
-                            strong Seller:
-                            |  RetroShelf
-
-                        p
-                            strong Time Remaining:
-                            |  18m
-
-                        a.secondary-button(
-                            href="/auction/4"
-                        ) View Auction
-
-                article.auction-card
-                    .auction-card-image
-                        | Product Image
-
-                    .auction-card-content
-                        h2 Wireless Headphones
-
-                        p
-                            strong Current Bid:
-                            |  £71.00
-
-                        p
-                            strong Bids:
-                            |  6
-
-                        p
-                            strong Seller:
-                            |  SoundHub
-
-                        p
-                            strong Time Remaining:
-                            |  29m
-
-                        a.secondary-button(
-                            href="/auction/5"
-                        ) View Auction
+                else
+                    p.dashboard-empty
+                        | No auctions match the selected filters.

@@ -6,6 +6,8 @@ const seller = require("./controllers/seller");
 const bidder = require("./controllers/bidder");
 const moderator = require("./controllers/moderator");
 
+const auctionService = require("./services/auction");
+
 const {
     requireLogin,
     requireModerator,
@@ -42,17 +44,30 @@ router.post("/age-check", (req, res) => {
 //protects normal bidbash pages behind age confirmation
 router.use(requireAgeConfirmation);
 
-//renders the homepage
+//renders the homepage with temporary auction data
 router.get("/", (req, res) => {
     res.render("index", {
-        pageTitle: "BIDBASH"
+        pageTitle: "BIDBASH",
+        featuredAuctions: auctionService.getFeatured(),
+        endingSoonAuctions: auctionService.getEndingSoon()
     });
 });
 
-//renders the browse auctions page
+//renders filtered and sorted browse auction results
 router.get("/browse", (req, res) => {
+    const sort = req.query.sort || "ending-soon";
+    const category = req.query.category || "all";
+
+    const auctions = auctionService.browse({
+        sort,
+        category
+    });
+
     res.render("browse", {
-        pageTitle: "Browse Auctions - BIDBASH"
+        pageTitle: "Browse Auctions - BIDBASH",
+        auctions,
+        activeSort: sort,
+        activeCategory: category
     });
 });
 
@@ -75,7 +90,7 @@ router.get("/register", (req, res) => {
     });
 });
 
-//prevents temporary registration data from being stored before sqlite exists
+//prevents registration storage before sqlite is connected
 router.post("/register", (req, res) => {
     res.render("register", {
         pageTitle: "Sign Up - BIDBASH",
