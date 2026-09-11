@@ -19,25 +19,28 @@ a {
 /*keeps the bidbash header on one horizontal line */
 
 .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+
     background: white;
     border-bottom: 1px solid #ddd;
 }
 
+/*keeps the bidbash header full-width */
+
 .topbar {
     width: 100%;
-    max-width: 1400px;
     min-height: 68px;
 
-    margin: 0 auto;
+    margin: 0;
     padding: 0 24px;
 
     display: flex;
     align-items: center;
-
     gap: 24px;
 
     white-space: nowrap;
-    box-sizing: border-box;
 }
 
 /*keeps the menu button and branding on the left */
@@ -73,7 +76,6 @@ a {
     display: flex;
     align-items: center;
     justify-content: flex-end;
-
     gap: 22px;
 }
 
@@ -153,10 +155,17 @@ a {
     }
 }
 
-/* i am styling the main page container, this allows the main page area to span the full viewport width */
-/*pushes the main page content when the sidebar is open */
+/*styles the main page area and allows sidebar push movement */
 
 .page-content {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    padding: 32px 0 60px;
+
+    background: #F3EAFB;
+    min-height: calc(100vh - 68px);
+
     transition:
         margin-left 0.25s ease,
         width 0.25s ease;
@@ -206,10 +215,6 @@ body.sidebar-open .page-content {
 }
 
 /* i am styling the auction sections and cards */
-
-.home-section {
-    margin-top: 36px;
-}
 
 .auction-grid {
     display: grid;
@@ -278,8 +283,6 @@ body.sidebar-open .page-content {
     cursor: pointer;
 }
 
-/* i am separating the filter controls from the auction results */
-/*allows browse results to use the full content width */
 /*adds spacing around browse page content without shrinking the purple header */
 
 .browse-page {
@@ -287,9 +290,6 @@ body.sidebar-open .page-content {
     padding: 0 24px 60px;
 }
 
-.browse-results {
-    width: 100%;
-}
 .browse-results {
     width: 100%;
 }
@@ -520,8 +520,6 @@ body.sidebar-open .page-content {
     z-index: 1000;
 }
 
-/* i am ensuring the hidden attribute actually removes the modal */
-
 .modal-overlay[hidden] {
     display: none;
 }
@@ -556,34 +554,16 @@ body.sidebar-open .page-content {
     cursor: pointer;
 }
 
-/*styles the account dashboard heading */
-
-.dashboard-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 24px;
-    margin-bottom: 24px;
-}
-
-.dashboard-heading h1 {
-    margin-bottom: 6px;
-}
-
-.dashboard-heading p {
-    margin: 0;
-    color: #666;
-}
-
-/*groups the dashboard title and tabs into one purple section */
-/*aligns purple page headers with the outer page-content edges */
-
 /*keeps purple page headers full-width inside the page area */
 
 .dashboard-top {
     width: 100%;
     margin: -32px 0 34px;
     padding: 30px 24px 0;
+
+    position: sticky;
+    top: 68px;
+    z-index: 800;
 
     background: #8E45DD;
     color: white;
@@ -663,10 +643,11 @@ body.sidebar-open .page-content {
     border-radius: 3px 3px 0 0;
 }
 
-/*styles each dashboard content section */
+/*spaces dashboard content beneath the full-width purple header */
 
 .dashboard-section {
     margin-bottom: 48px;
+    padding: 0 24px;
 }
 
 .dashboard-count {
@@ -853,32 +834,6 @@ body.sidebar-open .page-content {
     }
 }
 
-/*keeps the global header visible while page content scrolls */
-
-.site-header {
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-    background: white;
-}
-
-/*keeps the purple page heading beneath the global header */
-
-.dashboard-top {
-    position: sticky;
-    top: 68px;
-    z-index: 800;
-}
-
-
-/*keeps the main content beneath the fixed page controls */
-
-.page-content {
-    background: #F3EAFB;
-    min-height: calc(100vh - 68px);
-}
-
-/*darkens the page behind the open sidebar */
 /*keeps a transparent click area beside the open sidebar */
 
 .sidebar-overlay {
@@ -890,20 +845,6 @@ body.sidebar-open .page-content {
 
 .sidebar-overlay[hidden] {
     display: none;
-}
-
-/*keeps the sidebar as an overlay on smaller displays */
-
-@media (max-width: 700px) {
-    body.sidebar-open .page-content {
-        margin-left: 0;
-        width: 100%;
-    }
-
-    .sidebar-overlay {
-        inset: 68px 0 0;
-        background: rgba(36, 32, 42, 0.35);
-    }
 }
 
 /*creates the slide-out navigation sidebar */
@@ -958,30 +899,6 @@ body.sidebar-open .page-content {
     cursor: pointer;
 }
 
-/*styles the general sidebar navigation */
-
-.sidebar-navigation {
-    display: flex;
-    flex-direction: column;
-
-    gap: 6px;
-
-    padding-bottom: 24px;
-    margin-bottom: 24px;
-
-    border-bottom: 1px solid #ddd;
-}
-
-.sidebar-navigation a {
-    padding: 10px 12px;
-    border-radius: 7px;
-}
-
-.sidebar-navigation a:hover {
-    background: #F3EAFB;
-    color: #8E45DD;
-}
-
 /*styles browse filters inside the popup sidebar */
 
 .sidebar-filters {
@@ -1023,7 +940,47 @@ body.sidebar-open .page-content {
     gap: 8px;
 }
 
-/*styles the homepage purple page header and aligns the homepage purple header with the main page content */
+/*stacks sidebar discovery links vertically */
+
+.sidebar-section {
+    margin-bottom: 26px;
+}
+
+.sidebar-section h3 {
+    margin: 0 0 10px;
+}
+
+.sidebar-discovery {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.sidebar-discovery a {
+    display: block;
+    padding: 9px 10px;
+    border-radius: 7px;
+    color: #24202A;
+}
+
+.sidebar-discovery a:hover {
+    background: #F3EAFB;
+    color: #8E45DD;
+}
+
+/*keeps the sidebar as an overlay on smaller displays */
+
+@media (max-width: 700px) {
+    body.sidebar-open .page-content {
+        margin-left: 0;
+        width: 100%;
+    }
+
+    .sidebar-overlay {
+        inset: 68px 0 0;
+        background: rgba(36, 32, 42, 0.35);
+    }
+}
 
 /*adjusts homepage spacing inside the shared purple header */
 
@@ -1034,14 +991,14 @@ body.sidebar-open .page-content {
     border-radius: 0;
 }
 
-/*keeps the hero visually separate from the sticky purple header */
+/*keeps the homepage hero inset from the outer page edges */
 
 .hero-section {
     display: grid;
     grid-template-columns: 1.2fr 1fr;
     gap: 32px;
 
-    margin: 32px 0 48px;
+    margin: 32px 24px 48px;
     padding: 42px;
 
     background: #DEC9F4;
@@ -1107,63 +1064,12 @@ body.sidebar-open .page-content {
     color: #666;
 }
 
-/*styles homepage auction sections */
+/*spaces homepage auction sections inside the full-width page */
 
 .home-section {
+    margin-top: 36px;
     margin-bottom: 48px;
-}
-
-.home-section-heading {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    margin-bottom: 20px;
-}
-
-.home-section-heading h2 {
-    margin: 0;
-}
-
-/*stacks sidebar discovery links vertically */
-
-.sidebar-section {
-    margin-bottom: 26px;
-}
-
-.sidebar-section h3 {
-    margin: 0 0 10px;
-}
-
-.sidebar-discovery {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-}
-
-.sidebar-discovery a {
-    display: block;
-    padding: 9px 10px;
-    border-radius: 7px;
-    color: #24202A;
-}
-
-.sidebar-discovery a:hover {
-    background: #F3EAFB;
-    color: #8E45DD;
-}
-
-/*adjusts the homepage hero for smaller screens */
-
-@media (max-width: 800px) {
-    .hero-section {
-        grid-template-columns: 1fr;
-        padding: 28px;
-    }
-
-    .hero-copy h2 {
-        font-size: 30px;
-    }
+    padding: 0 24px;
 }
 
 /*aligns homepage section titles with carousel controls */
@@ -1209,7 +1115,7 @@ body.sidebar-open .page-content {
     scroll-behavior: smooth;
     scroll-snap-type: x mandatory;
 
-    padding: 2px 2px 14px;
+    padding-bottom: 16px;
 
     scrollbar-width: thin;
 }
@@ -1244,6 +1150,19 @@ body.sidebar-open .page-content {
 .carousel-button:hover {
     background: #8E45DD;
     color: white;
+}
+
+/*adjusts the homepage hero for smaller screens */
+
+@media (max-width: 800px) {
+    .hero-section {
+        grid-template-columns: 1fr;
+        padding: 28px;
+    }
+
+    .hero-copy h2 {
+        font-size: 30px;
+    }
 }
 
 /*adjusts carousel controls on smaller displays */
