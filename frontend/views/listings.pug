@@ -1,0 +1,126 @@
+extends layout
+
+block content
+    section.dashboard-header
+        .dashboard-heading
+            h1 My Listings
+            p Manage your active auctions, successful sales, and listing history.
+        a.primary-button(href="#") Create Listing
+
+    nav.dashboard-tabs
+        a.active(href="#active-listings") Active Listings
+        a(href="#successful-sales") Successful Sales
+        a(href="#listing-history") Listing History
+
+    section.dashboard-section#active-listings
+        .section-heading
+            h2 Active Listings
+            span.dashboard-count= listings.active.length
+
+        if listings.active.length
+            .dashboard-list
+                each listing in listings.active
+                    article.dashboard-item
+                        .dashboard-image
+                            | Product Image
+
+                        .dashboard-item-content
+                            h3= listing.title
+
+                            .dashboard-item-details
+                                p
+                                    strong Current Bid:
+                                    |  £#{listing.currentBid.toFixed(2)}
+
+                                p
+                                    strong Bids:
+                                    |  #{listing.bidCount}
+
+                                p
+                                    strong Time Remaining:
+                                    |  #{listing.timeRemaining}
+
+                        .dashboard-actions
+                            a.secondary-button(
+                                href=`/auction/${listing.id}`
+                            ) View Auction
+
+                            button.dashboard-action-button(
+                                type="button"
+                            ) Manage
+        else
+            p.dashboard-empty
+                | You currently have no active listings.
+
+    section.dashboard-section#successful-sales
+        .section-heading
+            h2 Successful Sales
+            span.dashboard-count= listings.successful.length
+
+        if listings.successful.length
+            .dashboard-list
+                each listing in listings.successful
+                    article.dashboard-item
+                        .dashboard-image
+                            | Product Image
+
+                        .dashboard-item-content
+                            h3= listing.title
+
+                            .dashboard-item-details
+                                p
+                                    strong Final Amount:
+                                    |  £#{listing.finalAmount.toFixed(2)}
+
+                                p
+                                    strong Buyer:
+                                    |  #{listing.buyer}
+
+                                p
+                                    strong Fulfilment:
+                                    |  #{listing.fulfilmentStatus}
+
+                        .dashboard-actions
+                            button.dashboard-action-button(
+                                type="button"
+                            ) View Sale
+        else
+            p.dashboard-empty
+                | You currently have no successful sales.
+
+    section.dashboard-section#listing-history
+        .section-heading
+            h2 Listing History
+            span.dashboard-count= listings.history.length
+
+        if listings.history.length
+            .dashboard-list
+                each listing in listings.history
+                    article.dashboard-item
+                        .dashboard-image
+                            | Product Image
+
+                        .dashboard-item-content
+                            h3= listing.title
+
+                            .dashboard-item-details
+                                p
+                                    strong Outcome:
+                                    |  #{listing.outcome}
+
+                                if listing.finalAmount
+                                    p
+                                        strong Final Amount:
+                                        |  £#{listing.finalAmount.toFixed(2)}
+
+                                p
+                                    strong Completed:
+                                    |  #{listing.completedAt}
+
+                        .dashboard-actions
+                            button.dashboard-action-button(
+                                type="button"
+                            ) View Details
+        else
+            p.dashboard-empty
+                | Your listing history is currently empty.

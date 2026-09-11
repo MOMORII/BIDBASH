@@ -7,7 +7,8 @@ const moderator = require("./controllers/moderator");
 
 const {
     requireLogin,
-    requireModerator
+    requireModerator,
+    requireOwnUser
 } = require("./middleware/auth");
 
 const {
@@ -66,10 +67,33 @@ router.post("/login", auth.login);
 //ends the active session
 router.post("/logout", auth.logout);
 
-//restricts seller tools to authenticated users
+//renders the temporary registration page
+router.get("/register", (req, res) => {
+    res.render("register", {
+        pageTitle: "Sign Up - BIDBASH"
+    });
+});
+
+//prevents temporary registration data from being stored before sqlite exists
+router.post("/register", (req, res) => {
+    res.render("register", {
+        pageTitle: "Sign Up - BIDBASH",
+        message: "Registration storage will be enabled when the BIDBASH database is connected."
+    });
+});
+
+//redirects authenticated sellers to their own dashboard
 router.get(
     "/sell",
     requireLogin,
+    seller.redirectToDashboard
+);
+
+//renders the seller-specific my listings dashboard
+router.get(
+    "/users/:id/listings",
+    requireLogin,
+    requireOwnUser,
     seller.dashboard
 );
 

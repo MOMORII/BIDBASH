@@ -1,12 +1,14 @@
 //stores temporary accounts until sqlite authentication exists
 const users = {
     user: {
+        id: 1,
         username: "user",
         password: "test123",
         role: "user"
     },
 
     moderator: {
+        id: 2,
         username: "moderator",
         password: "mod123",
         role: "moderator"
@@ -35,6 +37,7 @@ function login(req, res) {
 
     //stores required session information
     req.session.user = {
+        id: user.id,
         username: user.username,
         role: user.role
     };

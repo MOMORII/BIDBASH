@@ -20,7 +20,25 @@ function requireModerator(req, res, next) {
     next();
 }
 
+//checks whether the requested user dashboard belongs to the active session
+function requireOwnUser(req, res, next) {
+    if (!req.session.user) {
+        return res.redirect("/login");
+    }
+
+    const requestedUserId = Number(req.params.id);
+    const loggedInUserId = Number(req.session.user.id);
+
+    //rejects access to another user's private dashboard
+    if (requestedUserId !== loggedInUserId) {
+        return res.status(403).send("Access denied.");
+    }
+
+    next();
+}
+
 module.exports = {
     requireLogin,
-    requireModerator
+    requireModerator,
+    requireOwnUser
 };
