@@ -1,0 +1,116 @@
+extends layout
+
+block content
+    section.dashboard-top
+        .dashboard-header
+            .dashboard-heading
+                h1 Create Listing
+                p Add the information required to prepare a new BIDBASH auction listing.
+
+    section.dashboard-section
+        .listing-form-container
+            if error
+                p.form-message.form-error= error
+
+            if message
+                p.form-message.form-success= message
+
+            form.listing-form(
+                method="POST"
+                action="/listings/new"
+            )
+                .form-group
+                    label(for="title") Listing Title
+
+                    input#title(
+                        type="text"
+                        name="title"
+                        placeholder="Enter listing title"
+                        required
+                    )
+
+                .form-row
+                    .form-group
+                        label(for="category") Category
+
+                        select#category(
+                            name="category"
+                            required
+                        )
+                            option(value="") Select Category
+                            option(value="electronics") Electronics
+                            option(value="collectibles") Collectibles
+                            option(value="gaming") Gaming
+                            option(value="home") Home & Living
+                            option(value="fashion") Fashion
+
+                    .form-group
+                        label(for="condition") Condition
+
+                        select#condition(
+                            name="condition"
+                            required
+                        )
+                            option(value="") Select Condition
+                            option(value="new") New
+                            option(value="used-very-good") Used - Very Good
+                            option(value="used-good") Used - Good
+
+                .form-group
+                    label(for="brand") Brand
+
+                    input#brand(
+                        type="text"
+                        name="brand"
+                        placeholder="Enter brand if applicable"
+                    )
+
+                .form-group
+                    label(for="description") Description
+
+                    textarea#description(
+                        name="description"
+                        rows="6"
+                        placeholder="Describe the item, condition, and important details"
+                        required
+                    )
+
+                .form-row
+                    .form-group
+                        label(for="starting-price") Starting Price
+
+                        input#starting-price(
+                            type="number"
+                            name="startingPrice"
+                            min="0"
+                            step="0.01"
+                            placeholder="0.00"
+                            required
+                        )
+
+                    .form-group
+                        label(for="bid-increment") Bid Increment
+
+                        input#bid-increment(
+                            type="number"
+                            name="bidIncrement"
+                            min="0.01"
+                            step="0.01"
+                            placeholder="5.00"
+                            required
+                        )
+
+                .form-group
+                    label Listing Images
+
+                    .listing-image-placeholder
+                        | Image upload will be connected during database/file-storage implementation.
+
+                .form-actions
+                    a.secondary-button(
+                        href=`/users/${user.id}/listings`
+                    ) Cancel
+
+                    button.primary-button(
+                        type="submit"
+                    ) Validate Listing

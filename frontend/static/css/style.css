@@ -34,7 +34,7 @@ a {
     min-height: 68px;
 
     margin: 0;
-    padding: 0 24px;
+    padding: 0 16px;
 
     display: flex;
     align-items: center;
@@ -58,6 +58,12 @@ a {
     font-weight: bold;
     color: #8E45DD;
     text-decoration: none;
+}
+
+.logo-image {
+    display: block;
+    height: 60px;
+    width: auto;
 }
 
 .sidebar-toggle {
@@ -160,10 +166,12 @@ a {
 .page-content {
     width: 100%;
     max-width: none;
+
     margin: 0;
     padding: 32px 0 60px;
 
     background: #F3EAFB;
+
     min-height: calc(100vh - 68px);
 
     transition:
@@ -176,31 +184,22 @@ body.sidebar-open .page-content {
     width: calc(100% - 320px);
 }
 
-/* i am styling the homepage hero */
+/*removes outer page padding only on auction detail pages */
 
-.hero {
-    background: #f0e9f8;
-    border-radius: 16px;
-    padding: 48px;
-    margin-bottom: 40px;
+.page-content:has(.auction-page) {
+    padding-top: 0;
+    padding-bottom: 0;
 }
 
-.hero h1 {
-    margin-top: 0;
-    font-size: 42px;
-}
-
-.hero p {
-    max-width: 600px;
-    font-size: 18px;
-    line-height: 1.5;
-}
+/*styles shared buttons */
 
 .primary-button,
 .secondary-button {
     display: inline-block;
+
     margin-top: 12px;
     padding: 10px 16px;
+
     border-radius: 8px;
 }
 
@@ -214,7 +213,7 @@ body.sidebar-open .page-content {
     color: white;
 }
 
-/* i am styling the auction sections and cards */
+/*styles auction sections and cards */
 
 .auction-grid {
     display: grid;
@@ -224,22 +223,27 @@ body.sidebar-open .page-content {
 
 .auction-card {
     background: white;
+
     border: 1px solid #ddd;
     border-radius: 12px;
+
     padding: 16px;
 }
 
 .image-placeholder {
     height: 180px;
-    background: #eee;
-    border-radius: 8px;
+
     display: flex;
     align-items: center;
     justify-content: center;
+
     margin-bottom: 14px;
+
+    background: #eee;
+    border-radius: 8px;
 }
 
-/* i am making the card layout responsive */
+/*adjusts auction cards on smaller displays */
 
 @media (max-width: 800px) {
     .auction-grid {
@@ -247,13 +251,14 @@ body.sidebar-open .page-content {
     }
 }
 
-/* i am styling the browse auctions header */
+/*styles the browse auctions header */
 
 .browse-header {
     display: flex;
     justify-content: space-between;
     align-items: end;
     gap: 24px;
+
     margin-bottom: 32px;
 }
 
@@ -268,22 +273,27 @@ body.sidebar-open .page-content {
 
 .browse-search input {
     min-width: 260px;
+
     padding: 10px 12px;
+
     border: 1px solid #ccc;
     border-radius: 8px;
 }
 
 .browse-search button,
 .filter-button {
+    padding: 10px 16px;
+
+    border: 0;
+    border-radius: 8px;
+
     background: #8E45DD;
     color: white;
-    border: 0;
-    padding: 10px 16px;
-    border-radius: 8px;
+
     cursor: pointer;
 }
 
-/*adds spacing around browse page content without shrinking the purple header */
+/*adds spacing around browse page content */
 
 .browse-page {
     display: block;
@@ -301,23 +311,28 @@ body.sidebar-open .page-content {
 }
 
 .filters-panel {
+    align-self: start;
+
+    padding: 20px;
+
     background: white;
+
     border: 1px solid #ddd;
     border-radius: 12px;
-    padding: 20px;
-    align-self: start;
 }
 
 .filter-group {
     display: flex;
     flex-direction: column;
     gap: 6px;
+
     margin-bottom: 18px;
 }
 
 .filter-group select,
 .filter-group input {
     padding: 9px;
+
     border: 1px solid #ccc;
     border-radius: 7px;
 }
@@ -326,16 +341,18 @@ body.sidebar-open .page-content {
     display: flex;
     justify-content: space-between;
     align-items: center;
+
     margin-bottom: 18px;
 }
 
 .results-toolbar select {
     padding: 9px;
+
     border: 1px solid #ccc;
     border-radius: 7px;
 }
 
-/* i am adjusting the browse page for smaller screens */
+/*adjusts the browse page on smaller displays */
 
 @media (max-width: 850px) {
     .browse-header {
@@ -353,39 +370,58 @@ body.sidebar-open .page-content {
     }
 }
 
-/* i am styling the main auction details layout */
+/*uses the available viewport space beneath the global navigation */
 
 .auction-page {
-    display: grid;
-    grid-template-columns: 1fr 300px;
-    gap: 32px;
+    width: 100%;
+    max-width: none;
+
+    margin: 0;
+    padding: 20px 24px 24px;
+
+    min-height: calc(100vh - 68px);
 }
+
+/*uses the main width for the product image and auction information */
 
 .auction-main {
+    width: 100%;
+
     display: grid;
-    grid-template-columns: minmax(280px, 1fr) minmax(320px, 1fr);
-    gap: 32px;
+    grid-template-columns: minmax(420px, 0.9fr) minmax(520px, 1.1fr);
+    gap: 40px;
+
+    align-items: stretch;
 }
 
-.auction-image-panel {
+/*prevents auction columns from overflowing */
+
+.auction-image-panel,
+.auction-info {
     min-width: 0;
 }
 
+/*keeps the product image large */
+
 .image-placeholder.large {
-    min-height: 420px;
+    width: 100%;
+    min-height: 520px;
     height: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-/* i am styling the product and auction information */
+/*styles the product and auction information */
 
 .auction-category {
-    margin-bottom: 8px;
+    margin: 0 0 8px;
     color: #666;
 }
 
 .auction-info h1 {
-    margin-top: 0;
-    margin-bottom: 20px;
+    margin: 0 0 20px;
 }
 
 .product-meta {
@@ -397,126 +433,242 @@ body.sidebar-open .page-content {
 }
 
 .product-description {
-    line-height: 1.6;
     margin-bottom: 28px;
+    line-height: 1.6;
 }
+
+/*groups the current bid minimum bid and remaining time */
 
 .auction-status-panel {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 12px;
+
     margin-bottom: 24px;
 }
 
 .status-item {
+    min-width: 0;
+
+    padding: 16px;
+
     background: white;
+
     border: 1px solid #ddd;
     border-radius: 10px;
-    padding: 16px;
 }
 
 .status-item .label {
     display: block;
+
     margin-bottom: 8px;
+
     font-size: 14px;
     color: #666;
 }
 
-/* i am styling the bid entry controls */
+.status-item strong {
+    display: block;
+    font-size: 16px;
+}
+
+/*styles the bid entry panel */
 
 .bid-panel {
-    background: #DEC9F4;
-    border-radius: 12px;
     padding: 20px;
     margin-bottom: 20px;
+
+    background: #DEC9F4;
+
+    border-radius: 12px;
 }
 
 .bid-panel label {
     display: block;
-    font-weight: bold;
-    margin-bottom: 8px;
-}
 
-.bid-input-row {
-    display: flex;
-    gap: 10px;
-}
+    margin-bottom: 10px;
 
-.bid-input-row input {
-    flex: 1;
-    padding: 11px;
-    border: 1px solid #bbb;
-    border-radius: 8px;
-}
-
-.bid-input-row .primary-button {
-    border: 0;
-    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
 }
 
 .bid-help {
-    margin-bottom: 0;
+    margin: 12px 0 0;
+
     font-size: 14px;
+    line-height: 1.4;
 }
+
+/*styles the current user's auction status */
 
 .auction-message {
+    padding: 14px 16px;
+
     background: white;
+
     border: 1px solid #ddd;
     border-radius: 10px;
-    padding: 14px;
 }
 
-/* i am styling the supporting auction information */
+.auction-message p {
+    margin: 0;
+}
 
-.auction-sidebar {
+/*aligns supporting auction information with the main columns */
+
+.auction-support {
+    display: grid;
+    grid-template-columns: minmax(420px, 0.9fr) minmax(520px, 1.1fr);
+    gap: 40px;
+
+    margin-top: 30px;
+}
+
+/*stacks delivery and returns */
+
+.auction-support-left {
     display: flex;
     flex-direction: column;
-    gap: 18px;
+    gap: 20px;
 }
 
+.auction-activity-card {
+    height: 100%;
+}
+
+/*styles supporting auction cards */
+
 .info-card {
+    padding: 22px;
+
     background: white;
+
     border: 1px solid #ddd;
     border-radius: 12px;
-    padding: 18px;
 }
 
 .info-card h2 {
     margin-top: 0;
 }
 
-/* i am making the auction page responsive */
+/*styles bid controls */
 
-@media (max-width: 1000px) {
-    .auction-page {
-        grid-template-columns: 1fr;
+.bid-input-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    width: 100%;
+}
+
+.bid-input-row input {
+    flex: 1;
+
+    min-width: 0;
+    min-height: 46px;
+
+    padding: 11px 14px;
+
+    border: 1px solid #D8D3DC;
+    border-radius: 10px;
+
+    background: white;
+    color: #24202A;
+
+    font: inherit;
+    font-size: 16px;
+
+    outline: none;
+}
+
+.bid-input-row input:focus {
+    border-color: #8E45DD;
+    box-shadow: 0 0 0 3px rgba(142, 69, 221, 0.14);
+}
+
+.bid-input-row .primary-button {
+    min-height: 46px;
+
+    margin-top: 0;
+    padding: 0 20px;
+
+    border: 0;
+    border-radius: 10px;
+
+    cursor: pointer;
+}
+
+/*adjusts auction layout at medium widths */
+
+@media (max-width: 1050px) {
+    .auction-main,
+    .auction-support {
+        grid-template-columns: 1fr 1fr;
+        gap: 28px;
     }
 
-    .auction-main {
-        grid-template-columns: 1fr;
+    .auction-page {
+        padding-left: 24px;
+        padding-right: 24px;
     }
 }
 
+/*moves auction information below the image */
+
+@media (max-width: 800px) {
+    .auction-main {
+        grid-template-columns: 1fr;
+    }
+
+    .image-placeholder.large {
+        min-height: 340px;
+    }
+
+    .auction-support {
+        grid-template-columns: 1fr;
+    }
+
+    .auction-activity-card {
+        height: auto;
+    }
+}
+
+/*adjusts auction controls on smaller displays */
+
 @media (max-width: 650px) {
+    .auction-page {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+
     .auction-status-panel {
         grid-template-columns: 1fr;
     }
 
     .bid-input-row {
         flex-direction: column;
+        align-items: stretch;
+    }
+
+    .bid-input-row .primary-button {
+        width: 100%;
     }
 }
 
-/* i am styling the background shown behind the bid confirmation window */
+/*styles the modal background */
 
 .modal-overlay {
     position: fixed;
     inset: 0;
-    background: rgba(36, 32, 42, 0.6);
+
     display: flex;
     align-items: center;
     justify-content: center;
+
     padding: 20px;
+
+    background: rgba(36, 32, 42, 0.6);
+
     z-index: 1000;
 }
 
@@ -524,14 +676,17 @@ body.sidebar-open .page-content {
     display: none;
 }
 
-/* i am styling the bid confirmation window */
+/*styles modal windows */
 
 .modal-card {
     width: 100%;
     max-width: 480px;
-    background: white;
-    border-radius: 14px;
+
     padding: 28px;
+
+    background: white;
+
+    border-radius: 14px;
 }
 
 .modal-card h2 {
@@ -546,6 +701,7 @@ body.sidebar-open .page-content {
     display: flex;
     justify-content: flex-end;
     gap: 12px;
+
     margin-top: 24px;
 }
 
@@ -587,6 +743,7 @@ body.sidebar-open .page-content {
 
 .modal-close {
     border: 0;
+
     background: transparent;
 
     font-size: 28px;
@@ -639,15 +796,16 @@ body.sidebar-open .page-content {
 .listing-image-placeholder {
     padding: 24px;
 
-    border: 1px dashed #aaa;
-    border-radius: 8px;
-
     background: #F5F3F0;
     color: #666;
+
+    border: 1px dashed #aaa;
+    border-radius: 8px;
 }
 
 .form-message {
     padding: 12px 14px;
+
     border-radius: 8px;
 }
 
@@ -677,10 +835,11 @@ body.sidebar-open .page-content {
     }
 }
 
-/*keeps purple page headers full-width inside the page area */
+/*keeps shared purple dashboard headers full-width */
 
 .dashboard-top {
     width: 100%;
+
     margin: -32px 0 34px;
     padding: 30px 24px 0;
 
@@ -694,13 +853,14 @@ body.sidebar-open .page-content {
     border-radius: 0;
 }
 
-/*styles the dashboard heading */
+/*styles shared dashboard headings */
 
 .dashboard-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     gap: 24px;
+
     margin-bottom: 24px;
 }
 
@@ -714,7 +874,23 @@ body.sidebar-open .page-content {
     color: rgba(255, 255, 255, 0.82);
 }
 
-/*styles the create listing action */
+/*fills decorative header images */
+
+.header-image {
+    display: block;
+
+    width: 100%;
+    height: 100%;
+
+    margin: 0;
+    padding: 0;
+    border: 0;
+
+    object-fit: cover;
+    object-position: center;
+}
+
+/*styles dashboard header buttons */
 
 .dashboard-top .primary-button {
     background: white;
@@ -725,24 +901,31 @@ body.sidebar-open .page-content {
     background: #F5F3F0;
 }
 
-/*styles the dashboard tabs inside the purple section */
+/*styles dashboard tabs */
 
 .dashboard-tabs {
     display: flex;
     align-items: center;
     gap: 34px;
+
     margin: 0;
+
     border-bottom: 1px solid rgba(255, 255, 255, 0.28);
 }
 
 .dashboard-tab {
     position: relative;
-    border: 0;
-    background: transparent;
+
     padding: 12px 0 14px;
+
+    border: 0;
+
+    background: transparent;
+    color: rgba(255, 255, 255, 0.75);
+
     font: inherit;
     font-size: 16px;
-    color: rgba(255, 255, 255, 0.75);
+
     cursor: pointer;
 }
 
@@ -757,16 +940,144 @@ body.sidebar-open .page-content {
 
 .dashboard-tab.active::after {
     content: "";
+
     position: absolute;
     left: 0;
     right: 0;
     bottom: -1px;
+
     height: 3px;
+
     background: white;
+
     border-radius: 3px 3px 0 0;
 }
 
-/*spaces dashboard content beneath the full-width purple header */
+/*creates the homepage-only purple header image layout */
+
+.home-top {
+    width: 100%;
+
+    margin: -32px 0 32px;
+    padding: 0;
+
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 220px;
+    align-items: stretch;
+
+    overflow: hidden;
+}
+
+/*keeps homepage header content in the left section */
+
+.home-top .dashboard-header {
+    min-width: 0;
+
+    display: flex;
+    align-items: center;
+
+    margin: 0;
+    padding: 28px 24px 24px;
+}
+
+/*keeps the homepage image flush to the right */
+
+.home-top .dashboard-visual {
+    width: 220px;
+    height: 100%;
+
+    margin: 0;
+    padding: 0;
+
+    overflow: hidden;
+}
+
+/*fills the homepage header image section */
+
+.home-top .header-image {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+    object-position: center;
+}
+
+/*creates the my listings header image layout */
+
+.listings-top {
+    padding: 0;
+
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(280px, 34vw);
+    align-items: stretch;
+
+    overflow: hidden;
+}
+
+/*groups the listings heading button and tabs */
+
+.listings-header-content {
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+}
+
+/*spaces the listings heading area */
+
+.listings-top .dashboard-heading {
+    min-width: 0;
+
+    padding: 28px 24px 18px;
+}
+
+/*keeps the create listing button beneath the subtitle */
+
+.listings-top .dashboard-heading .primary-button {
+    margin-top: 16px;
+}
+
+/*keeps listings tabs at the bottom of the left section */
+
+.listings-top .dashboard-tabs {
+    margin-top: auto;
+    padding: 0 24px;
+}
+
+/*lets the image side grow while the left side flexes */
+
+.listings-top .dashboard-visual {
+    min-width: 280px;
+    width: 100%;
+    height: 100%;
+
+    margin: 0;
+    padding: 0;
+
+    display: flex;
+    align-items: stretch;
+    justify-content: flex-end;
+
+    overflow: hidden;
+}
+
+/*shows the full illustration without vertical gaps caused by cropping */
+
+.listings-top .header-image {
+    display: block;
+
+    width: 100%;
+    height: 100%;
+
+    margin: 0;
+    padding: 0;
+    border: 0;
+
+    object-fit: contain;
+    object-position: right center;
+}
+
+/*spaces dashboard content beneath the header */
 
 .dashboard-section {
     margin-bottom: 48px;
@@ -775,9 +1086,13 @@ body.sidebar-open .page-content {
 
 .dashboard-count {
     min-width: 30px;
+
     padding: 5px 9px;
-    border-radius: 20px;
+
     background: #DEC9F4;
+
+    border-radius: 20px;
+
     text-align: center;
     font-size: 14px;
 }
@@ -788,26 +1103,35 @@ body.sidebar-open .page-content {
     gap: 14px;
 }
 
-/*styles individual seller dashboard entries */
+/*styles individual dashboard entries */
 
 .dashboard-item {
     display: grid;
     grid-template-columns: 120px 1fr auto;
     align-items: center;
     gap: 20px;
+
     padding: 18px;
+
     background: white;
+
     border: 1px solid #ddd;
     border-radius: 12px;
 }
 
+/*styles dashboard product thumbnails */
+
 .dashboard-image {
     height: 90px;
+
     display: flex;
     align-items: center;
     justify-content: center;
+
     background: #eee;
+
     border-radius: 8px;
+
     font-size: 13px;
     color: #666;
 }
@@ -835,29 +1159,35 @@ body.sidebar-open .page-content {
 }
 
 .dashboard-action-button {
+    padding: 10px 14px;
+
     border: 1px solid #8E45DD;
+    border-radius: 8px;
+
     background: white;
     color: #8E45DD;
-    padding: 10px 14px;
-    border-radius: 8px;
+
     cursor: pointer;
 }
 
 .dashboard-empty {
     padding: 24px;
+
     background: white;
+    color: #666;
+
     border: 1px dashed #bbb;
     border-radius: 12px;
-    color: #666;
 }
 
-/*aligns auction titles with their bidding status */
+/*aligns auction titles with bidding status */
 
 .dashboard-item-title {
     display: flex;
     align-items: center;
     flex-wrap: wrap;
     gap: 10px;
+
     margin-bottom: 10px;
 }
 
@@ -865,13 +1195,16 @@ body.sidebar-open .page-content {
     margin: 0;
 }
 
-/*styles bidder status labels without relying on colour alone */
+/*styles bidder status labels */
 
 .bid-status {
     display: inline-flex;
     align-items: center;
+
     padding: 5px 10px;
+
     border-radius: 20px;
+
     font-size: 13px;
     font-weight: 600;
 }
@@ -891,7 +1224,7 @@ body.sidebar-open .page-content {
     color: #8B2929;
 }
 
-/*adjusts dashboard entries for smaller screens */
+/*adjusts dashboard entries on smaller displays */
 
 @media (max-width: 750px) {
     .dashboard-header {
@@ -912,25 +1245,29 @@ body.sidebar-open .page-content {
     }
 }
 
-/*styles the browse controls inside the purple page header */
+/*styles browse controls inside the purple header */
 
 .browse-top {
     padding-bottom: 24px;
 }
 
 .browse-header-controls {
+    width: 100%;
+
     display: flex;
     align-items: center;
     gap: 12px;
-    width: 100%;
 }
 
 .browse-header-controls input,
 .browse-header-controls select {
     min-height: 42px;
+
+    padding: 10px 14px;
+
     border: 0;
     border-radius: 8px;
-    padding: 10px 14px;
+
     font: inherit;
 }
 
@@ -943,7 +1280,7 @@ body.sidebar-open .page-content {
     min-width: 180px;
 }
 
-/*adjusts browse header controls on smaller displays */
+/*adjusts browse header controls */
 
 @media (max-width: 700px) {
     .browse-header-controls {
@@ -957,12 +1294,14 @@ body.sidebar-open .page-content {
     }
 }
 
-/*keeps a transparent click area beside the open sidebar */
+/*keeps a transparent click area beside the sidebar */
 
 .sidebar-overlay {
     position: fixed;
     inset: 68px 0 0 320px;
+
     background: transparent;
+
     z-index: 850;
 }
 
@@ -974,16 +1313,19 @@ body.sidebar-open .page-content {
 
 .sidebar-drawer {
     position: fixed;
+
     top: 68px;
     left: 0;
 
     width: 320px;
     max-width: 88vw;
+
     height: calc(100vh - 68px);
 
     padding: 24px;
 
     background: white;
+
     box-shadow: 8px 0 24px rgba(36, 32, 42, 0.18);
 
     overflow-y: auto;
@@ -1014,6 +1356,7 @@ body.sidebar-open .page-content {
 
 .sidebar-close {
     border: 0;
+
     background: transparent;
 
     font-size: 28px;
@@ -1022,7 +1365,7 @@ body.sidebar-open .page-content {
     cursor: pointer;
 }
 
-/*styles browse filters inside the popup sidebar */
+/*styles browse filters inside the sidebar */
 
 .sidebar-filters {
     display: flex;
@@ -1063,7 +1406,7 @@ body.sidebar-open .page-content {
     gap: 8px;
 }
 
-/*stacks sidebar discovery links vertically */
+/*stacks sidebar discovery links */
 
 .sidebar-section {
     margin-bottom: 26px;
@@ -1081,8 +1424,11 @@ body.sidebar-open .page-content {
 
 .sidebar-discovery a {
     display: block;
+
     padding: 9px 10px;
+
     border-radius: 7px;
+
     color: #24202A;
 }
 
@@ -1101,107 +1447,163 @@ body.sidebar-open .page-content {
 
     .sidebar-overlay {
         inset: 68px 0 0;
+
         background: rgba(36, 32, 42, 0.35);
     }
 }
 
-/*adjusts homepage spacing inside the shared purple header */
+/*places homepage hero copy beside its fixed image */
+/*moves the hero image to the left side */
 
-.home-top {
-    width: 100%;
-    margin: -32px 0 32px;
-    padding: 28px 24px 24px;
-    border-radius: 0;
-}
-
-/*keeps the homepage hero inset from the outer page edges */
+/*places the homepage image on the left and content on the right */
 
 .hero-section {
     display: grid;
-    grid-template-columns: 1.2fr 1fr;
-    gap: 32px;
+    grid-template-columns: 445px minmax(0, 1fr);
+    gap: 0;
 
-    margin: 32px 24px 48px;
-    padding: 42px;
+    width: calc(100% - 40px);
+    height: 340px;
+
+    margin: 0 20px 48px;
+    padding: 0;
 
     background: #DEC9F4;
 
-    border-radius: 0 0 42px 42px;
+    border-radius: 0;
+
+    overflow: hidden;
 }
 
-/*preserves the homepage hero shape */
+/*keeps the hero image fixed on the left */
 
-.hero-content {
-    display: contents;
+.hero-visual {
+    grid-column: 1;
+    grid-row: 1;
+
+    min-width: 0;
+    width: 100%;
+    height: 100%;
+
+    margin: 0;
+    padding: 0;
+
+    overflow: hidden;
 }
+
+/*fills the left image section */
+
+.hero-image {
+    display: block;
+
+    width: 100%;
+    height: 100%;
+
+    margin: 0;
+    padding: 0;
+
+    object-fit: cover;
+    object-position: center;
+}
+
+/*centres the lilac hero content inside the right section */
 
 .hero-copy {
+    grid-column: 2;
+    grid-row: 1;
+
+    min-width: 0;
+
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: flex-start;
+
+    padding: 36px 48px;
 }
 
+/*styles the hero heading */
+
 .hero-copy h2 {
-    margin-top: 0;
-    margin-bottom: 14px;
+    margin: 0 0 14px;
 
     font-size: 36px;
     color: #24202A;
 }
 
+/*styles the hero description */
+
 .hero-copy p {
+    width: 100%;
     max-width: 620px;
-    margin-top: 0;
-    margin-bottom: 24px;
+
+    margin: 0 0 24px;
 
     line-height: 1.6;
 }
 
+/*keeps hero actions together */
+
 .hero-actions {
     display: flex;
+    align-items: center;
     flex-wrap: wrap;
-    gap: 12px;
+    gap: 0;
 }
 
-/*styles the homepage hero visual */
+/*keeps the image on the left when the browser becomes narrower */
 
-.hero-visual {
-    min-height: 240px;
+@media (max-width: 800px) {
+    .hero-section {
+        grid-template-columns: 220px minmax(0, 1fr);
+        height: 300px;
+    }
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    .hero-copy {
+        padding: 24px;
+    }
+
+    .hero-copy h2 {
+        font-size: 28px;
+    }
+
+    .hero-copy p {
+        font-size: 15px;
+    }
 }
 
-.hero-placeholder {
+/*fills the hero image column */
+
+.hero-image {
+    display: block;
+
     width: 100%;
-    min-height: 220px;
+    height: 100%;
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    margin: 0;
+    padding: 0;
 
-    background: white;
-    border-radius: 24px;
-
-    color: #666;
+    object-fit: cover;
+    object-position: center;
 }
 
-/*spaces homepage auction sections inside the full-width page */
+/*spaces homepage auction sections */
 
 .home-section {
     margin-top: 36px;
     margin-bottom: 48px;
+
     padding: 0 24px;
 }
 
-/*aligns homepage section titles with carousel controls */
+/*aligns homepage section headings */
 
 .home-section-heading {
     display: flex;
     align-items: flex-end;
     justify-content: space-between;
     gap: 24px;
+
     margin-bottom: 18px;
 }
 
@@ -1222,11 +1624,13 @@ body.sidebar-open .page-content {
 
 .home-view-all {
     margin-right: 8px;
+
     color: #8E45DD;
+
     font-weight: 500;
 }
 
-/*creates the horizontal homepage auction carousel */
+/*creates the homepage auction carousel */
 
 .auction-carousel {
     display: flex;
@@ -1248,7 +1652,7 @@ body.sidebar-open .page-content {
     scroll-snap-align: start;
 }
 
-/*styles the carousel navigation buttons */
+/*styles carousel navigation buttons */
 
 .carousel-button {
     width: 38px;
@@ -1275,20 +1679,8 @@ body.sidebar-open .page-content {
     color: white;
 }
 
-/*adjusts the homepage hero for smaller screens */
 
-@media (max-width: 800px) {
-    .hero-section {
-        grid-template-columns: 1fr;
-        padding: 28px;
-    }
-
-    .hero-copy h2 {
-        font-size: 30px;
-    }
-}
-
-/*adjusts carousel controls on smaller displays */
+/*adjusts homepage carousel controls */
 
 @media (max-width: 700px) {
     .home-section-heading {
@@ -1301,10 +1693,11 @@ body.sidebar-open .page-content {
     }
 }
 
-/*styles the create listing form */
+/*styles standalone create listing forms */
 
 .listing-form-container {
     max-width: 900px;
+
     margin: 0 auto;
 }
 
@@ -1316,6 +1709,7 @@ body.sidebar-open .page-content {
     padding: 28px;
 
     background: white;
+
     border: 1px solid #ddd;
     border-radius: 12px;
 }
@@ -1340,6 +1734,7 @@ body.sidebar-open .page-content {
 .form-group select,
 .form-group textarea {
     width: 100%;
+
     padding: 11px 12px;
 
     border: 1px solid #bbb;
@@ -1355,11 +1750,11 @@ body.sidebar-open .page-content {
 .listing-image-placeholder {
     padding: 28px;
 
-    border: 1px dashed #aaa;
-    border-radius: 8px;
-
     background: #F5F3F0;
     color: #666;
+
+    border: 1px dashed #aaa;
+    border-radius: 8px;
 }
 
 .form-actions {
@@ -1372,13 +1767,16 @@ body.sidebar-open .page-content {
 .form-actions .primary-button,
 .form-actions .secondary-button {
     margin-top: 0;
+
     border: 0;
+
     cursor: pointer;
 }
 
 .form-message {
     padding: 14px 16px;
     margin-bottom: 18px;
+
     border-radius: 8px;
 }
 
@@ -1392,7 +1790,7 @@ body.sidebar-open .page-content {
     color: #236B3A;
 }
 
-/*adjusts listing forms on smaller displays */
+/*adjusts standalone listing forms on smaller displays */
 
 @media (max-width: 700px) {
     .form-row {
@@ -1426,6 +1824,7 @@ body.sidebar-open .page-content {
     padding: 16px;
 
     background: #F5F3F0;
+
     border-radius: 8px;
 }
 
@@ -1438,7 +1837,7 @@ body.sidebar-open .page-content {
     font-size: 16px;
 }
 
-/*styles the confirmation guidance */
+/*styles confirmation guidance */
 
 .bid-confirmation-note {
     margin: 0;

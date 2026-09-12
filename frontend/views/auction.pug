@@ -75,17 +75,18 @@ block content
                         a.primary-button(href="/login")
                             | Login to Bid
 
-        aside.auction-sidebar
-            section.info-card
-                h2 Delivery
-                p Standard UK delivery available.
-                p Estimated delivery: 3-5 working days.
+        section.auction-support
+            .auction-support-left
+                section.info-card
+                    h2 Delivery
+                    p Standard UK delivery available.
+                    p Estimated delivery: 3-5 working days.
 
-            section.info-card
-                h2 Returns
-                p Returns accepted within 14 days where applicable.
+                section.info-card
+                    h2 Returns
+                    p Returns accepted within 14 days where applicable.
 
-            section.info-card
+            section.info-card.auction-activity-card
                 h2 Auction Activity
                 p #{auction.bidCount} bids placed
                 p #{auction.activeBidders} active bidders

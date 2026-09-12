@@ -6,31 +6,37 @@ block content
             .dashboard-heading
                 h1 BIDBASH
                 p Discover active auctions, track competitive listings, and bid with confidence.
+        .dashboard-visual
+            img.header-image(
+                src="/images/header-img.png"
+                alt="BIDBASH illustration"
+            )
 
     section.hero-section
-        .hero-content
-            .hero-copy
-                h2 Find your next auction win
+        .hero-copy
+            h2 Find your next auction win
 
-                p
-                    | Browse active listings, discover ending-soon auctions, and find items that interest you.
+            p
+                | Browse active listings, discover ending-soon auctions, and find items that interest you.
 
-                .hero-actions
-                    a.primary-button(href="/browse") Browse Auctions
+            .hero-actions
+                a.primary-button(href="/browse") Browse Auctions
 
-                    if user
-                        a.secondary-button(
-                            href=`/users/${user.id}/bids`
-                        ) View My Bids
+                if user
+                    a.secondary-button(
+                        href=`/users/${user.id}/bids`
+                    ) View My Bids
 
-                    else
-                        a.secondary-button(
-                            href="/register"
-                        ) Create Account
+                else
+                    a.secondary-button(
+                        href="/register"
+                    ) Create Account
 
-            .hero-visual
-                .hero-placeholder
-                    | Featured Auction Visual
+        .hero-visual
+            img.hero-image(
+                src="/images/hero-img.png"
+                    alt="Featured auction"
+            )
 
     section.home-section
         .home-section-heading

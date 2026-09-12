@@ -1,44 +1,61 @@
 extends layout
 
 block content
-    section.dashboard-top
-        .dashboard-header
+
+    section.dashboard-top.listings-top
+
+        .listings-header-content
+
             .dashboard-heading
                 h1 My Listings
                 p Manage your active auctions, successful sales, and listing history.
 
-            button.primary-button#create-listing-button(
-                type="button"
-            ) Create Listing
+                button.primary-button#create-listing-button(
+                    type="button"
+                ) Create Listing
 
-        nav.dashboard-tabs
-            button.dashboard-tab.active(
-                type="button"
-                data-dashboard-target="active-listings"
-            ) Active Listings
+            nav.dashboard-tabs
 
-            button.dashboard-tab(
-                type="button"
-                data-dashboard-target="successful-sales"
-            ) Successful Sales
+                button.dashboard-tab.active(
+                    type="button"
+                    data-dashboard-target="active-listings"
+                ) Active Listings
 
-            button.dashboard-tab(
-                type="button"
-                data-dashboard-target="listing-history"
-            ) Listing History
+                button.dashboard-tab(
+                    type="button"
+                    data-dashboard-target="successful-sales"
+                ) Successful Sales
+
+                button.dashboard-tab(
+                    type="button"
+                    data-dashboard-target="listing-history"
+                ) Listing History
+
+        .dashboard-visual
+            img.header-image(
+                src="/images/header-img.png"
+                alt="BIDBASH illustration"
+            )
 
     section.dashboard-section.dashboard-panel#active-listings
+
         if listings.active.length
+
             .dashboard-list
+
                 each listing in listings.active
+
                     article.dashboard-item
+
                         .dashboard-image
                             | Product Image
 
                         .dashboard-item-content
+
                             h3= listing.title
 
                             .dashboard-item-details
+
                                 p
                                     strong Current Bid:
                                     |  £#{listing.currentBid.toFixed(2)}
@@ -52,6 +69,7 @@ block content
                                     |  #{listing.timeRemaining}
 
                         .dashboard-actions
+
                             a.secondary-button(
                                 href=`/auction/${listing.id}`
                             ) View Auction
@@ -59,22 +77,31 @@ block content
                             button.dashboard-action-button(
                                 type="button"
                             ) Manage
+
         else
+
             p.dashboard-empty
                 | You currently have no active listings.
 
     section.dashboard-section.dashboard-panel#successful-sales(hidden)
+
         if listings.successful.length
+
             .dashboard-list
+
                 each listing in listings.successful
+
                     article.dashboard-item
+
                         .dashboard-image
                             | Product Image
 
                         .dashboard-item-content
+
                             h3= listing.title
 
                             .dashboard-item-details
+
                                 p
                                     strong Final Amount:
                                     |  £#{listing.finalAmount.toFixed(2)}
@@ -88,30 +115,41 @@ block content
                                     |  #{listing.fulfilmentStatus}
 
                         .dashboard-actions
+
                             button.dashboard-action-button(
                                 type="button"
                             ) View Sale
+
         else
+
             p.dashboard-empty
                 | You currently have no successful sales.
 
     section.dashboard-section.dashboard-panel#listing-history(hidden)
+
         if listings.history.length
+
             .dashboard-list
+
                 each listing in listings.history
+
                     article.dashboard-item
+
                         .dashboard-image
                             | Product Image
 
                         .dashboard-item-content
+
                             h3= listing.title
 
                             .dashboard-item-details
+
                                 p
                                     strong Outcome:
                                     |  #{listing.outcome}
 
                                 if listing.finalAmount
+
                                     p
                                         strong Final Amount:
                                         |  £#{listing.finalAmount.toFixed(2)}
@@ -121,19 +159,26 @@ block content
                                     |  #{listing.completedAt}
 
                         .dashboard-actions
+
                             button.dashboard-action-button(
                                 type="button"
                             ) View Details
+
         else
+
             p.dashboard-empty
                 | Your listing history is currently empty.
 
     //- displays the create listing form over the dashboard
+
     .modal-overlay#create-listing-modal(
         hidden=!openCreateListing
     )
+
         .modal-card.listing-modal-card
+
             .listing-modal-header
+
                 div
                     h2 Create Listing
                     p Add the information required for a new auction listing.
@@ -153,7 +198,9 @@ block content
                 method="POST"
                 action="/listings/new"
             )
+
                 .form-group
+
                     label(for="title") Listing Title
 
                     input#title(
@@ -164,13 +211,16 @@ block content
                     )
 
                 .form-row
+
                     .form-group
+
                         label(for="category") Category
 
                         select#category(
                             name="category"
                             required
                         )
+
                             option(value="") Select Category
                             option(value="electronics") Electronics
                             option(value="collectibles") Collectibles
@@ -179,18 +229,21 @@ block content
                             option(value="fashion") Fashion
 
                     .form-group
+
                         label(for="condition") Condition
 
                         select#condition(
                             name="condition"
                             required
                         )
+
                             option(value="") Select Condition
                             option(value="new") New
                             option(value="used-very-good") Used - Very Good
                             option(value="used-good") Used - Good
 
                 .form-group
+
                     label(for="brand") Brand
 
                     input#brand(
@@ -200,6 +253,7 @@ block content
                     )
 
                 .form-group
+
                     label(for="description") Description
 
                     textarea#description(
@@ -210,7 +264,9 @@ block content
                     )
 
                 .form-row
+
                     .form-group
+
                         label(for="starting-price") Starting Price
 
                         input#starting-price(
@@ -223,6 +279,7 @@ block content
                         )
 
                     .form-group
+
                         label(for="bid-increment") Bid Increment
 
                         input#bid-increment(
@@ -235,12 +292,14 @@ block content
                         )
 
                 .form-group
+
                     label Listing Images
 
                     .listing-image-placeholder
                         | Image upload will be connected during file-storage implementation.
 
                 .modal-actions
+
                     button.secondary-button#create-listing-cancel(
                         type="button"
                     ) Cancel
