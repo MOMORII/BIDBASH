@@ -1,35 +1,105 @@
-doctype html
-html(lang="en")
-    head
-        meta(charset="UTF-8")
-        meta(name="viewport" content="width=device-width, initial-scale=1.0")
-        title= pageTitle
-        link(rel="stylesheet" href="/css/style.css")
+extends layout
 
-    body
-        main
-            h1 BIDBASH
+block content
 
-            h2 Age Confirmation
+    section.auth-page.age-check-page
 
-            p
-                | BIDBASH is intended for users aged 18 or over.
+        .auth-shell.age-check-shell
 
-            if error
-                p= error
+            .auth-brand-panel.age-brand-panel
 
-            form(method="POST" action="/age-check")
-                label
-                    input(
-                        type="checkbox"
-                        name="ageConfirmed"
-                        value="yes"
-                        required
-                    )
-                    |  I confirm that I am aged 18 or over.
+                .auth-brand-content
 
-                br
-                br
+                    span.auth-eyebrow BEFORE YOU ENTER
 
-                button.primary-button(type="submit")
-                    | Continue
+                    h1 Welcome to BIDBASH.
+
+                    p
+                        | BIDBASH contains auction functionality that allows users to browse listings, submit bids and participate in online auction activity.
+
+                    .age-notice
+
+                        span.age-notice-number 18+
+
+                        .age-notice-text
+
+                            strong Adults Only
+
+                            p
+                                | You must confirm that you are aged 18 or over before continuing.
+
+            .auth-form-panel.age-form-panel
+
+                .auth-form-header
+
+                    span.auth-form-label AGE CONFIRMATION
+
+                    h2 Are you 18 or over?
+
+                    p
+                        | Please confirm your age before entering the BIDBASH platform.
+
+                if error
+
+                    .auth-message.auth-message-error
+                        p= error
+
+                form.auth-form(
+                    method="POST"
+                    action="/age-check"
+                )
+
+                    .age-choice-group
+
+                        label.age-choice(
+                            for="age-confirm-yes"
+                        )
+
+                            input(
+                                type="radio"
+                                id="age-confirm-yes"
+                                name="ageConfirmed"
+                                value="yes"
+                                required
+                            )
+
+                            .age-choice-content
+
+                                span.age-choice-title Yes, I am 18 or over
+
+                                span.age-choice-description
+                                    | Continue to BIDBASH.
+
+                        label.age-choice(
+                            for="age-confirm-no"
+                        )
+
+                            input(
+                                type="radio"
+                                id="age-confirm-no"
+                                name="ageConfirmed"
+                                value="no"
+                            )
+
+                            .age-choice-content
+
+                                span.age-choice-title No, I am under 18
+
+                                span.age-choice-description
+                                    | I understand that I cannot continue.
+
+                    button.auth-primary-button(
+                        type="submit"
+                    ) Continue
+
+                .age-policy-links
+
+                    a(
+                        href="/terms"
+                    ) Terms & Conditions
+
+                    span •
+
+                    a(
+                        href="/privacy"
+                    ) Privacy Policy

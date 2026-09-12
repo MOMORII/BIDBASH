@@ -1,29 +1,95 @@
 extends layout
 
 block content
-    section.login-page
-        h1 Login
 
-        p Sign in to access BIDBASH account features.
+    section.auth-page
 
-        if error
-            p.login-error= error
+        .auth-shell
 
-        form(method="POST" action="/login")
-            .form-group
-                label(for="username") Username
-                input#username(
-                    type="text"
-                    name="username"
-                    required
+            .auth-brand-panel
+
+                .auth-brand-content
+
+                    span.auth-eyebrow WELCOME BACK
+
+                    h1 Return to the BIDBASH arena.
+
+                    p
+                        | Sign in to continue bidding, manage your listings, and keep track of your auction activity.
+
+                    .auth-brand-points
+
+                        .auth-brand-point
+                            span.auth-brand-icon ✓
+                            p Track active and completed bids
+
+                        .auth-brand-point
+                            span.auth-brand-icon ✓
+                            p Manage your auction listings
+
+                        .auth-brand-point
+                            span.auth-brand-icon ✓
+                            p Continue where you left off
+
+            .auth-form-panel
+
+                .auth-form-header
+
+                    span.auth-form-label ACCOUNT ACCESS
+
+                    h2 Sign In
+
+                    p Enter your BIDBASH account details below.
+
+                if error
+
+                    .auth-message.auth-message-error
+                        p= error
+
+                form.auth-form(
+                    method="POST"
+                    action="/login"
                 )
 
-            .form-group
-                label(for="password") Password
-                input#password(
-                    type="password"
-                    name="password"
-                    required
-                )
+                    .auth-field
 
-            button.primary-button(type="submit") Login
+                        label(
+                            for="username"
+                        ) Username
+
+                        input(
+                            type="text"
+                            id="username"
+                            name="username"
+                            placeholder="Enter your username"
+                            autocomplete="username"
+                            required
+                        )
+
+                    .auth-field
+
+                        label(
+                            for="password"
+                        ) Password
+
+                        input(
+                            type="password"
+                            id="password"
+                            name="password"
+                            placeholder="Enter your password"
+                            autocomplete="current-password"
+                            required
+                        )
+
+                    button.auth-primary-button(
+                        type="submit"
+                    ) Sign In
+
+                .auth-switch
+
+                    p
+                        | New to BIDBASH?
+
+                    a(
+                        href="/register"
+                    ) Create an account

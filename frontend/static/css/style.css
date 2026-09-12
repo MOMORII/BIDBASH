@@ -2,7 +2,7 @@
 
 html {
     min-width: 1200px;
-    zoom: 0.67;
+    zoom: 0.5;
 }
 
 * {
@@ -131,6 +131,26 @@ a {
 
 .account-status {
     font-size: 14px;
+}
+
+/*styles the login navigation button */
+
+.login-button {
+    padding: 10px 16px;
+
+    border: 1px solid #8E45DD;
+    border-radius: 8px;
+
+    background: white;
+    color: #8E45DD;
+
+    font-weight: 500;
+}
+
+/*highlights the login navigation button */
+
+.login-button:hover {
+    background: #F3EAFB;
 }
 
 .button-link {
@@ -324,7 +344,9 @@ body.sidebar-open .page-content {
 .browse-page {
     display: block;
 
-    padding: 0 24px 60px;
+    padding-left: 24px;
+    padding-right: 24px;
+    padding-bottom: 0;
 }
 
 .browse-results {
@@ -1112,7 +1134,7 @@ body.dark-mode .header-search-button {
     width: 100%;
     height: 100%;
 
-    object-fit: cover;
+    object-fit: contain;
     object-position: center;
 }
 
@@ -1465,10 +1487,15 @@ body.dark-mode .header-search-button {
 }
 
 /*keeps a transparent click area beside the sidebar */
+/*keeps the sidebar overlay between navigation and footer */
 
 .sidebar-overlay {
     position: fixed;
-    inset: 68px 0 0 320px;
+
+    top: 68px;
+    right: 0;
+    bottom: 58px;
+    left: 320px;
 
     background: transparent;
 
@@ -1481,16 +1508,17 @@ body.dark-mode .header-search-button {
 
 /*creates the slide-out navigation sidebar */
 
+/*fixes the filter sidebar between navigation and footer */
+
 .sidebar-drawer {
     position: fixed;
 
     top: 68px;
+    bottom: 58px;
     left: 0;
 
     width: 320px;
     max-width: 88vw;
-
-    height: calc(100vh - 68px);
 
     padding: 24px;
 
@@ -1844,7 +1872,7 @@ body.dark-mode .header-search-button {
 
 .home-view-all {
     margin-right: 8px;
-
+    
     color: #8E45DD;
 
     font-weight: 500;
@@ -1907,7 +1935,7 @@ body.dark-mode .header-search-button {
 @media (max-width: 700px) {
     .home-section-heading {
         align-items: flex-start;
-        flex-direction: column;
+        flex-direction: row;
     }
 
     .carousel-card {
@@ -2148,11 +2176,6 @@ body.dark-mode .header-search-button {
 
 .site-footer {
     width: 100%;
-
-    background: #24202A;
-    color: white;
-
-    border-top: 4px solid #8E45DD;
 }
 
 /*lays out the main footer */
@@ -2240,12 +2263,566 @@ body.dark-mode .header-search-button {
     background: #24202A;
     color: #BEB5C2;
 
-    border-top: 1px solid #4B4450;
+    border-top: 4px solid #4B4450;
 
     font-size: 14px;
 }
+
 .footer-bottom p {
     margin: 0;
+}
+
+
+/*styles bidbash authentication pages */
+
+.auth-page {
+    width: 100%;
+
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+
+    padding: 48px 24px 100px;
+}
+
+/*creates the shared authentication card */
+
+.auth-shell {
+    width: 100%;
+    max-width: none;
+
+    display: grid;
+    grid-template-columns:
+        minmax(0, 0.9fr)
+        minmax(0, 1.1fr);
+
+    overflow: hidden;
+
+    background: white;
+
+    border: 1px solid #D8D3DC;
+    border-radius: 24px;
+
+    box-shadow: 0 18px 45px rgba(36, 32, 42, 0.1);
+}
+
+/*styles the authentication branding panel */
+
+.auth-brand-panel {
+    min-width: 0;
+
+    position: relative;
+
+    display: flex;
+    align-items: center;
+
+    padding: 56px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #8E45DD 0%,
+            #A86BE5 52%,
+            #C4A2EB 100%
+        );
+
+    color: white;
+}
+
+/*constrains authentication branding content */
+
+.auth-brand-content {
+    width: 100%;
+    max-width: 470px;
+    min-width: 0;
+}
+
+/*styles authentication eyebrow text */
+
+.auth-eyebrow {
+    display: inline-block;
+
+    margin-bottom: 18px;
+    padding: 7px 12px;
+
+    background: rgba(255, 255, 255, 0.16);
+
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    border-radius: 999px;
+
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1.4px;
+}
+
+/*styles authentication branding heading */
+
+.auth-brand-content h1 {
+    margin: 0 0 18px;
+
+    font-size: 42px;
+    line-height: 1.08;
+}
+
+/*styles authentication branding text */
+
+.auth-brand-content > p {
+    margin: 0;
+
+    font-size: 16px;
+    line-height: 1.7;
+
+    color: rgba(255, 255, 255, 0.86);
+}
+
+/*stacks authentication feature points */
+
+.auth-brand-points {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+
+    margin-top: 34px;
+}
+
+/*styles authentication feature points */
+
+.auth-brand-point {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.auth-brand-point p {
+    margin: 0;
+
+    color: rgba(255, 255, 255, 0.92);
+}
+
+/*styles authentication feature icons */
+
+.auth-brand-icon {
+    width: 28px;
+    height: 28px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    background: rgba(255, 255, 255, 0.18);
+
+    border-radius: 50%;
+
+    font-size: 13px;
+    font-weight: bold;
+}
+
+/*styles the authentication form panel */
+
+.auth-form-panel {
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    padding: 58px 64px;
+
+    background: white;
+}
+
+/*styles authentication form headers */
+
+.auth-form-header {
+    margin-bottom: 28px;
+}
+
+.auth-form-label {
+    display: block;
+
+    margin-bottom: 9px;
+
+    color: #8E45DD;
+
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1.3px;
+}
+
+.auth-form-header h2 {
+    margin: 0 0 10px;
+
+    font-size: 34px;
+
+    color: #24202A;
+}
+
+.auth-form-header p {
+    margin: 0;
+
+    line-height: 1.6;
+
+    color: #666;
+}
+
+/*stacks authentication form controls */
+
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/*stacks authentication labels and fields */
+
+.auth-field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.auth-field label {
+    font-weight: 600;
+
+    color: #302B35;
+}
+
+/*styles authentication inputs */
+
+.auth-field input {
+    width: 100%;
+    min-height: 50px;
+
+    padding: 12px 14px;
+
+    background: #FAF8FC;
+    color: #24202A;
+
+    border: 1px solid #D8D3DC;
+    border-radius: 10px;
+
+    font: inherit;
+
+    outline: none;
+}
+
+/*highlights authentication inputs */
+
+.auth-field input:focus {
+    border-color: #8E45DD;
+
+    box-shadow: 0 0 0 3px rgba(142, 69, 221, 0.13);
+}
+
+/*styles authentication placeholders */
+
+.auth-field input::placeholder {
+    color: #918A95;
+}
+
+/*styles the primary authentication action */
+
+.auth-primary-button {
+    width: 100%;
+    min-height: 50px;
+
+    margin-top: 4px;
+    padding: 12px 18px;
+
+    border: 0;
+    border-radius: 10px;
+
+    background: #8E45DD;
+    color: white;
+
+    font: inherit;
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+/*highlights the primary authentication action */
+
+.auth-primary-button:hover {
+    background: #7933C7;
+}
+
+/*styles authentication switch links */
+
+.auth-switch {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+
+    margin-top: 26px;
+    padding-top: 22px;
+
+    border-top: 1px solid #E3DEE7;
+}
+
+.auth-switch p {
+    margin: 0;
+
+    color: #6A636E;
+}
+
+.auth-switch a {
+    color: #8E45DD;
+
+    font-weight: 700;
+}
+
+/*styles authentication messages */
+
+.auth-message {
+    margin-bottom: 20px;
+    padding: 13px 15px;
+
+    border-radius: 9px;
+}
+
+.auth-message p {
+    margin: 0;
+}
+
+.auth-message-error {
+    background: #FBE7E7;
+    color: #8B2929;
+
+    border: 1px solid #EABBBB;
+}
+
+/*styles registration consent */
+
+.auth-consent {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 10px;
+
+    align-items: start;
+}
+
+.auth-consent input {
+    margin-top: 3px;
+}
+
+.auth-consent label {
+    color: #625A66;
+
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.auth-consent a {
+    color: #8E45DD;
+
+    font-weight: 600;
+}
+
+/*styles the age notice */
+
+.age-notice {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+
+    margin-top: 36px;
+    padding: 18px;
+
+    background: rgba(255, 255, 255, 0.14);
+
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    border-radius: 14px;
+}
+
+/*styles the age notice number */
+
+.age-notice-number {
+    min-width: 74px;
+    height: 74px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: white;
+    color: #8E45DD;
+
+    border-radius: 50%;
+
+    font-size: 26px;
+    font-weight: 800;
+}
+
+/*styles the age notice text */
+
+.age-notice-text strong {
+    display: block;
+
+    margin-bottom: 4px;
+
+    font-size: 17px;
+}
+
+.age-notice-text p {
+    margin: 0;
+
+    line-height: 1.5;
+
+    color: rgba(255, 255, 255, 0.84);
+}
+
+/*stacks age confirmation choices */
+
+.age-choice-group {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/*styles age confirmation choices */
+
+.age-choice {
+    position: relative;
+
+    display: block;
+
+    cursor: pointer;
+}
+
+.age-choice input {
+    position: absolute;
+
+    opacity: 0;
+
+    pointer-events: none;
+}
+
+/*styles age confirmation choice content */
+
+.age-choice-content {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    padding: 17px 18px;
+
+    background: #FAF8FC;
+
+    border: 1px solid #D8D3DC;
+    border-radius: 11px;
+
+    transition:
+        border-color 0.18s ease,
+        background 0.18s ease,
+        box-shadow 0.18s ease;
+}
+
+/*highlights selected age choices */
+
+.age-choice input:checked + .age-choice-content {
+    background: #F0E4FA;
+
+    border-color: #8E45DD;
+
+    box-shadow: 0 0 0 3px rgba(142, 69, 221, 0.1);
+}
+
+/*styles age choice headings */
+
+.age-choice-title {
+    font-weight: 700;
+
+    color: #24202A;
+}
+
+/*styles age choice descriptions */
+
+.age-choice-description {
+    color: #706875;
+
+    font-size: 14px;
+}
+
+/*groups age policy links */
+
+.age-policy-links {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+
+    margin-top: 24px;
+
+    color: #746C79;
+
+    font-size: 14px;
+}
+
+.age-policy-links a {
+    color: #8E45DD;
+}
+
+/*adjusts authentication pages on narrower desktop windows */
+
+@media (max-width: 1500px) {
+    .auth-page {
+        padding-left: 24px;
+        padding-right: 24px;
+    }
+
+    .auth-brand-panel {
+        padding: 42px;
+    }
+
+    .auth-form-panel {
+        padding: 44px 48px;
+    }
+
+    .auth-brand-content h1 {
+        font-size: 36px;
+    }
+
+    .auth-form-header h2 {
+        font-size: 30px;
+    }
+}
+
+/*keeps authentication content usable in narrow desktop tabs */
+
+@media (max-width: 1250px) {
+    .auth-page {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    .auth-shell {
+        grid-template-columns:
+            minmax(0, 0.9fr)
+            minmax(0, 1.1fr);
+    }
+
+    .auth-brand-panel {
+        padding: 32px;
+    }
+
+    .auth-form-panel {
+        padding: 36px 38px;
+    }
+
+    .auth-brand-content h1 {
+        font-size: 32px;
+    }
+
+    .auth-brand-content > p {
+        font-size: 15px;
+    }
+
+    .auth-brand-points {
+        margin-top: 26px;
+    }
 }
 
 /*groups the bottom legal links */
@@ -2306,7 +2883,7 @@ body.dark-mode .logout-button {
 /*uses the wireframe purple dashboard colour */
 
 body.dark-mode .dashboard-top {
-    background: #583F70;
+    background: #5B4674;
 }
 
 /*darkens dashboard content cards */
@@ -2724,6 +3301,21 @@ body.dark-mode .button-link {
     color: white;
 }
 
+/*darkens the login navigation button */
+
+body.dark-mode .login-button {
+    background: #181818;
+    color: #D7B8EA;
+
+    border-color: #775B83;
+}
+
+/*highlights the dark login navigation button */
+
+body.dark-mode .login-button:hover {
+    background: #2A2230;
+}
+
 /*darkens the sidebar toggle */
 
 body.dark-mode .sidebar-toggle {
@@ -2847,12 +3439,6 @@ body.dark-mode .info-content-card .info-updated {
 
 /*darkens the footer */
 
-body.dark-mode .site-footer {
-    background: #0F0F0F;
-
-    border-top-color: #775B83;
-}
-
 body.dark-mode .footer-bottom {
     background: #0F0F0F;
     color: #BEB5C2;
@@ -2860,8 +3446,117 @@ body.dark-mode .footer-bottom {
     border-top-color: #3D3542;
 }
 
-/*moves the fixed footer with the open sidebar */
+/*darkens authentication shells */
 
-body.sidebar-open .footer-bottom {
-    left: 320px;
+body.dark-mode .auth-shell {
+    background: #181818;
+
+    border-color: #6E6472;
+
+    box-shadow: 0 18px 45px rgba(0, 0, 0, 0.34);
+}
+
+/*darkens authentication branding */
+
+body.dark-mode .auth-brand-panel {
+    background:
+        linear-gradient(
+            145deg,
+            #4A365C 0%,
+            #583F70 55%,
+            #775B83 100%
+        );
+}
+
+/*darkens authentication forms */
+
+body.dark-mode .auth-form-panel {
+    background: #181818;
+    color: #F5F5F5;
+}
+
+/*keeps authentication headings readable */
+
+body.dark-mode .auth-form-header h2,
+body.dark-mode .auth-field label {
+    color: #F5F5F5;
+}
+
+/*styles dark authentication secondary text */
+
+body.dark-mode .auth-form-header p,
+body.dark-mode .auth-switch p,
+body.dark-mode .auth-consent label,
+body.dark-mode .age-policy-links {
+    color: #B4A8B9;
+}
+
+/*styles dark authentication labels */
+
+body.dark-mode .auth-form-label,
+body.dark-mode .auth-switch a,
+body.dark-mode .auth-consent a,
+body.dark-mode .age-policy-links a {
+    color: #D7B8EA;
+}
+
+/*darkens authentication inputs */
+
+body.dark-mode .auth-field input {
+    background: #101010;
+    color: #F5F5F5;
+
+    border-color: #6E6472;
+}
+
+/*styles dark authentication input focus */
+
+body.dark-mode .auth-field input:focus {
+    border-color: #A393AB;
+
+    box-shadow: 0 0 0 3px rgba(163, 147, 171, 0.14);
+}
+
+/*styles dark authentication actions */
+
+body.dark-mode .auth-primary-button {
+    background: #775B83;
+}
+
+body.dark-mode .auth-primary-button:hover {
+    background: #8A6B97;
+}
+
+/*darkens authentication separators */
+
+body.dark-mode .auth-switch {
+    border-top-color: #403944;
+}
+
+/*darkens age confirmation choices */
+
+body.dark-mode .age-choice-content {
+    background: #101010;
+
+    border-color: #6E6472;
+}
+
+/*highlights dark age confirmation choices */
+
+body.dark-mode .age-choice input:checked + .age-choice-content {
+    background: #30253A;
+
+    border-color: #A393AB;
+
+    box-shadow: 0 0 0 3px rgba(163, 147, 171, 0.12);
+}
+
+/*keeps age confirmation text readable */
+
+body.dark-mode .age-choice-title {
+    color: #F5F5F5;
+}
+
+body.dark-mode .age-choice-description {
+    color: #B4A8B9;
 }

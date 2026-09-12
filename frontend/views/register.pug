@@ -1,41 +1,132 @@
 extends layout
 
 block content
-    section.login-page
-        h1 Create an Account
 
-        p Register for a BIDBASH account to place bids, sell items, and access account-specific auction activity.
+    section.auth-page
 
-        if message
-            p= message
+        .auth-shell
 
-        form(method="POST" action="/register")
-            .form-group
-                label(for="username") Username
-                input#username(
-                    type="text"
-                    name="username"
-                    required
+            .auth-brand-panel
+
+                .auth-brand-content
+
+                    span.auth-eyebrow JOIN BIDBASH
+
+                    h1 Ready to bid, bash and battle?
+
+                    p
+                        | Create your account to start bidding, selling and managing auction activity through BIDBASH.
+
+                    .auth-brand-points
+
+                        .auth-brand-point
+                            span.auth-brand-icon ✓
+                            p Discover active auctions
+
+                        .auth-brand-point
+                            span.auth-brand-icon ✓
+                            p Place and monitor your bids
+
+                        .auth-brand-point
+                            span.auth-brand-icon ✓
+                            p Create and manage listings
+
+            .auth-form-panel
+
+                .auth-form-header
+
+                    span.auth-form-label CREATE ACCOUNT
+
+                    h2 Sign Up
+
+                    p Set up your BIDBASH account to get started.
+
+                if error
+
+                    .auth-message.auth-message-error
+                        p= error
+
+                form.auth-form(
+                    method="POST"
+                    action="/register"
                 )
 
-            .form-group
-                label(for="email") Email
-                input#email(
-                    type="email"
-                    name="email"
-                    required
-                )
+                    .auth-field
 
-            .form-group
-                label(for="password") Password
-                input#password(
-                    type="password"
-                    name="password"
-                    required
-                )
+                        label(
+                            for="username"
+                        ) Username
 
-            button.primary-button(type="submit") Sign Up
+                        input(
+                            type="text"
+                            id="username"
+                            name="username"
+                            placeholder="Choose a username"
+                            autocomplete="username"
+                            required
+                        )
 
-        p
-            | Already registered? 
-            a(href="/login") Login
+                    .auth-field
+
+                        label(
+                            for="password"
+                        ) Password
+
+                        input(
+                            type="password"
+                            id="password"
+                            name="password"
+                            placeholder="Create a password"
+                            autocomplete="new-password"
+                            required
+                        )
+
+                    .auth-field
+
+                        label(
+                            for="confirm-password"
+                        ) Confirm Password
+
+                        input(
+                            type="password"
+                            id="confirm-password"
+                            name="confirmPassword"
+                            placeholder="Repeat your password"
+                            autocomplete="new-password"
+                            required
+                        )
+
+                    .auth-consent
+
+                        input(
+                            type="checkbox"
+                            id="terms"
+                            name="terms"
+                            required
+                        )
+
+                        label(
+                            for="terms"
+                        )
+                            | I agree to the 
+                            a(
+                                href="/terms"
+                            ) Terms & Conditions
+                            |  and 
+                            a(
+                                href="/privacy"
+                            ) Privacy Policy
+                            | .
+
+                    button.auth-primary-button(
+                        type="submit"
+                    ) Create Account
+
+                .auth-switch
+
+                    p
+                        | Already have an account?
+
+                    a(
+                        href="/login"
+                    ) Sign in instead
