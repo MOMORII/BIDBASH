@@ -145,4 +145,36 @@ router.get(
     moderator.dashboard
 );
 
+//renders the help page
+
+router.get("/help", (req, res) => {
+    res.render("help", {
+        pageTitle: "Help | BIDBASH"
+    });
+});
+
+//renders the about page
+
+router.get("/about", (req, res) => {
+    res.render("about", {
+        pageTitle: "About Us | BIDBASH"
+    });
+});
+
+//renders the privacy page
+
+router.get("/privacy", (req, res) => {
+    res.render("privacy", {
+        pageTitle: "Privacy Policy | BIDBASH"
+    });
+});
+
+//renders the terms page
+
+router.get("/terms", (req, res) => {
+    res.render("terms", {
+        pageTitle: "Terms & Conditions | BIDBASH"
+    });
+});
+
 module.exports = router;

@@ -11,7 +11,7 @@ html {
 
 body {
     min-width: 1200px;
-
+    padding-bottom: 32px;
     margin: 0;
 
     font-family: Arial, sans-serif;
@@ -194,7 +194,7 @@ a {
     min-height: calc(100vh - 68px);
 
     margin: 0;
-    padding: 32px 0 60px;
+    padding: 32px 0 0px;
 
     background: #F3EAFB;
 
@@ -899,13 +899,14 @@ body.sidebar-open .page-content {
 
 .dashboard-heading h1 {
     margin: 0 0 6px;
-
+    letter-spacing: 15px;
+    font-weight: 900;
     color: white;
 }
 
 .dashboard-heading p {
     margin: 0;
-
+    font-weight: 200;
     color: rgba(255, 255, 255, 0.82);
 }
 
@@ -1746,11 +1747,13 @@ body.dark-mode .header-search-button {
 
     .hero-copy h2 {
         font-size: 32px;
+        font-weight: 850;
+        letter-spacing: 5px;
     }
 }
 
 /*spaces homepage auction sections */
-/*wraps each homepage section inside a rounded content box */
+/*wraps each homepage auction section inside the purple bubble */
 
 .home-section {
     width: calc(100% - 48px);
@@ -1762,17 +1765,23 @@ body.dark-mode .header-search-button {
 
     border-radius: 18px;
 }
+
 /*aligns homepage section headings */
 /*aligns homepage section controls with the title row */
 /*spaces each homepage auction section */
+/*keeps the heading area transparent inside the section */
 
-.home-section {
-    width: calc(100% - 48px);
+.home-section-heading {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
 
-    margin: 36px 24px 48px;
+    
     padding: 0;
 
     background: transparent;
+
+    border-radius: 0;
 }
 
 /*wraps only the homepage heading inside the rounded bubble */
@@ -1781,10 +1790,7 @@ body.dark-mode .header-search-button {
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
-    gap: 24px;
 
-    margin-bottom: 18px;
-    padding: 18px 20px;
 
     background: #ae90d4;
 
@@ -1807,14 +1813,14 @@ body.dark-mode .header-search-button {
 
     color: black;
    
-    font-weight: bold;
+    font-weight: 850;
 }
 
 /*styles the homepage subtitle */
 
 .home-section-title p {
     margin: 0;
-    padding: 6px 12px;
+    padding-bottom: 12px;
     color: black;
     font-style: italic;
 }
@@ -2076,6 +2082,182 @@ body.dark-mode .header-search-button {
     font: inherit;
 
     cursor: pointer;
+}
+
+
+/*styles shared information pages */
+
+.info-top {
+    padding-bottom: 26px;
+}
+
+/*spaces informational page content */
+
+.info-page {
+    width: calc(100% - 48px);
+    max-width: 1200px;
+
+    margin: 0 auto;
+    padding-bottom: 40px;
+}
+
+/*styles informational content cards */
+
+.info-content-card {
+    padding: 34px 38px;
+
+    background: white;
+
+    border: 1px solid #ddd;
+    border-radius: 16px;
+}
+
+/*spaces information page headings */
+
+.info-content-card h2 {
+    margin: 30px 0 10px;
+
+    color: #24202A;
+}
+
+.info-content-card h2:first-child {
+    margin-top: 0;
+}
+
+/*styles information page paragraphs */
+
+.info-content-card p {
+    margin: 0 0 18px;
+
+    line-height: 1.7;
+
+    color: #555;
+}
+
+/*styles information update text */
+
+.info-content-card .info-updated {
+    margin-bottom: 28px;
+
+    color: #777;
+
+    font-style: italic;
+}
+
+/*styles the global footer */
+
+.site-footer {
+    width: 100%;
+
+    background: #24202A;
+    color: white;
+
+    border-top: 4px solid #8E45DD;
+}
+
+/*lays out the main footer */
+
+.footer-inner {
+    width: 100%;
+
+    display: grid;
+    grid-template-columns: minmax(280px, 1.2fr) minmax(520px, 2fr);
+    gap: 60px;
+
+    padding: 42px 32px;
+}
+
+/*styles the footer brand */
+
+.footer-brand {
+    max-width: 460px;
+}
+
+.footer-logo {
+    display: block;
+
+    width: auto;
+    height: 64px;
+
+    margin-bottom: 16px;
+}
+
+.footer-brand p {
+    margin: 0;
+
+    line-height: 1.6;
+
+    color: #D7CFDB;
+}
+
+/*lays out footer links */
+
+.footer-links {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(140px, 1fr));
+    gap: 36px;
+}
+
+/*stacks individual footer link groups */
+
+.footer-column {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.footer-column h3 {
+    margin: 0 0 8px;
+
+    color: white;
+}
+
+.footer-column a {
+    color: #D7CFDB;
+}
+
+.footer-column a:hover {
+    color: #C6A6DF;
+}
+
+/*keeps the footer fixed to the bottom of the viewport */
+
+.footer-bottom {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    z-index: 1000;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+
+    padding: 18px 32px;
+
+    background: #24202A;
+    color: #BEB5C2;
+
+    border-top: 1px solid #4B4450;
+
+    font-size: 14px;
+}
+.footer-bottom p {
+    margin: 0;
+}
+
+/*groups the bottom legal links */
+
+.footer-bottom-links {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.footer-bottom-links a:hover {
+    color: white;
 }
 
 /*applies the original wireframe dark theme */
@@ -2351,14 +2533,16 @@ body.dark-mode .hero-copy p {
     color: #E0D9E4;
 }
 
-/*darkens only the homepage heading bubble */
+/*darkens homepage auction sections */
 
 body.dark-mode .home-section {
-    background: transparent;
+    background: #4E3C63;
 }
 
+/*keeps the heading area transparent */
+
 body.dark-mode .home-section-heading {
-    background: #4E3C63;
+    background: transparent;
 }
 
 /*keeps homepage section headings readable */
@@ -2640,3 +2824,44 @@ body.dark-mode .dashboard-count {
     cursor: pointer;
 }
 
+/*darkens informational content cards */
+
+body.dark-mode .info-content-card {
+    background: #181818;
+    color: #F5F5F5;
+
+    border-color: #6E6472;
+}
+
+body.dark-mode .info-content-card h2 {
+    color: #F5F5F5;
+}
+
+body.dark-mode .info-content-card p {
+    color: #D7CFDB;
+}
+
+body.dark-mode .info-content-card .info-updated {
+    color: #AFA6B3;
+}
+
+/*darkens the footer */
+
+body.dark-mode .site-footer {
+    background: #0F0F0F;
+
+    border-top-color: #775B83;
+}
+
+body.dark-mode .footer-bottom {
+    background: #0F0F0F;
+    color: #BEB5C2;
+
+    border-top-color: #3D3542;
+}
+
+/*moves the fixed footer with the open sidebar */
+
+body.sidebar-open .footer-bottom {
+    left: 320px;
+}
