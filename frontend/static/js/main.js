@@ -337,11 +337,47 @@ if (createListingModal) {
     });
 }
 
-//finds the colour theme toggle
+//finds the colour theme controls
+
 const darkModeToggle =
     document.getElementById("dark-mode-toggle");
 
+const siteLogo =
+    document.getElementById("site-logo");
+
+const homeHeaderImage =
+    document.getElementById("home-header-image");
+
+const homeHeroImage =
+    document.getElementById("home-hero-image");
+
+//updates theme images
+
+function updateThemeImages() {
+    const darkModeEnabled =
+        document.body.classList.contains("dark-mode");
+
+    if (siteLogo) {
+        siteLogo.src = darkModeEnabled
+            ? "/images/dark-bidbash_logo.png"
+            : "/images/bidbash_logo.png";
+    }
+
+    if (homeHeaderImage) {
+        homeHeaderImage.src = darkModeEnabled
+            ? "/images/dark-header-img.png"
+            : "/images/header-img.png";
+    }
+
+    if (homeHeroImage) {
+        homeHeroImage.src = darkModeEnabled
+            ? "/images/dark-hero-img.png"
+            : "/images/hero-img.png";
+    }
+}
+
 //loads the saved colour theme
+
 const savedTheme =
     localStorage.getItem("bidbash-theme");
 
@@ -350,6 +386,7 @@ if (savedTheme === "dark") {
 }
 
 //updates the colour theme toggle
+
 function updateThemeToggle() {
     if (!darkModeToggle) {
         return;
@@ -371,10 +408,13 @@ function updateThemeToggle() {
     );
 }
 
-//sets the initial theme toggle state
+//sets the initial theme state
+
 updateThemeToggle();
+updateThemeImages();
 
 //switches between light and dark themes
+
 if (darkModeToggle) {
     darkModeToggle.addEventListener("click", () => {
         document.body.classList.toggle("dark-mode");
@@ -390,5 +430,6 @@ if (darkModeToggle) {
         );
 
         updateThemeToggle();
+        updateThemeImages();
     });
 }

@@ -1622,17 +1622,17 @@ body.dark-mode .header-search-button {
     }
 }
 
-/*places the homepage image on the left and text on the right */
+/*lays out the homepage hero using natural content height */
 
 .hero-section {
-    width: calc(100% - 40px);
-    height: 340px;
+    width: calc(100% - 48px);
 
     display: grid;
-    grid-template-columns: 445px minmax(0, 1fr);
+    grid-template-columns: 360px minmax(0, 1fr);
+    align-items: stretch;
     gap: 0;
 
-    margin: 0 20px 48px;
+    margin: 0 24px 48px;
     padding: 0;
 
     background: #DEC9F4;
@@ -1642,15 +1642,17 @@ body.dark-mode .header-search-button {
     overflow: hidden;
 }
 
-/*keeps the hero image fixed on the left */
+/*keeps the full hero illustration visible */
 
 .hero-visual {
     grid-column: 1;
     grid-row: 1;
 
     min-width: 0;
-    width: 100%;
-    height: 100%;
+
+    display: flex;
+    align-items: stretch;
+    justify-content: flex-start;
 
     margin: 0;
     padding: 0;
@@ -1658,22 +1660,24 @@ body.dark-mode .header-search-button {
     overflow: hidden;
 }
 
-/*fills the left hero image section */
+/*fits the full image without cropping */
 
 .hero-image {
     display: block;
 
     width: 100%;
-    height: 100%;
+    height: auto;
+
+    align-self: stretch;
 
     margin: 0;
     padding: 0;
 
-    object-fit: cover;
-    object-position: center;
+    object-fit: contain;
+    object-position: left center;
 }
 
-/*centres the lilac hero content */
+/*lets the text determine the hero height when needed */
 
 .hero-copy {
     grid-column: 2;
@@ -1684,93 +1688,152 @@ body.dark-mode .header-search-button {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: flex-start;
+    align-items: stretch;
 
-    padding: 36px 48px;
+    padding: 48px 56px;
 }
 
+/*styles the hero heading */
+
 .hero-copy h2 {
-    margin: 0 0 14px;
+    width: 100%;
+
+    margin: 0 0 18px;
 
     font-size: 36px;
 
     color: #24202A;
 }
 
+/*lets the description use the available space */
+
 .hero-copy p {
     width: 100%;
-    max-width: 620px;
+    max-width: none;
 
-    margin: 0 0 24px;
+    margin: 0 0 30px;
 
     line-height: 1.6;
 }
 
-/*keeps hero actions together */
+/*spaces the hero actions */
 
 .hero-actions {
     display: flex;
     align-items: center;
     flex-wrap: wrap;
-    gap: 0;
+    gap: 16px;
+}
+
+/*removes shared button margins inside the hero */
+
+.hero-actions .primary-button,
+.hero-actions .secondary-button {
+    margin-top: 0;
 }
 
 /*keeps the hero image left when the browser becomes narrower */
+/*adjusts the hero at narrower desktop widths */
 
-@media (max-width: 800px) {
+@media (max-width: 1400px) {
     .hero-section {
-        grid-template-columns: 220px minmax(0, 1fr);
-
-        height: 300px;
+        grid-template-columns: 340px minmax(0, 1fr);
     }
 
     .hero-copy {
-        padding: 24px;
+        padding: 38px 44px;
     }
 
     .hero-copy h2 {
-        font-size: 28px;
-    }
-
-    .hero-copy p {
-        font-size: 15px;
+        font-size: 32px;
     }
 }
 
 /*spaces homepage auction sections */
+/*wraps each homepage section inside a rounded content box */
 
 .home-section {
-    margin-top: 36px;
-    margin-bottom: 48px;
+    width: calc(100% - 48px);
 
-    padding: 0 24px;
+    margin: 36px 24px 48px;
+    padding: 24px;
+
+    background: #ae90d4;
+
+    border-radius: 18px;
+}
+/*aligns homepage section headings */
+/*aligns homepage section controls with the title row */
+/*spaces each homepage auction section */
+
+.home-section {
+    width: calc(100% - 48px);
+
+    margin: 36px 24px 48px;
+    padding: 0;
+
+    background: transparent;
 }
 
-/*aligns homepage section headings */
+/*wraps only the homepage heading inside the rounded bubble */
 
 .home-section-heading {
     display: flex;
-    align-items: flex-end;
+    align-items: flex-start;
     justify-content: space-between;
     gap: 24px;
 
     margin-bottom: 18px;
+    padding: 18px 20px;
+
+    background: #ae90d4;
+
+    border-radius: 18px;
 }
 
-.home-section-title h2 {
-    margin: 0 0 5px;
+/*lets the homepage title area use the available space */
+
+.home-section-title {
+    flex: 1;
+    min-width: 0;
 }
+
+/*styles the homepage title */
+
+.home-section-title h2 {
+    margin: 0 0 12px;
+    padding-top: 6px;
+    padding-left: 12px;
+
+    color: black;
+   
+    font-weight: bold;
+}
+
+/*styles the homepage subtitle */
 
 .home-section-title p {
     margin: 0;
-
-    color: #666;
+    padding: 6px 12px;
+    color: black;
+    font-style: italic;
 }
 
+/*keeps homepage controls aligned with the heading */
+
 .home-section-actions {
+    flex-shrink: 0;
+
     display: flex;
     align-items: center;
     gap: 8px;
+
+    margin-top: 0;
+    padding: 8px 12px;
+
+    background: #F3EAFB;
+
+    border-radius: 999px;
 }
 
 .home-view-all {
@@ -1781,13 +1844,15 @@ body.dark-mode .header-search-button {
     font-weight: 500;
 }
 
-/*creates the homepage auction carousel */
+/*keeps the carousel outside the heading bubble */
 
 .auction-carousel {
     display: flex;
     gap: 20px;
 
-    padding-bottom: 16px;
+    padding: 0 0 16px;
+
+    background: transparent;
 
     overflow-x: auto;
     overflow-y: hidden;
@@ -2250,6 +2315,313 @@ body.dark-mode .bid-status-outbid {
 body.dark-mode .bid-status-lost {
     background: #3B2326;
     color: #E5A6AD;
+}
+
+/*darkens the homepage purple header */
+
+body.dark-mode .home-top {
+    background: #5C4674;
+}
+
+/*keeps homepage header text readable */
+
+body.dark-mode .home-top .dashboard-heading h1 {
+    color: #F5F5F5;
+}
+
+body.dark-mode .home-top .dashboard-heading p {
+    color: #E2DAE7;
+}
+
+/*darkens the homepage hero container */
+
+body.dark-mode .hero-section {
+    background: #222222;
+}
+
+/*keeps hero heading readable */
+
+body.dark-mode .hero-copy h2 {
+    color: #F5F5F5;
+}
+
+/*keeps hero description readable */
+
+body.dark-mode .hero-copy p {
+    color: #E0D9E4;
+}
+
+/*darkens only the homepage heading bubble */
+
+body.dark-mode .home-section {
+    background: transparent;
+}
+
+body.dark-mode .home-section-heading {
+    background: #4E3C63;
+}
+
+/*keeps homepage section headings readable */
+
+body.dark-mode .home-section-title h2 {
+    color: #F5F5F5;
+}
+
+/*styles homepage section descriptions */
+
+body.dark-mode .home-section-title p {
+    color: #CBBFD2;
+}
+
+/*darkens the homepage action bubble */
+
+body.dark-mode .home-section-actions {
+    background: #1C1C1C;
+}
+
+/*styles the view all action */
+
+body.dark-mode .home-view-all {
+    color: #D7B8EA;
+}
+
+/*darkens homepage auction cards */
+
+body.dark-mode .auction-card {
+    background: #181818;
+    color: #F5F5F5;
+
+    border-color: #6E6472;
+}
+
+/*keeps card headings readable */
+
+body.dark-mode .auction-card h3 {
+    color: #F5F5F5;
+}
+
+/*keeps card body text readable */
+
+body.dark-mode .auction-card p {
+    color: #E0D9E4;
+}
+
+/*darkens carousel scrollbar area */
+
+body.dark-mode .auction-carousel {
+    scrollbar-color: #775B83 #222222;
+}
+
+/*styles chromium carousel scrollbar */
+
+body.dark-mode .auction-carousel::-webkit-scrollbar {
+    height: 12px;
+}
+
+/*darkens carousel scrollbar track */
+
+body.dark-mode .auction-carousel::-webkit-scrollbar-track {
+    background: #222222;
+
+    border-radius: 10px;
+}
+
+/*styles carousel scrollbar thumb */
+
+body.dark-mode .auction-carousel::-webkit-scrollbar-thumb {
+    background: #775B83;
+
+    border-radius: 10px;
+}
+
+/*darkens carousel navigation buttons */
+
+body.dark-mode .carousel-button {
+    background: #111111;
+    color: #E3D5EB;
+
+    border-color: #775B83;
+}
+
+/*highlights carousel navigation buttons */
+
+body.dark-mode .carousel-button:hover {
+    background: #775B83;
+    color: white;
+}
+
+/*darkens secondary homepage buttons */
+
+body.dark-mode .hero-actions .secondary-button,
+body.dark-mode .auction-card .secondary-button {
+    background: #151515;
+    color: #F5F5F5;
+
+    border: 1px solid #775B83;
+}
+
+/*styles primary homepage buttons */
+
+body.dark-mode .hero-actions .primary-button {
+    background: #775B83;
+    color: white;
+}
+
+/*darkens the global header */
+
+body.dark-mode .site-header {
+    background: #101010;
+
+    border-bottom-color: #3D3542;
+}
+
+/*keeps global navigation readable */
+
+body.dark-mode .main-nav a {
+    color: #F5F5F5;
+}
+
+/*keeps account controls readable */
+
+body.dark-mode .account-status {
+    color: #F5F5F5;
+}
+
+/*darkens the account divider */
+
+body.dark-mode .account-nav {
+    border-left-color: #4B4450;
+}
+
+/*darkens the global search field */
+
+body.dark-mode .header-search-input {
+    background: #171717;
+    color: #F5F5F5;
+
+    border-color: #6E6472;
+}
+
+/*styles search placeholder text */
+
+body.dark-mode .header-search-input::placeholder {
+    color: #A79EAB;
+}
+
+/*styles the global search button */
+
+body.dark-mode .header-search-button {
+    background: #775B83;
+    color: white;
+
+    border-color: #775B83;
+}
+
+/*styles the dark theme button */
+
+body.dark-mode .theme-toggle {
+    background: #5C4674;
+    color: white;
+
+    border-color: #A393AB;
+}
+
+/*keeps login and logout actions visible */
+
+body.dark-mode .logout-button,
+body.dark-mode .account-nav > a {
+    color: #D7B8EA;
+}
+
+/*darkens sign up buttons */
+
+body.dark-mode .button-link {
+    background: #775B83;
+    color: white;
+}
+
+/*darkens the sidebar toggle */
+
+body.dark-mode .sidebar-toggle {
+    color: #F5F5F5;
+}
+
+/*darkens the page below homepage sections */
+
+body.dark-mode .page-content {
+    background: #121212;
+}
+
+/*darkens dashboard content backgrounds */
+
+body.dark-mode .dashboard-section {
+    color: #F5F5F5;
+}
+
+/*darkens auction detail metadata */
+
+body.dark-mode .auction-category,
+body.dark-mode .product-meta,
+body.dark-mode .product-description,
+body.dark-mode .bid-help {
+    color: #D7CFDB;
+}
+
+/*darkens browse toolbar text */
+
+body.dark-mode .browse-header,
+body.dark-mode .browse-results,
+body.dark-mode .results-toolbar {
+    color: #F5F5F5;
+}
+
+/*darkens select and input controls */
+
+body.dark-mode .browse-search input,
+body.dark-mode .browse-search button,
+body.dark-mode .filter-group input,
+body.dark-mode .filter-group select,
+body.dark-mode .results-toolbar select,
+body.dark-mode .browse-header-controls input,
+body.dark-mode .browse-header-controls select {
+    background: #171717;
+    color: #F5F5F5;
+
+    border-color: #6E6472;
+}
+
+/*darkens listing modal controls */
+
+body.dark-mode .listing-form {
+    background: #1B1B1B;
+    color: #F5F5F5;
+
+    border-color: #6E6472;
+}
+
+/*darkens listing form helper areas */
+
+body.dark-mode .listing-image-placeholder {
+    background: #242424;
+    color: #C6BBCB;
+
+    border-color: #775B83;
+}
+
+/*darkens dashboard buttons */
+
+body.dark-mode .dashboard-action-button {
+    background: #171717;
+    color: #D7B8EA;
+
+    border-color: #775B83;
+}
+
+/*darkens dashboard counters */
+
+body.dark-mode .dashboard-count {
+    background: #4E3C63;
+    color: #F5F5F5;
 }
 
 /*styles the colour theme toggle */
