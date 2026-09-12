@@ -1,15 +1,25 @@
 doctype html
+
 html(lang="en")
+
     head
+
         meta(charset="UTF-8")
+
         meta(name="viewport" content="width=device-width, initial-scale=1.0")
+
         title= pageTitle
+
         link(rel="stylesheet" href="/css/style.css")
 
     body
+
         header.site-header
+
             .topbar
+
                 .header-left
+
                     button.sidebar-toggle(
                         type="button"
                         id="sidebar-toggle"
@@ -18,44 +28,94 @@ html(lang="en")
                     ) ☰
 
                     a.logo(href="/")
+
                         img.logo-image(
                             src="/images/bidbash_logo.png"
                             alt="BIDBASH"
                         )
 
+                form.header-search(
+                    method="GET"
+                    action="/browse"
+                )
+
+                    input.header-search-input(
+                        type="search"
+                        name="search"
+                        placeholder="Search auctions..."
+                        aria-label="Search auctions"
+                    )
+
+                    button.header-search-button(
+                        type="submit"
+                        aria-label="Search auctions"
+                    ) Search
+
                 .header-right
+
                     nav.main-nav
-                        a(href="/") Home
+
                         a(href="/browse") Browse
 
                         if user
+
                             a(href=`/users/${user.id}/listings`) My Listings
+
                             a(href=`/users/${user.id}/bids`) My Bids
+
                         else
+
                             a(href="/sell") Sell
 
                     .account-nav
+
                         if user
+
                             span.account-status
+
                                 | Logged in as 
+
                                 strong= user.username
 
                             if user.role === "moderator"
+
                                 a(href="/moderation") Moderation
 
-                            form.logout-form(method="POST" action="/logout")
-                                button.logout-button(type="submit") Logout
+                            button#dark-mode-toggle.theme-toggle(
+                                type="button"
+                                aria-label="Switch to dark mode"
+                            ) Dark Mode
+
+                            form.logout-form(
+                                method="POST"
+                                action="/logout"
+                            )
+
+                                button.logout-button(
+                                    type="submit"
+                                ) Logout
 
                         else
+
+                            button#dark-mode-toggle.theme-toggle(
+                                type="button"
+                                aria-label="Switch to dark mode"
+                            ) Dark Mode
+
                             a(href="/login") Login
-                            a.button-link(href="/register") Sign Up
+
+                            a.button-link(
+                                href="/register"
+                            ) Sign Up
 
         .sidebar-overlay#sidebar-overlay(hidden)
 
         aside.sidebar-drawer#sidebar-drawer(
             aria-hidden="true"
         )
+
             .sidebar-header
+
                 h2 Explore Auctions
 
                 button.sidebar-close(
@@ -65,28 +125,41 @@ html(lang="en")
                 ) ×
 
             section.sidebar-section
+
                 h3 Quick Browse
 
                 nav.sidebar-discovery
+
                     a(href="/browse?sort=featured") Featured Auctions
+
                     a(href="/browse?sort=ending-soon") Ending Soon
+
                     a(href="/browse?sort=newest") Newly Listed
+
                     a(href="/browse?sort=price-low") Lowest Price
+
                     a(href="/browse?sort=price-high") Highest Price
 
             section.sidebar-section
+
                 h3 Categories
 
                 nav.sidebar-discovery
+
                     a(href="/browse?category=electronics") Electronics
+
                     a(href="/browse?category=collectibles") Collectibles
+
                     a(href="/browse?category=gaming") Gaming
+
                     a(href="/browse?category=home") Home & Living
+
                     a(href="/browse?category=fashion") Fashion
 
             block sidebar
 
         main.page-content
+
             block content
 
         script(src="/js/main.js")

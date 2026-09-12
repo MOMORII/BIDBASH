@@ -1,49 +1,64 @@
 extends layout
 
 block content
-    section.dashboard-top
-        .dashboard-header
+
+    section.dashboard-top.bids-top
+
+        .bids-header-content
+
             .dashboard-heading
                 h1 My Bids
-                p Track your active bids, successful auctions, and previous bidding activity.
+                p Track your active bids, successful auctions, and bid history.
 
-        nav.dashboard-tabs
-            button.dashboard-tab.active(
-                type="button"
-                data-dashboard-target="active-bids"
-            ) Active Bids
+            nav.dashboard-tabs
 
-            button.dashboard-tab(
-                type="button"
-                data-dashboard-target="successful-auctions"
-            ) Successful Auctions
+                button.dashboard-tab.active(
+                    type="button"
+                    data-dashboard-target="active-bids"
+                ) Active Bids
 
-            button.dashboard-tab(
-                type="button"
-                data-dashboard-target="bid-history"
-            ) Bid History
+                button.dashboard-tab(
+                    type="button"
+                    data-dashboard-target="successful-auctions"
+                ) Successful Auctions
+
+                button.dashboard-tab(
+                    type="button"
+                    data-dashboard-target="bid-history"
+                ) Bid History
+
+        img.header-image.bids-header-image(
+            src="/images/header-img.png"
+            alt="BIDBASH illustration"
+        )
 
     section.dashboard-section.dashboard-panel#active-bids
+
         if bids.active.length
+
             .dashboard-list
+
                 each bid in bids.active
+
                     article.dashboard-item
+
                         .dashboard-image
                             | Product Image
 
                         .dashboard-item-content
+
                             .dashboard-item-title
+
                                 h3= bid.title
 
                                 if bid.bidStatus === "winning"
-                                    span.bid-status.bid-status-winning
-                                        | ✓ Winning
+                                    span.bid-status.bid-status-winning Winning
 
-                                else if bid.bidStatus === "outbid"
-                                    span.bid-status.bid-status-outbid
-                                        | ! Outbid
+                                if bid.bidStatus === "outbid"
+                                    span.bid-status.bid-status-outbid Outbid
 
                             .dashboard-item-details
+
                                 p
                                     strong Your Bid:
                                     |  £#{bid.userBid.toFixed(2)}
@@ -57,35 +72,39 @@ block content
                                     |  #{bid.timeRemaining}
 
                         .dashboard-actions
+
                             a.secondary-button(
                                 href=`/auction/${bid.auctionId}`
                             ) View Auction
 
-                            if bid.bidStatus === "outbid"
-                                a.dashboard-action-button(
-                                    href=`/auction/${bid.auctionId}`
-                                ) Bid Again
-
         else
+
             p.dashboard-empty
                 | You currently have no active bids.
 
     section.dashboard-section.dashboard-panel#successful-auctions(hidden)
+
         if bids.successful.length
+
             .dashboard-list
+
                 each bid in bids.successful
+
                     article.dashboard-item
+
                         .dashboard-image
                             | Product Image
 
                         .dashboard-item-content
+
                             .dashboard-item-title
+
                                 h3= bid.title
 
-                                span.bid-status.bid-status-winning
-                                    | ✓ Won
+                                span.bid-status.bid-status-winning Won
 
                             .dashboard-item-details
+
                                 p
                                     strong Final Amount:
                                     |  £#{bid.finalAmount.toFixed(2)}
@@ -99,35 +118,43 @@ block content
                                     |  #{bid.fulfilmentStatus}
 
                         .dashboard-actions
-                            button.dashboard-action-button(
-                                type="button"
-                            ) View Order
+
+                            a.secondary-button(
+                                href=`/auction/${bid.auctionId}`
+                            ) View Auction
 
         else
+
             p.dashboard-empty
                 | You currently have no successful auctions.
 
     section.dashboard-section.dashboard-panel#bid-history(hidden)
+
         if bids.history.length
+
             .dashboard-list
+
                 each bid in bids.history
+
                     article.dashboard-item
+
                         .dashboard-image
                             | Product Image
 
                         .dashboard-item-content
+
                             .dashboard-item-title
+
                                 h3= bid.title
 
                                 if bid.outcome === "Won"
-                                    span.bid-status.bid-status-winning
-                                        | ✓ Won
+                                    span.bid-status.bid-status-winning Won
 
-                                else
-                                    span.bid-status.bid-status-lost
-                                        | × Lost
+                                if bid.outcome === "Lost"
+                                    span.bid-status.bid-status-lost Lost
 
                             .dashboard-item-details
+
                                 p
                                     strong Your Latest Bid:
                                     |  £#{bid.latestBid.toFixed(2)}
@@ -141,10 +168,12 @@ block content
                                     |  #{bid.completedAt}
 
                         .dashboard-actions
-                            button.dashboard-action-button(
-                                type="button"
-                            ) View Bid History
+
+                            a.secondary-button(
+                                href=`/auction/${bid.auctionId}`
+                            ) View Auction
 
         else
+
             p.dashboard-empty
                 | Your bid history is currently empty.

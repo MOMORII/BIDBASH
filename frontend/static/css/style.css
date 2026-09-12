@@ -1,13 +1,22 @@
-/* i am applying the shared bidbash page styling */
+/*applies the shared bidbash page styling */
+
+html {
+    min-width: 1200px;
+    zoom: 0.67;
+}
 
 * {
     box-sizing: border-box;
 }
 
 body {
+    min-width: 1200px;
+
     margin: 0;
+
     font-family: Arial, sans-serif;
-    background: #DEC9F4;
+
+    background: #F3EAFB;
     color: #24202A;
 }
 
@@ -56,22 +65,29 @@ a {
 .logo {
     font-size: 24px;
     font-weight: bold;
+
     color: #8E45DD;
+
     text-decoration: none;
 }
 
 .logo-image {
     display: block;
-    height: 60px;
+
     width: auto;
+    height: 60px;
 }
 
 .sidebar-toggle {
-    border: 0;
-    background: transparent;
-    font-size: 24px;
-    cursor: pointer;
     padding: 6px;
+
+    border: 0;
+
+    background: transparent;
+
+    font-size: 24px;
+
+    cursor: pointer;
 }
 
 /*pushes navigation and account controls to the right */
@@ -91,6 +107,7 @@ a {
     display: flex;
     align-items: center;
     gap: 20px;
+
     flex: none;
 }
 
@@ -106,6 +123,7 @@ a {
     gap: 14px;
 
     padding-left: 22px;
+
     border-left: 1px solid #D8D3DC;
 
     flex-shrink: 0;
@@ -116,9 +134,11 @@ a {
 }
 
 .button-link {
+    padding: 10px 16px;
+
     background: #8E45DD;
     color: white;
-    padding: 10px 16px;
+
     border-radius: 8px;
 }
 
@@ -127,12 +147,16 @@ a {
 }
 
 .logout-button {
+    padding: 0;
+
     border: 0;
+
     background: transparent;
     color: #8E45DD;
+
     font: inherit;
+
     cursor: pointer;
-    padding: 0;
 }
 
 /*adjusts the global header on smaller displays */
@@ -167,12 +191,12 @@ a {
     width: 100%;
     max-width: none;
 
+    min-height: calc(100vh - 68px);
+
     margin: 0;
     padding: 32px 0 60px;
 
     background: #F3EAFB;
-
-    min-height: calc(100vh - 68px);
 
     transition:
         margin-left 0.25s ease,
@@ -180,8 +204,9 @@ a {
 }
 
 body.sidebar-open .page-content {
-    margin-left: 320px;
     width: calc(100% - 320px);
+
+    margin-left: 320px;
 }
 
 /*removes outer page padding only on auction detail pages */
@@ -222,12 +247,12 @@ body.sidebar-open .page-content {
 }
 
 .auction-card {
+    padding: 16px;
+
     background: white;
 
     border: 1px solid #ddd;
     border-radius: 12px;
-
-    padding: 16px;
 }
 
 .image-placeholder {
@@ -240,6 +265,7 @@ body.sidebar-open .page-content {
     margin-bottom: 14px;
 
     background: #eee;
+
     border-radius: 8px;
 }
 
@@ -297,6 +323,7 @@ body.sidebar-open .page-content {
 
 .browse-page {
     display: block;
+
     padding: 0 24px 60px;
 }
 
@@ -376,10 +403,10 @@ body.sidebar-open .page-content {
     width: 100%;
     max-width: none;
 
+    min-height: calc(100vh - 68px);
+
     margin: 0;
     padding: 20px 24px 24px;
-
-    min-height: calc(100vh - 68px);
 }
 
 /*uses the main width for the product image and auction information */
@@ -417,6 +444,7 @@ body.sidebar-open .page-content {
 
 .auction-category {
     margin: 0 0 8px;
+
     color: #666;
 }
 
@@ -434,6 +462,7 @@ body.sidebar-open .page-content {
 
 .product-description {
     margin-bottom: 28px;
+
     line-height: 1.6;
 }
 
@@ -464,19 +493,21 @@ body.sidebar-open .page-content {
     margin-bottom: 8px;
 
     font-size: 14px;
+
     color: #666;
 }
 
 .status-item strong {
     display: block;
+
     font-size: 16px;
 }
 
 /*styles the bid entry panel */
 
 .bid-panel {
-    padding: 20px;
     margin-bottom: 20px;
+    padding: 20px;
 
     background: #DEC9F4;
 
@@ -554,18 +585,18 @@ body.sidebar-open .page-content {
 /*styles bid controls */
 
 .bid-input-row {
+    width: 100%;
+
     display: flex;
     align-items: center;
     gap: 12px;
-
-    width: 100%;
 }
 
 .bid-input-row input {
-    flex: 1;
-
     min-width: 0;
     min-height: 46px;
+
+    flex: 1;
 
     padding: 11px 14px;
 
@@ -707,6 +738,7 @@ body.sidebar-open .page-content {
 
 .modal-actions button {
     border: 0;
+
     cursor: pointer;
 }
 
@@ -736,6 +768,7 @@ body.sidebar-open .page-content {
 
 .listing-modal-header p {
     margin: 0;
+
     color: #666;
 }
 
@@ -866,11 +899,13 @@ body.sidebar-open .page-content {
 
 .dashboard-heading h1 {
     margin: 0 0 6px;
+
     color: white;
 }
 
 .dashboard-heading p {
     margin: 0;
+
     color: rgba(255, 255, 255, 0.82);
 }
 
@@ -879,15 +914,92 @@ body.sidebar-open .page-content {
 .header-image {
     display: block;
 
-    width: 100%;
-    height: 100%;
-
     margin: 0;
     padding: 0;
-    border: 0;
 
-    object-fit: cover;
-    object-position: center;
+    border: 0;
+}
+
+
+
+/*styles the global auction search */
+
+.header-search {
+    flex: 1;
+
+    min-width: 240px;
+    max-width: 620px;
+
+    display: flex;
+    align-items: center;
+
+    margin: 0 12px;
+}
+
+/*styles the global search input */
+
+.header-search-input {
+    width: 100%;
+    min-width: 0;
+    height: 42px;
+
+    padding: 0 14px;
+
+    border: 1px solid #D8D3DC;
+    border-right: 0;
+    border-radius: 8px 0 0 8px;
+
+    background: #F7F4F9;
+    color: #24202A;
+
+    font: inherit;
+
+    outline: none;
+}
+
+/*highlights the global search input */
+
+.header-search-input:focus {
+    border-color: #8E45DD;
+
+    box-shadow: 0 0 0 3px rgba(142, 69, 221, 0.12);
+}
+
+/*styles the global search button */
+
+.header-search-button {
+    height: 42px;
+
+    padding: 0 18px;
+
+    border: 1px solid #8E45DD;
+    border-radius: 0 8px 8px 0;
+
+    background: #8E45DD;
+    color: white;
+
+    font: inherit;
+
+    cursor: pointer;
+}
+
+/*darkens the global search */
+
+body.dark-mode .header-search-input {
+    background: #181818;
+    color: #F5F5F5;
+
+    border-color: #6E6472;
+}
+
+body.dark-mode .header-search-input::placeholder {
+    color: #918897;
+}
+
+body.dark-mode .header-search-button {
+    background: #775B83;
+
+    border-color: #775B83;
 }
 
 /*styles dashboard header buttons */
@@ -935,6 +1047,7 @@ body.sidebar-open .page-content {
 
 .dashboard-tab.active {
     color: white;
+
     font-weight: 600;
 }
 
@@ -1002,75 +1115,130 @@ body.sidebar-open .page-content {
     object-position: center;
 }
 
-/*creates the my listings header image layout */
+/*restricts the listings header height */
 
 .listings-top {
+    height: 180px;
+
     padding: 0;
 
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(280px, 34vw);
+    grid-template-columns: minmax(0, 1fr) auto;
     align-items: stretch;
 
     overflow: hidden;
 }
 
-/*groups the listings heading button and tabs */
+/*groups listings content inside the header */
 
 .listings-header-content {
     min-width: 0;
+    height: 100%;
 
     display: flex;
     flex-direction: column;
 }
 
-/*spaces the listings heading area */
+/*spaces the listings heading inside the fixed header */
 
 .listings-top .dashboard-heading {
     min-width: 0;
 
-    padding: 28px 24px 18px;
+    padding: 20px 24px 8px;
 }
 
 /*keeps the create listing button beneath the subtitle */
 
 .listings-top .dashboard-heading .primary-button {
-    margin-top: 16px;
+    margin-top: 10px;
 }
 
-/*keeps listings tabs at the bottom of the left section */
+/*keeps listing tabs attached to the bottom */
 
 .listings-top .dashboard-tabs {
     margin-top: auto;
     padding: 0 24px;
 }
 
-/*lets the image side grow while the left side flexes */
+/*matches the listings image to the purple header height */
 
-.listings-top .dashboard-visual {
-    min-width: 280px;
-    width: 100%;
-    height: 100%;
+.listings-header-image {
+    grid-column: 2;
+    grid-row: 1;
+
+    height: 180px;
+    width: auto;
+
+    max-width: none;
+
+    align-self: stretch;
+    justify-self: end;
 
     margin: 0;
     padding: 0;
 
-    display: flex;
+    border: 0;
+
+    object-fit: contain;
+    object-position: right center;
+}
+
+/*restricts the bids header height */
+
+.bids-top {
+    height: 180px;
+
+    padding: 0;
+
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
     align-items: stretch;
-    justify-content: flex-end;
 
     overflow: hidden;
 }
 
-/*shows the full illustration without vertical gaps caused by cropping */
+/*groups bids content inside the header */
 
-.listings-top .header-image {
-    display: block;
-
-    width: 100%;
+.bids-header-content {
+    min-width: 0;
     height: 100%;
+
+    display: flex;
+    flex-direction: column;
+}
+
+/*spaces the bids heading inside the fixed header */
+
+.bids-top .dashboard-heading {
+    min-width: 0;
+
+    padding: 20px 24px 8px;
+}
+
+/*keeps bid tabs attached to the bottom */
+
+.bids-top .dashboard-tabs {
+    margin-top: auto;
+    padding: 0 24px;
+}
+
+/*matches the bids image to the purple header height */
+
+.bids-header-image {
+    grid-column: 2;
+    grid-row: 1;
+
+    height: 180px;
+    width: auto;
+
+    max-width: none;
+
+    align-self: stretch;
+    justify-self: end;
 
     margin: 0;
     padding: 0;
+
     border: 0;
 
     object-fit: contain;
@@ -1273,6 +1441,7 @@ body.sidebar-open .page-content {
 
 .browse-header-controls input {
     flex: 1;
+
     min-width: 220px;
 }
 
@@ -1441,8 +1610,9 @@ body.sidebar-open .page-content {
 
 @media (max-width: 700px) {
     body.sidebar-open .page-content {
-        margin-left: 0;
         width: 100%;
+
+        margin-left: 0;
     }
 
     .sidebar-overlay {
@@ -1452,18 +1622,15 @@ body.sidebar-open .page-content {
     }
 }
 
-/*places homepage hero copy beside its fixed image */
-/*moves the hero image to the left side */
-
-/*places the homepage image on the left and content on the right */
+/*places the homepage image on the left and text on the right */
 
 .hero-section {
+    width: calc(100% - 40px);
+    height: 340px;
+
     display: grid;
     grid-template-columns: 445px minmax(0, 1fr);
     gap: 0;
-
-    width: calc(100% - 40px);
-    height: 340px;
 
     margin: 0 20px 48px;
     padding: 0;
@@ -1491,7 +1658,7 @@ body.sidebar-open .page-content {
     overflow: hidden;
 }
 
-/*fills the left image section */
+/*fills the left hero image section */
 
 .hero-image {
     display: block;
@@ -1506,7 +1673,7 @@ body.sidebar-open .page-content {
     object-position: center;
 }
 
-/*centres the lilac hero content inside the right section */
+/*centres the lilac hero content */
 
 .hero-copy {
     grid-column: 2;
@@ -1522,16 +1689,13 @@ body.sidebar-open .page-content {
     padding: 36px 48px;
 }
 
-/*styles the hero heading */
-
 .hero-copy h2 {
     margin: 0 0 14px;
 
     font-size: 36px;
+
     color: #24202A;
 }
-
-/*styles the hero description */
 
 .hero-copy p {
     width: 100%;
@@ -1551,11 +1715,12 @@ body.sidebar-open .page-content {
     gap: 0;
 }
 
-/*keeps the image on the left when the browser becomes narrower */
+/*keeps the hero image left when the browser becomes narrower */
 
 @media (max-width: 800px) {
     .hero-section {
         grid-template-columns: 220px minmax(0, 1fr);
+
         height: 300px;
     }
 
@@ -1570,21 +1735,6 @@ body.sidebar-open .page-content {
     .hero-copy p {
         font-size: 15px;
     }
-}
-
-/*fills the hero image column */
-
-.hero-image {
-    display: block;
-
-    width: 100%;
-    height: 100%;
-
-    margin: 0;
-    padding: 0;
-
-    object-fit: cover;
-    object-position: center;
 }
 
 /*spaces homepage auction sections */
@@ -1613,6 +1763,7 @@ body.sidebar-open .page-content {
 
 .home-section-title p {
     margin: 0;
+
     color: #666;
 }
 
@@ -1636,19 +1787,20 @@ body.sidebar-open .page-content {
     display: flex;
     gap: 20px;
 
+    padding-bottom: 16px;
+
     overflow-x: auto;
     overflow-y: hidden;
 
     scroll-behavior: smooth;
     scroll-snap-type: x mandatory;
 
-    padding-bottom: 16px;
-
     scrollbar-width: thin;
 }
 
 .carousel-card {
     flex: 0 0 280px;
+
     scroll-snap-align: start;
 }
 
@@ -1678,7 +1830,6 @@ body.sidebar-open .page-content {
     background: #8E45DD;
     color: white;
 }
-
 
 /*adjusts homepage carousel controls */
 
@@ -1774,8 +1925,8 @@ body.sidebar-open .page-content {
 }
 
 .form-message {
-    padding: 14px 16px;
     margin-bottom: 18px;
+    padding: 14px 16px;
 
     border-radius: 8px;
 }
@@ -1830,6 +1981,7 @@ body.sidebar-open .page-content {
 
 .bid-confirmation-item span {
     font-size: 13px;
+
     color: #666;
 }
 
@@ -1841,5 +1993,278 @@ body.sidebar-open .page-content {
 
 .bid-confirmation-note {
     margin: 0;
+
     color: #666;
 }
+
+/*styles the theme toggle */
+
+.theme-toggle {
+    padding: 8px 12px;
+
+    border: 1px solid #8E45DD;
+    border-radius: 8px;
+
+    background: transparent;
+    color: #8E45DD;
+
+    font: inherit;
+
+    cursor: pointer;
+}
+
+/*applies the original wireframe dark theme */
+
+body.dark-mode {
+    background: #121212;
+    color: #F5F5F5;
+}
+
+/*darkens the main page background */
+
+body.dark-mode .page-content {
+    background: #121212;
+}
+
+/*darkens the global navigation */
+
+body.dark-mode .site-header {
+    background: #101010;
+
+    border-bottom-color: #4B4450;
+}
+
+/*keeps navigation text readable */
+
+body.dark-mode .main-nav a,
+body.dark-mode .account-status {
+    color: #F5F5F5;
+}
+
+/*styles the dark theme toggle */
+
+body.dark-mode .theme-toggle {
+    background: #775B83;
+    color: white;
+
+    border-color: #A393AB;
+}
+
+/*keeps the logout action visible */
+
+body.dark-mode .logout-button {
+    color: #C6A6DF;
+}
+
+/*uses the wireframe purple dashboard colour */
+
+body.dark-mode .dashboard-top {
+    background: #583F70;
+}
+
+/*darkens dashboard content cards */
+
+body.dark-mode .dashboard-item,
+body.dark-mode .auction-card,
+body.dark-mode .info-card,
+body.dark-mode .status-item,
+body.dark-mode .auction-message,
+body.dark-mode .filters-panel {
+    background: #181818;
+    color: #F5F5F5;
+
+    border-color: #6E6472;
+}
+
+/*darkens product image placeholders */
+
+body.dark-mode .dashboard-image,
+body.dark-mode .image-placeholder {
+    background: #292929;
+    color: #B4A8B9;
+}
+
+/*styles dark dashboard empty states */
+
+body.dark-mode .dashboard-empty {
+    background: #181818;
+    color: #B4A8B9;
+
+    border-color: #6E6472;
+}
+
+/*uses purple for selected interface areas */
+
+body.dark-mode .dashboard-tab.active {
+    color: white;
+}
+
+body.dark-mode .dashboard-tab.active::after {
+    background: #D6C2DF;
+}
+
+/*darkens the homepage hero */
+
+body.dark-mode .hero-section {
+    background: #222222;
+}
+
+/*keeps hero text visible */
+
+body.dark-mode .hero-copy h2 {
+    color: #F5F5F5;
+}
+
+body.dark-mode .hero-copy p {
+    color: #D3CBD6;
+}
+
+/*darkens homepage secondary text */
+
+body.dark-mode .home-section-title p {
+    color: #B4A8B9;
+}
+
+/*darkens the sidebar */
+
+body.dark-mode .sidebar-drawer {
+    background: #151515;
+    color: #F5F5F5;
+}
+
+/*styles sidebar links */
+
+body.dark-mode .sidebar-discovery a {
+    color: #F5F5F5;
+}
+
+body.dark-mode .sidebar-discovery a:hover {
+    background: #323232;
+    color: #D7B8EA;
+}
+
+/*darkens the bid entry panel */
+
+body.dark-mode .bid-panel {
+    background: #323232;
+}
+
+/*darkens modal windows */
+
+body.dark-mode .modal-card {
+    background: #1B1B1B;
+    color: #F5F5F5;
+}
+
+/*styles muted modal text */
+
+body.dark-mode .listing-modal-header p,
+body.dark-mode .bid-confirmation-note {
+    color: #B4A8B9;
+}
+
+/*darkens form controls */
+
+body.dark-mode input,
+body.dark-mode select,
+body.dark-mode textarea {
+    background: #101010;
+    color: #F5F5F5;
+
+    border-color: #6E6472;
+}
+
+/*keeps form placeholders visible */
+
+body.dark-mode input::placeholder,
+body.dark-mode textarea::placeholder {
+    color: #918897;
+}
+
+/*darkens listing upload areas */
+
+body.dark-mode .listing-image-placeholder {
+    background: #222222;
+    color: #B4A8B9;
+
+    border-color: #775B83;
+}
+
+/*darkens confirmation information */
+
+body.dark-mode .bid-confirmation-item {
+    background: #292929;
+}
+
+/*styles wireframe-inspired secondary buttons */
+
+body.dark-mode .secondary-button {
+    background: #181818;
+    color: #F5F5F5;
+
+    border: 1px solid #775B83;
+}
+
+/*styles wireframe-inspired primary actions */
+
+body.dark-mode .primary-button {
+    background: #775B83;
+    color: white;
+}
+
+/*keeps dashboard header actions contrasting */
+
+body.dark-mode .dashboard-top .primary-button {
+    background: #181818;
+    color: white;
+
+    border: 1px solid #D6C2DF;
+}
+
+/*styles carousel buttons */
+
+body.dark-mode .carousel-button {
+    background: #181818;
+    color: #D6C2DF;
+
+    border-color: #775B83;
+}
+
+body.dark-mode .carousel-button:hover {
+    background: #775B83;
+    color: white;
+}
+
+/*styles dark bid status labels */
+
+body.dark-mode .bid-status-winning {
+    background: #263522;
+    color: #B7D69C;
+}
+
+body.dark-mode .bid-status-outbid {
+    background: #3B3320;
+    color: #E6D28A;
+}
+
+body.dark-mode .bid-status-lost {
+    background: #3B2326;
+    color: #E5A6AD;
+}
+
+/*styles the colour theme toggle */
+
+.theme-toggle {
+    padding: 8px 12px;
+
+    border: 1px solid #8E45DD;
+    border-radius: 8px;
+
+    background: transparent;
+    color: #8E45DD;
+
+    font: inherit;
+
+    cursor: pointer;
+}
+

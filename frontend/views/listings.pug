@@ -31,11 +31,10 @@ block content
                     data-dashboard-target="listing-history"
                 ) Listing History
 
-        .dashboard-visual
-            img.header-image(
-                src="/images/header-img.png"
-                alt="BIDBASH illustration"
-            )
+        img.header-image.listings-header-image(
+            src="/images/header-img.png"
+            alt="BIDBASH illustration"
+        )
 
     section.dashboard-section.dashboard-panel#active-listings
 
@@ -169,7 +168,7 @@ block content
             p.dashboard-empty
                 | Your listing history is currently empty.
 
-    //- displays the create listing form over the dashboard
+    //-displays the create listing form over the dashboard
 
     .modal-overlay#create-listing-modal(
         hidden=!openCreateListing

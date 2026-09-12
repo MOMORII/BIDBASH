@@ -1,4 +1,4 @@
-// i am confirming that browser-side javascript has loaded
+//confirms that browser-side javascript has loaded
 console.log("BIDBASH frontend JavaScript loaded");
 
 //finds the bidding controls on the auction page
@@ -334,5 +334,61 @@ if (createListingModal) {
         if (event.target === createListingModal) {
             closeCreateListing();
         }
+    });
+}
+
+//finds the colour theme toggle
+const darkModeToggle =
+    document.getElementById("dark-mode-toggle");
+
+//loads the saved colour theme
+const savedTheme =
+    localStorage.getItem("bidbash-theme");
+
+if (savedTheme === "dark") {
+    document.body.classList.add("dark-mode");
+}
+
+//updates the colour theme toggle
+function updateThemeToggle() {
+    if (!darkModeToggle) {
+        return;
+    }
+
+    const darkModeEnabled =
+        document.body.classList.contains("dark-mode");
+
+    darkModeToggle.textContent =
+        darkModeEnabled
+            ? "Light Mode"
+            : "Dark Mode";
+
+    darkModeToggle.setAttribute(
+        "aria-label",
+        darkModeEnabled
+            ? "Switch to light mode"
+            : "Switch to dark mode"
+    );
+}
+
+//sets the initial theme toggle state
+updateThemeToggle();
+
+//switches between light and dark themes
+if (darkModeToggle) {
+    darkModeToggle.addEventListener("click", () => {
+        document.body.classList.toggle("dark-mode");
+
+        const darkModeEnabled =
+            document.body.classList.contains("dark-mode");
+
+        localStorage.setItem(
+            "bidbash-theme",
+            darkModeEnabled
+                ? "dark"
+                : "light"
+        );
+
+        updateThemeToggle();
     });
 }
