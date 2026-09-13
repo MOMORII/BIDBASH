@@ -1207,6 +1207,15 @@ async function submitBid() {
             bidAmountInput.value =
                 "";
         }
+
+        //refreshes the page after a successful bid
+        setTimeout(
+            () => {
+                window.location.reload();
+            },
+            1500
+        );
+
     } catch (error) {
         showBidRejected(
             "BIDBASH could not process the bid. Please try again."
