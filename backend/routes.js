@@ -1,12 +1,29 @@
-const express = require("express");
+const express =
+    require("express");
 
-const auction = require("./controllers/auction");
-const auth = require("./controllers/auth");
-const seller = require("./controllers/seller");
-const bidder = require("./controllers/bidder");
-const moderator = require("./controllers/moderator");
+const multer =
+    require("multer");
 
-const auctionService = require("./services/auction");
+const path =
+    require("path");
+
+const auction =
+    require("./controllers/auction");
+
+const auth =
+    require("./controllers/auth");
+
+const seller =
+    require("./controllers/seller");
+
+const bidder =
+    require("./controllers/bidder");
+
+const moderator =
+    require("./controllers/moderator");
+
+const auctionService =
+    require("./services/auction");
 
 const {
     requireLogin,
@@ -18,13 +35,8 @@ const {
     requireAgeConfirmation
 } = require("./middleware/ageGate");
 
-const router = express.Router();
-
-const multer =
-    require("multer");
-
-const path =
-    require("path");
+const router =
+    express.Router();
 
 //stores uploaded listing images
 
@@ -123,6 +135,7 @@ const uploadListingImage =
                 1024
         }
     });
+
 //renders the age confirmation page
 
 router.get(
@@ -149,6 +162,7 @@ router.post(
                 {
                     pageTitle:
                         "Age Confirmation - BIDBASH",
+
                     error:
                         "You must confirm that you are aged 18 or over."
                 }
@@ -168,28 +182,35 @@ router.use(
     requireAgeConfirmation
 );
 
-//renders the homepage with temporary auction data
+//renders the homepage
 
-router.get("/", (req, res) => {
-    if (
-        req.session.user &&
-        req.session.user.role ===
-            "moderator"
-    ) {
-        return res.redirect(
-            "/moderation"
-        );
+router.get(
+    "/",
+    (req, res) => {
+        if (
+            req.session.user &&
+            req.session.user.role ===
+                "moderator"
+        ) {
+            return res.redirect(
+                "/moderation"
+            );
+        }
+
+        res.render("index", {
+            pageTitle:
+                "BIDBASH",
+
+            featuredAuctions:
+                auctionService
+                    .getFeatured(),
+
+            endingSoonAuctions:
+                auctionService
+                    .getEndingSoon()
+        });
     }
-
-    res.render("index", {
-        pageTitle:
-            "BIDBASH",
-        featuredAuctions:
-            auctionService.getFeatured(),
-        endingSoonAuctions:
-            auctionService.getEndingSoon()
-    });
-});
+);
 
 //renders filtered and sorted browse auction results
 
@@ -218,11 +239,15 @@ router.get(
         res.render("browse", {
             pageTitle:
                 "Browse Auctions - BIDBASH",
+
             auctions,
+
             activeSort:
                 sort,
+
             activeCategory:
                 category,
+
             activeSearch:
                 search
         });
@@ -288,7 +313,7 @@ router.get(
     seller.dashboard
 );
 
-//validates authenticated listing submissions
+//creates authenticated listings
 
 router.post(
     "/listings/new",
@@ -299,13 +324,13 @@ router.post(
     seller.create
 );
 
-/*
+//updates active seller listings
+
 router.post(
-    "/listings/new",
+    "/api/listings/:id/edit",
     requireLogin,
-    seller.create
+    seller.updateListing
 );
-*/
 
 //renders the user-specific my bids dashboard
 

@@ -272,6 +272,152 @@ function create(
     });
 }
 
+//updates an active listing
+
+function updateListing(
+    req,
+    res
+) {
+    if (!req.session.user) {
+        return res.status(401).json({
+            success: false,
+            message:
+                "You must be signed in to edit a listing."
+        });
+    }
+
+    const {
+        title,
+        category,
+        condition,
+        description,
+        brand,
+        startingPrice,
+        bidIncrement,
+        deliveryInfo,
+        returnInfo
+    } = req.body;
+
+    if (
+        !title ||
+        !category ||
+        !condition ||
+        !description ||
+        !startingPrice ||
+        !bidIncrement
+    ) {
+        return res.status(400).json({
+            success: false,
+            message:
+                "Please complete all required listing fields."
+        });
+    }
+
+    const numericStartingPrice =
+        Number(
+            startingPrice
+        );
+
+    const numericBidIncrement =
+        Number(
+            bidIncrement
+        );
+
+    if (
+        !Number.isFinite(
+            numericStartingPrice
+        ) ||
+        numericStartingPrice <= 0
+    ) {
+        return res.status(400).json({
+            success: false,
+            message:
+                "Starting price must be greater than £0."
+        });
+    }
+
+    if (
+        !Number.isFinite(
+            numericBidIncrement
+        ) ||
+        numericBidIncrement <= 0
+    ) {
+        return res.status(400).json({
+            success: false,
+            message:
+                "Bid increment must be greater than £0."
+        });
+    }
+
+    const result =
+        listingService.update({
+            listingId:
+                req.params.id,
+
+            sellerId:
+                req.session.user.id,
+
+            title:
+                title.trim(),
+
+            category,
+
+            condition,
+
+            description:
+                description.trim(),
+
+            brand:
+                brand
+                    ? brand.trim()
+                    : null,
+
+            startingPrice:
+                numericStartingPrice,
+
+            bidIncrement:
+                numericBidIncrement,
+
+            deliveryInfo:
+                deliveryInfo
+                    ? deliveryInfo.trim()
+                    : null,
+
+            returnInfo:
+                returnInfo
+                    ? returnInfo.trim()
+                    : null
+        });
+
+    if (!result.success) {
+        if (
+            result.status ===
+            "not-found"
+        ) {
+            return res.status(404).json(
+                result
+            );
+        }
+
+        if (
+            result.status ===
+            "forbidden"
+        ) {
+            return res.status(403).json(
+                result
+            );
+        }
+
+        return res.status(400).json(
+            result
+        );
+    }
+
+    res.json(
+        result
+    );
+}
+
 //dispatches a paid seller order
 
 function dispatchOrder(
@@ -312,5 +458,6 @@ module.exports = {
     redirectToDashboard,
     dashboard,
     create,
+    updateListing,
     dispatchOrder
 };

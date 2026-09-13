@@ -1453,6 +1453,20 @@ body.dark-mode .header-search-button {
     cursor: pointer;
 }
 
+.dashboard-actions .secondary-button,
+.dashboard-actions .dashboard-action-button {
+    width: 180px;
+    min-height: 44px;
+
+    box-sizing: border-box;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+}
+
 .dashboard-empty {
     padding: 24px;
 

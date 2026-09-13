@@ -2075,3 +2075,380 @@ document.addEventListener(
         }
     }
 );
+
+//finds edit listing controls
+
+const manageListingButtons =
+    document.querySelectorAll(
+        ".manage-listing-button"
+    );
+
+const editListingModal =
+    document.getElementById(
+        "edit-listing-modal"
+    );
+
+const editListingForm =
+    document.getElementById(
+        "edit-listing-form"
+    );
+
+const editListingClose =
+    document.getElementById(
+        "edit-listing-close"
+    );
+
+const editListingCancel =
+    document.getElementById(
+        "edit-listing-cancel"
+    );
+
+const editListingError =
+    document.getElementById(
+        "edit-listing-error"
+    );
+
+const saveListingButton =
+    document.getElementById(
+        "save-listing-button"
+    );
+
+const editPricingHelp =
+    document.getElementById(
+        "edit-pricing-help"
+    );
+
+//opens an active listing for editing
+
+function openEditListing(
+    button
+) {
+    if (!editListingModal) {
+        return;
+    }
+
+    const listingId =
+        document.getElementById(
+            "edit-listing-id"
+        );
+
+    const title =
+        document.getElementById(
+            "edit-title"
+        );
+
+    const category =
+        document.getElementById(
+            "edit-category"
+        );
+
+    const condition =
+        document.getElementById(
+            "edit-condition"
+        );
+
+    const brand =
+        document.getElementById(
+            "edit-brand"
+        );
+
+    const description =
+        document.getElementById(
+            "edit-description"
+        );
+
+    const startingPrice =
+        document.getElementById(
+            "edit-starting-price"
+        );
+
+    const bidIncrement =
+        document.getElementById(
+            "edit-bid-increment"
+        );
+
+    const deliveryInfo =
+        document.getElementById(
+            "edit-delivery-info"
+        );
+
+    const returnInfo =
+        document.getElementById(
+            "edit-return-info"
+        );
+
+    listingId.value =
+        button.dataset.listingId;
+
+    title.value =
+        button.dataset.title;
+
+    category.value =
+        button.dataset.category;
+
+    condition.value =
+        button.dataset.condition;
+
+    brand.value =
+        button.dataset.brand;
+
+    description.value =
+        button.dataset.description;
+
+    startingPrice.value =
+        button.dataset.startingPrice;
+
+    bidIncrement.value =
+        button.dataset.bidIncrement;
+
+    deliveryInfo.value =
+        button.dataset.deliveryInfo;
+
+    returnInfo.value =
+        button.dataset.returnInfo;
+
+    const bidCount =
+        Number(
+            button.dataset.bidCount ||
+            0
+        );
+
+    const pricingLocked =
+        bidCount > 0;
+
+    startingPrice.readOnly =
+        pricingLocked;
+
+    bidIncrement.readOnly =
+        pricingLocked;
+
+    if (editPricingHelp) {
+        editPricingHelp.hidden =
+            !pricingLocked;
+    }
+
+    if (editListingError) {
+        editListingError.hidden =
+            true;
+
+        editListingError.textContent =
+            "";
+    }
+
+    editListingModal.hidden =
+        false;
+}
+
+//closes the edit listing overlay
+
+function closeEditListing() {
+    if (!editListingModal) {
+        return;
+    }
+
+    editListingModal.hidden =
+        true;
+}
+
+//opens selected listing management
+
+manageListingButtons.forEach(
+    button => {
+        button.addEventListener(
+            "click",
+            () => {
+                openEditListing(
+                    button
+                );
+            }
+        );
+    }
+);
+
+//closes listing management using close
+
+if (editListingClose) {
+    editListingClose.addEventListener(
+        "click",
+        closeEditListing
+    );
+}
+
+//closes listing management using cancel
+
+if (editListingCancel) {
+    editListingCancel.addEventListener(
+        "click",
+        closeEditListing
+    );
+}
+
+//closes listing management using background
+
+if (editListingModal) {
+    editListingModal.addEventListener(
+        "click",
+        event => {
+            if (
+                event.target ===
+                editListingModal
+            ) {
+                closeEditListing();
+            }
+        }
+    );
+}
+
+//saves listing changes
+
+async function saveListingChanges(
+    event
+) {
+    event.preventDefault();
+
+    if (
+        !editListingForm ||
+        !saveListingButton
+    ) {
+        return;
+    }
+
+    const listingId =
+        document.getElementById(
+            "edit-listing-id"
+        ).value;
+
+    saveListingButton.disabled =
+        true;
+
+    saveListingButton.textContent =
+        "Saving...";
+
+    if (editListingError) {
+        editListingError.hidden =
+            true;
+
+        editListingError.textContent =
+            "";
+    }
+
+    try {
+        const response =
+            await fetch(
+                `/api/listings/${listingId}/edit`,
+                {
+                    method:
+                        "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body:
+                        JSON.stringify({
+                            title:
+                                document.getElementById(
+                                    "edit-title"
+                                ).value,
+
+                            category:
+                                document.getElementById(
+                                    "edit-category"
+                                ).value,
+
+                            condition:
+                                document.getElementById(
+                                    "edit-condition"
+                                ).value,
+
+                            brand:
+                                document.getElementById(
+                                    "edit-brand"
+                                ).value,
+
+                            description:
+                                document.getElementById(
+                                    "edit-description"
+                                ).value,
+
+                            startingPrice:
+                                document.getElementById(
+                                    "edit-starting-price"
+                                ).value,
+
+                            bidIncrement:
+                                document.getElementById(
+                                    "edit-bid-increment"
+                                ).value,
+
+                            deliveryInfo:
+                                document.getElementById(
+                                    "edit-delivery-info"
+                                ).value,
+
+                            returnInfo:
+                                document.getElementById(
+                                    "edit-return-info"
+                                ).value
+                        })
+                }
+            );
+
+        const result =
+            await response.json();
+
+        if (!response.ok) {
+            if (editListingError) {
+                editListingError.textContent =
+                    result.message ||
+                    result.error ||
+                    "The listing could not be updated.";
+
+                editListingError.hidden =
+                    false;
+            }
+
+            saveListingButton.disabled =
+                false;
+
+            saveListingButton.textContent =
+                "Save Changes";
+
+            return;
+        }
+
+        saveListingButton.textContent =
+            "Saved";
+
+        setTimeout(
+            () => {
+                window.location.reload();
+            },
+            700
+        );
+    } catch (error) {
+        if (editListingError) {
+            editListingError.textContent =
+                "BIDBASH could not update the listing. Please try again.";
+
+            editListingError.hidden =
+                false;
+        }
+
+        saveListingButton.disabled =
+            false;
+
+        saveListingButton.textContent =
+            "Save Changes";
+    }
+}
+
+//handles listing edit submission
+
+if (editListingForm) {
+    editListingForm.addEventListener(
+        "submit",
+        saveListingChanges
+    );
+}

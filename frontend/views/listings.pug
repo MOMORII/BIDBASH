@@ -87,8 +87,19 @@ block content
                                     href=`/auction/${listing.auctionId}`
                                 ) View Auction
 
-                            button.dashboard-action-button(
+                            button.dashboard-action-button.manage-listing-button(
                                 type="button"
+                                data-listing-id=listing.id
+                                data-title=listing.title
+                                data-category=listing.category
+                                data-condition=listing.condition
+                                data-brand=listing.brand || ""
+                                data-description=listing.description
+                                data-starting-price=listing.startingPrice
+                                data-bid-increment=listing.bidIncrement
+                                data-delivery-info=listing.deliveryInfo || ""
+                                data-return-info=listing.returnInfo || ""
+                                data-bid-count=listing.bidCount
                             ) Manage
 
         else
@@ -294,9 +305,7 @@ block content
 
                 .form-group
 
-                    label(
-                        for="title"
-                    ) Listing Title
+                    label(for="title") Listing Title
 
                     input#title(
                         type="text"
@@ -309,91 +318,42 @@ block content
 
                     .form-group
 
-                        label(
-                            for="category"
-                        ) Category
+                        label(for="category") Category
 
                         select#category(
                             name="category"
                             required
                         )
 
-                            option(
-                                value=""
-                            ) Select Category
-
-                            option(
-                                value="Electronics"
-                            ) Electronics
-
-                            option(
-                                value="Collectibles"
-                            ) Collectibles
-
-                            option(
-                                value="Fashion"
-                            ) Fashion
-
-                            option(
-                                value="Home"
-                            ) Home
-
-                            option(
-                                value="Gaming"
-                            ) Gaming
-
-                            option(
-                                value="Sports"
-                            ) Sports
-
-                            option(
-                                value="Books"
-                            ) Books
-
-                            option(
-                                value="Music"
-                            ) Music
+                            option(value="") Select Category
+                            option(value="Electronics") Electronics
+                            option(value="Collectibles") Collectibles
+                            option(value="Fashion") Fashion
+                            option(value="Home") Home
+                            option(value="Gaming") Gaming
+                            option(value="Sports") Sports
+                            option(value="Books") Books
+                            option(value="Music") Music
 
                     .form-group
 
-                        label(
-                            for="condition"
-                        ) Condition
+                        label(for="condition") Condition
 
                         select#condition(
                             name="condition"
                             required
                         )
 
-                            option(
-                                value=""
-                            ) Select Condition
-
-                            option(
-                                value="New"
-                            ) New
-
-                            option(
-                                value="Like New"
-                            ) Like New
-
-                            option(
-                                value="Very Good"
-                            ) Very Good
-
-                            option(
-                                value="Good"
-                            ) Good
-
-                            option(
-                                value="Used"
-                            ) Used
+                            option(value="") Select Condition
+                            option(value="New") New
+                            option(value="Like New") Like New
+                            option(value="Very Good") Very Good
+                            option(value="Good") Good
+                            option(value="Used") Used
 
                 .form-group
 
-                    label(
-                        for="brand"
-                    ) Brand
+                    label(for="brand") Brand
 
                     input#brand(
                         type="text"
@@ -403,9 +363,7 @@ block content
 
                 .form-group
 
-                    label(
-                        for="description"
-                    ) Description
+                    label(for="description") Description
 
                     textarea#description(
                         name="description"
@@ -418,9 +376,7 @@ block content
 
                     .form-group
 
-                        label(
-                            for="starting-price"
-                        ) Starting Price
+                        label(for="starting-price") Starting Price
 
                         input#starting-price(
                             type="number"
@@ -433,9 +389,7 @@ block content
 
                     .form-group
 
-                        label(
-                            for="bid-increment"
-                        ) Bid Increment
+                        label(for="bid-increment") Bid Increment
 
                         input#bid-increment(
                             type="number"
@@ -448,9 +402,27 @@ block content
 
                 .form-group
 
-                    label(
-                        for="listing-image"
-                    ) Listing Image
+                    label(for="delivery-info") Delivery Information
+
+                    textarea#delivery-info(
+                        name="deliveryInfo"
+                        rows="3"
+                        placeholder="Enter delivery information"
+                    )
+
+                .form-group
+
+                    label(for="return-info") Return Information
+
+                    textarea#return-info(
+                        name="returnInfo"
+                        rows="3"
+                        placeholder="Enter return information"
+                    )
+
+                .form-group
+
+                    label(for="listing-image") Listing Image
 
                     input#listing-image(
                         type="file"
@@ -470,3 +442,148 @@ block content
                     button.primary-button(
                         type="submit"
                     ) Create Listing
+
+    //-displays the edit listing form over the dashboard
+
+    .modal-overlay#edit-listing-modal(
+        hidden
+    )
+
+        .modal-card.listing-modal-card
+
+            .listing-modal-header
+
+                div
+
+                    h2 Edit Listing
+
+                    p Update the information shown on your active auction.
+
+                button.modal-close#edit-listing-close(
+                    type="button"
+                    aria-label="Close edit listing form"
+                ) ×
+
+            p.form-message.form-error#edit-listing-error(
+                hidden
+            )
+
+            form.listing-form#edit-listing-form
+
+                input#edit-listing-id(
+                    type="hidden"
+                )
+
+                .form-group
+
+                    label(for="edit-title") Listing Title
+
+                    input#edit-title(
+                        type="text"
+                        required
+                    )
+
+                .form-row
+
+                    .form-group
+
+                        label(for="edit-category") Category
+
+                        select#edit-category(
+                            required
+                        )
+
+                            option(value="Electronics") Electronics
+                            option(value="Collectibles") Collectibles
+                            option(value="Fashion") Fashion
+                            option(value="Home") Home
+                            option(value="Gaming") Gaming
+                            option(value="Sports") Sports
+                            option(value="Books") Books
+                            option(value="Music") Music
+
+                    .form-group
+
+                        label(for="edit-condition") Condition
+
+                        select#edit-condition(
+                            required
+                        )
+
+                            option(value="New") New
+                            option(value="Like New") Like New
+                            option(value="Very Good") Very Good
+                            option(value="Good") Good
+                            option(value="Used") Used
+
+                .form-group
+
+                    label(for="edit-brand") Brand
+
+                    input#edit-brand(
+                        type="text"
+                    )
+
+                .form-group
+
+                    label(for="edit-description") Description
+
+                    textarea#edit-description(
+                        rows="5"
+                        required
+                    )
+
+                .form-row
+
+                    .form-group
+
+                        label(for="edit-starting-price") Starting Price
+
+                        input#edit-starting-price(
+                            type="number"
+                            min="0.01"
+                            step="0.01"
+                            required
+                        )
+
+                    .form-group
+
+                        label(for="edit-bid-increment") Bid Increment
+
+                        input#edit-bid-increment(
+                            type="number"
+                            min="0.01"
+                            step="0.01"
+                            required
+                        )
+
+                p.form-help#edit-pricing-help(
+                    hidden
+                )
+                    | Starting price and bid increment are locked because this auction already has bids.
+
+                .form-group
+
+                    label(for="edit-delivery-info") Delivery Information
+
+                    textarea#edit-delivery-info(
+                        rows="3"
+                    )
+
+                .form-group
+
+                    label(for="edit-return-info") Return Information
+
+                    textarea#edit-return-info(
+                        rows="3"
+                    )
+
+                .modal-actions
+
+                    button.secondary-button#edit-listing-cancel(
+                        type="button"
+                    ) Cancel
+
+                    button.primary-button#save-listing-button(
+                        type="submit"
+                    ) Save Changes

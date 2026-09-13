@@ -157,6 +157,9 @@ function mapSellerListing(
         title:
             row.title,
 
+        description:
+            row.description,
+
         category:
             row.category,
 
@@ -170,6 +173,17 @@ function mapSellerListing(
             Number(
                 row.starting_price
             ),
+
+        bidIncrement:
+            Number(
+                row.bid_increment
+            ),
+
+        deliveryInfo:
+            row.delivery_info,
+
+        returnInfo:
+            row.return_info,
 
         currentBid,
 
@@ -268,6 +282,8 @@ function getBySellerId(
                 listings.brand,
                 listings.starting_price,
                 listings.bid_increment,
+                listings.delivery_info,
+                listings.return_info,
                 listings.status AS listing_status,
                 listings.created_at,
 
@@ -415,6 +431,48 @@ function getCategoryByName(
             LOWER(?)
     `).get(
         category
+    );
+}
+
+//loads an editable listing
+
+function getEditableListing(
+    listingId
+) {
+    return db.prepare(`
+        SELECT
+            listings.listing_id,
+            listings.seller_id,
+            listings.status,
+            listings.starting_price,
+            listings.bid_increment,
+
+            auctions.auction_id,
+            auctions.status AS auction_status,
+
+            (
+                SELECT
+                    COUNT(*)
+
+                FROM bids
+
+                WHERE
+                    bids.auction_id =
+                        auctions.auction_id
+            ) AS bid_count
+
+        FROM listings
+
+        LEFT JOIN auctions
+            ON auctions.listing_id =
+                listings.listing_id
+
+        WHERE
+            listings.listing_id = ?
+    `).get(
+        Number(
+            listingId
+        )
     );
 }
 
@@ -627,8 +685,180 @@ function create({
     });
 }
 
+//updates an active seller listing
+
+function update({
+    listingId,
+    sellerId,
+    title,
+    category,
+    condition,
+    description,
+    brand = null,
+    startingPrice,
+    bidIncrement,
+    deliveryInfo = null,
+    returnInfo = null
+}) {
+    const listing =
+        getEditableListing(
+            listingId
+        );
+
+    if (!listing) {
+        return {
+            success: false,
+            status:
+                "not-found",
+            message:
+                "Listing not found."
+        };
+    }
+
+    if (
+        Number(
+            listing.seller_id
+        ) !==
+        Number(
+            sellerId
+        )
+    ) {
+        return {
+            success: false,
+            status:
+                "forbidden",
+            message:
+                "You cannot edit another user's listing."
+        };
+    }
+
+    if (
+        listing.status !==
+            "active" ||
+        listing.auction_status !==
+            "active"
+    ) {
+        return {
+            success: false,
+            status:
+                "not-editable",
+            message:
+                "Only active listings can be edited."
+        };
+    }
+
+    const categoryRecord =
+        getCategoryByName(
+            category
+        );
+
+    if (!categoryRecord) {
+        return {
+            success: false,
+            status:
+                "invalid-category",
+            message:
+                "Please select a valid listing category."
+        };
+    }
+
+    const numericStartingPrice =
+        Number(
+            startingPrice
+        );
+
+    const numericBidIncrement =
+        Number(
+            bidIncrement
+        );
+
+    const bidCount =
+        Number(
+            listing.bid_count ||
+            0
+        );
+
+    if (
+        bidCount > 0 &&
+        (
+            numericStartingPrice !==
+                Number(
+                    listing.starting_price
+                ) ||
+            numericBidIncrement !==
+                Number(
+                    listing.bid_increment
+                )
+        )
+    ) {
+        return {
+            success: false,
+            status:
+                "pricing-locked",
+            message:
+                "Starting price and bid increment cannot be changed after bids have been placed."
+        };
+    }
+
+    db.prepare(`
+        UPDATE listings
+
+        SET
+            category_id = ?,
+            title = ?,
+            description = ?,
+            condition = ?,
+            brand = ?,
+            starting_price = ?,
+            bid_increment = ?,
+            delivery_info = ?,
+            return_info = ?,
+            updated_at =
+                CURRENT_TIMESTAMP
+
+        WHERE
+            listing_id = ?
+            AND seller_id = ?
+    `).run(
+        categoryRecord.category_id,
+        title,
+        description,
+        condition,
+        brand ||
+            null,
+        numericStartingPrice,
+        numericBidIncrement,
+        deliveryInfo ||
+            "Standard UK delivery available.",
+        returnInfo ||
+            "Returns accepted within 14 days.",
+        Number(
+            listingId
+        ),
+        Number(
+            sellerId
+        )
+    );
+
+    return {
+        success: true,
+
+        status:
+            "updated",
+
+        listingId:
+            Number(
+                listingId
+            ),
+
+        message:
+            "Listing updated successfully."
+    };
+}
+
 module.exports = {
     getBySellerId,
     groupSellerListings,
-    create
+    create,
+    update
 };
