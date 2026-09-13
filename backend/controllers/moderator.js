@@ -1,77 +1,76 @@
-//loads temporary moderation cases
-
-const moderationCases =
-    require("../data/mockModerationCases");
+//loads moderation services
 
 const moderationService =
     require("../services/moderation");
 
-//sorts moderation cases by risk
-
-function sortByRisk(cases) {
-    const priorities = {
-        high: 1,
-        medium: 2,
-        low: 3
-    };
-
-    return [...cases].sort((a, b) => {
-        return priorities[a.riskLevel] -
-            priorities[b.riskLevel];
-    });
-}
-
 //renders the moderation dashboard
 
-function dashboard(req, res) {
+function dashboard(
+    req,
+    res
+) {
     const cases =
-        sortByRisk(moderationCases);
+        moderationService
+            .getCases();
 
     res.render("moderator", {
-        pageTitle: "Moderation Dashboard - BIDBASH",
+        pageTitle:
+            "Moderation Dashboard - BIDBASH",
+
         cases
     });
 }
 
-//updates a temporary moderation case
+//updates a moderation case
 
-function updateCase(req, res) {
-    const moderationCase =
-        moderationCases.find(
-            item => item.id === req.params.id
-        );
-
-    if (!moderationCase) {
-        return res.status(404).send(
-            "Moderation case not found."
+function updateCase(
+    req,
+    res
+) {
+    if (!req.session.user) {
+        return res.status(401).send(
+            "You must be signed in."
         );
     }
 
     const action =
         req.body.action;
 
-    if (!moderationService.validateDecision(action)) {
+    const result =
+        moderationService
+            .updateCase({
+                caseId:
+                    req.params.id,
+
+                moderatorId:
+                    req.session.user.id,
+
+                decision:
+                    action,
+
+                decisionNotes:
+                    req.body.decisionNotes ||
+                    null
+            });
+
+    if (!result.success) {
+        if (
+            result.status ===
+            "not-found"
+        ) {
+            return res.status(404).send(
+                result.message
+            );
+        }
+
         return res.status(400).send(
-            "Invalid moderation action."
+            result.message
         );
     }
 
-    if (action === "approve") {
-        moderationCase.status =
-            "approved";
-    }
-
-    if (action === "request-change") {
-        moderationCase.status =
-            "changes-requested";
-    }
-
-    if (action === "remove") {
-        moderationCase.status =
-            "removed";
-    }
-
-    res.redirect("/moderation");
+    res.redirect(
+        "/moderation"
+    );
 }
 
 module.exports = {
