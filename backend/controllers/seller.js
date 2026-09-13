@@ -3,6 +3,9 @@
 const listingService =
     require("../services/listing");
 
+const orderService =
+    require("../services/order");
+
 //redirects the seller shortcut
 
 function redirectToDashboard(
@@ -262,8 +265,45 @@ function create(
     });
 }
 
+//dispatches a paid seller order
+
+function dispatchOrder(
+    req,
+    res
+) {
+    if (!req.session.user) {
+        return res.status(401).json({
+            error:
+                "You must be signed in to dispatch an order."
+        });
+    }
+
+    const result =
+        orderService.dispatchOrder({
+            orderId:
+                req.params.id,
+
+            sellerId:
+                req.session.user.id,
+
+            trackingReference:
+                req.body.trackingReference
+        });
+
+    if (!result.success) {
+        return res.status(400).json(
+            result
+        );
+    }
+
+    res.json(
+        result
+    );
+}
+
 module.exports = {
     redirectToDashboard,
     dashboard,
-    create
+    create,
+    dispatchOrder
 };

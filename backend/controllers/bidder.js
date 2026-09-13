@@ -6,6 +6,9 @@ const biddingService =
 const notificationService =
     require("../services/notification");
 
+const orderService =
+    require("../services/order");
+
 //renders the user's bidding dashboard
 
 function dashboard(
@@ -123,9 +126,43 @@ function readNotification(
     });
 }
 
+//pays a won auction order
+
+function payOrder(
+    req,
+    res
+) {
+    if (!req.session.user) {
+        return res.status(401).json({
+            error:
+                "You must be signed in to pay for an order."
+        });
+    }
+
+    const result =
+        orderService.payOrder({
+            orderId:
+                req.params.id,
+
+            buyerId:
+                req.session.user.id
+        });
+
+    if (!result.success) {
+        return res.status(400).json(
+            result
+        );
+    }
+
+    res.json(
+        result
+    );
+}
+
 module.exports = {
     dashboard,
     placeBid,
     getNotifications,
-    readNotification
+    readNotification,
+    payOrder
 };

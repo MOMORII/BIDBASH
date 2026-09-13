@@ -213,6 +213,10 @@ function mapDashboardBid(
         listingId:
             row.listing_id,
 
+        orderId:
+            row.order_id ||
+            null,
+
         title:
             row.title,
 
@@ -281,10 +285,6 @@ function mapDashboardBid(
 
         imagePath:
             row.image_path ||
-            null,
-
-        orderId:
-            row.order_id ||
             null
     };
 }
@@ -510,7 +510,9 @@ const placeBidTransaction =
             }
 
             const numericAmount =
-                Number(amount);
+                Number(
+                    amount
+                );
 
             if (
                 !Number.isFinite(
@@ -596,6 +598,7 @@ const placeBidTransaction =
                     bidIncrement
                 };
             }
+
             const previousHighestBid =
                 getHighestBid(
                     auctionId
@@ -655,14 +658,21 @@ const placeBidTransaction =
                 .createNotification({
                     userId:
                         Number(userId),
+
                     type:
                         "bid_accepted",
+
                     title:
                         "Bid Accepted",
+
                     message:
                         `Your £${numericAmount.toFixed(2)} bid on ${auction.title} was accepted.`,
+
                     auctionId:
-                        Number(auctionId),
+                        Number(
+                            auctionId
+                        ),
+
                     orderId:
                         null
                 });
@@ -680,16 +690,21 @@ const placeBidTransaction =
                         userId:
                             previousHighestBid
                                 .bidder_id,
+
                         type:
                             "outbid",
+
                         title:
                             "You've Been Outbid",
+
                         message:
                             `A higher bid has been placed on ${auction.title}.`,
+
                         auctionId:
                             Number(
                                 auctionId
                             ),
+
                         orderId:
                             null
                     });
@@ -697,8 +712,10 @@ const placeBidTransaction =
 
             return {
                 success: true,
+
                 status:
                     "accepted",
+
                 message:
                     "Your bid has been accepted.",
 
@@ -707,14 +724,20 @@ const placeBidTransaction =
                         Number(
                             result.lastInsertRowid
                         ),
+
                     userId:
-                        Number(userId),
+                        Number(
+                            userId
+                        ),
+
                     auctionId:
                         Number(
                             auctionId
                         ),
+
                     amount:
                         numericAmount,
+
                     status:
                         "winning"
                 },
@@ -722,6 +745,7 @@ const placeBidTransaction =
                 auction: {
                     currentBid:
                         numericAmount,
+
                     minimumBid:
                         numericAmount +
                         bidIncrement
@@ -740,10 +764,14 @@ function placeBid({
 }) {
     return placeBidTransaction({
         userId:
-            Number(userId),
+            Number(
+                userId
+            ),
 
         auctionId:
-            Number(auctionId),
+            Number(
+                auctionId
+            ),
 
         amount,
 

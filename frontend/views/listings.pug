@@ -7,7 +7,9 @@ block content
         .listings-header-content
 
             .dashboard-heading
+
                 h1 My Listings
+
                 p Manage your active auctions, successful sales, and listing history.
 
                 button.primary-button#create-listing-button(
@@ -47,7 +49,14 @@ block content
                     article.dashboard-item
 
                         .dashboard-image
-                            | Product Image
+
+                            if listing.imagePath
+                                img(
+                                    src=listing.imagePath
+                                    alt=listing.title
+                                )
+                            else
+                                | Product Image
 
                         .dashboard-item-content
 
@@ -69,9 +78,10 @@ block content
 
                         .dashboard-actions
 
-                            a.secondary-button(
-                                href=`/auction/${listing.id}`
-                            ) View Auction
+                            if listing.auctionId
+                                a.secondary-button(
+                                    href=`/auction/${listing.auctionId}`
+                                ) View Auction
 
                             button.dashboard-action-button(
                                 type="button"
@@ -93,7 +103,14 @@ block content
                     article.dashboard-item
 
                         .dashboard-image
-                            | Product Image
+
+                            if listing.imagePath
+                                img(
+                                    src=listing.imagePath
+                                    alt=listing.title
+                                )
+                            else
+                                | Product Image
 
                         .dashboard-item-content
 
@@ -107,17 +124,65 @@ block content
 
                                 p
                                     strong Buyer:
-                                    |  #{listing.buyer}
+                                    |  #{listing.buyer || "Not available"}
+
+                                p
+                                    strong Payment:
+                                    |  #{listing.paymentStatus}
 
                                 p
                                     strong Fulfilment:
                                     |  #{listing.fulfilmentStatus}
 
+                                if listing.trackingReference
+
+                                    p
+                                        strong Tracking:
+                                        |  #{listing.trackingReference}
+
+                                if listing.rawPaymentStatus === "paid" && listing.rawFulfilmentStatus === "awaiting-dispatch"
+
+                                    .dispatch-order-controls
+
+                                        label(
+                                            for=`tracking-reference-${listing.orderId}`
+                                        ) Tracking Reference
+
+                                        input.dispatch-tracking-input(
+                                            id=`tracking-reference-${listing.orderId}`
+                                            type="text"
+                                            placeholder="Enter tracking reference"
+                                            data-order-id=listing.orderId
+                                        )
+
                         .dashboard-actions
 
-                            button.dashboard-action-button(
-                                type="button"
-                            ) View Sale
+                            if listing.auctionId
+                                a.secondary-button(
+                                    href=`/auction/${listing.auctionId}`
+                                ) View Auction
+
+                            if listing.rawPaymentStatus === "paid" && listing.rawFulfilmentStatus === "awaiting-dispatch"
+
+                                button.primary-button.dispatch-order-button(
+                                    type="button"
+                                    data-order-id=listing.orderId
+                                ) Mark as Dispatched
+
+                            else if !listing.rawPaymentStatus
+
+                                span.dashboard-status
+                                    | Awaiting Buyer Payment
+
+                            else if listing.rawFulfilmentStatus === "dispatched"
+
+                                span.dashboard-status
+                                    | Dispatched
+
+                            else if listing.rawFulfilmentStatus === "delivered"
+
+                                span.dashboard-status
+                                    | Delivered
 
         else
 
@@ -135,7 +200,14 @@ block content
                     article.dashboard-item
 
                         .dashboard-image
-                            | Product Image
+
+                            if listing.imagePath
+                                img(
+                                    src=listing.imagePath
+                                    alt=listing.title
+                                )
+                            else
+                                | Product Image
 
                         .dashboard-item-content
 
@@ -147,7 +219,7 @@ block content
                                     strong Outcome:
                                     |  #{listing.outcome}
 
-                                if listing.finalAmount
+                                if listing.finalAmount !== null
 
                                     p
                                         strong Final Amount:
@@ -159,9 +231,10 @@ block content
 
                         .dashboard-actions
 
-                            button.dashboard-action-button(
-                                type="button"
-                            ) View Details
+                            if listing.auctionId
+                                a.secondary-button(
+                                    href=`/auction/${listing.auctionId}`
+                                ) View Details
 
         else
 
@@ -179,7 +252,9 @@ block content
             .listing-modal-header
 
                 div
+
                     h2 Create Listing
+
                     p Add the information required for a new auction listing.
 
                 button.modal-close#create-listing-close(
@@ -188,9 +263,11 @@ block content
                 ) ×
 
             if listingError
+
                 p.form-message.form-error= listingError
 
             if listingMessage
+
                 p.form-message.form-success= listingMessage
 
             form.listing-form(
@@ -221,11 +298,14 @@ block content
                         )
 
                             option(value="") Select Category
-                            option(value="electronics") Electronics
-                            option(value="collectibles") Collectibles
-                            option(value="gaming") Gaming
-                            option(value="home") Home & Living
-                            option(value="fashion") Fashion
+                            option(value="Electronics") Electronics
+                            option(value="Collectibles") Collectibles
+                            option(value="Fashion") Fashion
+                            option(value="Home") Home
+                            option(value="Gaming") Gaming
+                            option(value="Sports") Sports
+                            option(value="Books") Books
+                            option(value="Music") Music
 
                     .form-group
 
@@ -237,9 +317,11 @@ block content
                         )
 
                             option(value="") Select Condition
-                            option(value="new") New
-                            option(value="used-very-good") Used - Very Good
-                            option(value="used-good") Used - Good
+                            option(value="New") New
+                            option(value="Like New") Like New
+                            option(value="Very Good") Very Good
+                            option(value="Good") Good
+                            option(value="Used") Used
 
                 .form-group
 
@@ -271,7 +353,7 @@ block content
                         input#starting-price(
                             type="number"
                             name="startingPrice"
-                            min="0"
+                            min="0.01"
                             step="0.01"
                             placeholder="0.00"
                             required
@@ -305,4 +387,4 @@ block content
 
                     button.primary-button(
                         type="submit"
-                    ) Validate Listing
+                    ) Create Listing

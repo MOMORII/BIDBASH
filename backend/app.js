@@ -7,6 +7,10 @@ const routes = require("./routes");
 const app = express();
 const PORT = 3000;
 
+const {
+    processExpiredAuctions
+} = require("./middleware/auctionLifecycle");
+
 //configures pug templates
 app.set(
     "views",
@@ -48,8 +52,12 @@ app.use((req, res, next) => {
     next();
 });
 
+app.use(
+    processExpiredAuctions
+);
+
 //registers all bidbash routes
-app.use(routes);
+app.use("/", routes);
 
 //starts the development server
 app.listen(PORT, () => {

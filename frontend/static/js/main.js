@@ -1,5 +1,8 @@
 //confirms that browser-side javascript has loaded
-console.log("BIDBASH frontend JavaScript loaded");
+
+console.log(
+    "BIDBASH frontend JavaScript loaded"
+);
 
 //finds the dashboard tabs and content panels
 
@@ -167,7 +170,9 @@ if (sidebarToggle) {
             if (
                 sidebarDrawer
                     .classList
-                    .contains("open")
+                    .contains(
+                        "open"
+                    )
             ) {
                 closeSidebar();
             } else {
@@ -219,7 +224,9 @@ if (browseSort) {
             ) {
                 currentUrl
                     .searchParams
-                    .delete("sort");
+                    .delete(
+                        "sort"
+                    );
             } else {
                 currentUrl
                     .searchParams
@@ -310,6 +317,7 @@ carouselButtons.forEach(
                         "left"
                             ? -scrollDistance
                             : scrollDistance,
+
                     behavior:
                         "smooth"
                 });
@@ -589,6 +597,229 @@ if (darkModeToggle) {
     );
 }
 
+//finds buyer payment controls
+
+const payOrderButtons =
+    document.querySelectorAll(
+        ".pay-order-button"
+    );
+
+//pays a won auction order
+
+async function payOrder(
+    button
+) {
+    const orderId =
+        Number(
+            button.dataset
+                .orderId
+        );
+
+    if (
+        !Number.isFinite(
+            orderId
+        )
+    ) {
+        return;
+    }
+
+    button.disabled =
+        true;
+
+    button.textContent =
+        "Processing...";
+
+    try {
+        const response =
+            await fetch(
+                `/api/orders/${orderId}/pay`,
+                {
+                    method:
+                        "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    }
+                }
+            );
+
+        const result =
+            await response.json();
+
+        if (!response.ok) {
+            alert(
+                result.message ||
+                result.error ||
+                "The payment could not be completed."
+            );
+
+            button.disabled =
+                false;
+
+            button.textContent =
+                "Pay Now";
+
+            return;
+        }
+
+        button.textContent =
+            "Payment Complete";
+
+        setTimeout(
+            () => {
+                window.location.reload();
+            },
+            800
+        );
+    } catch (error) {
+        alert(
+            "BIDBASH could not process the payment. Please try again."
+        );
+
+        button.disabled =
+            false;
+
+        button.textContent =
+            "Pay Now";
+    }
+}
+
+//handles buyer payment clicks
+
+payOrderButtons.forEach(
+    button => {
+        button.addEventListener(
+            "click",
+            () => {
+                payOrder(
+                    button
+                );
+            }
+        );
+    }
+);
+
+//finds seller dispatch controls
+
+const dispatchOrderButtons =
+    document.querySelectorAll(
+        ".dispatch-order-button"
+    );
+
+//dispatches a paid seller order
+
+async function dispatchOrder(
+    button
+) {
+    const orderId =
+        Number(
+            button.dataset
+                .orderId
+        );
+
+    if (
+        !Number.isFinite(
+            orderId
+        )
+    ) {
+        return;
+    }
+
+    const trackingInput =
+        document.querySelector(
+            `.dispatch-tracking-input[data-order-id="${orderId}"]`
+        );
+
+    const trackingReference =
+        trackingInput
+            ? trackingInput
+                .value
+                .trim()
+            : "";
+
+    button.disabled =
+        true;
+
+    button.textContent =
+        "Updating...";
+
+    try {
+        const response =
+            await fetch(
+                `/api/orders/${orderId}/dispatch`,
+                {
+                    method:
+                        "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body:
+                        JSON.stringify({
+                            trackingReference
+                        })
+                }
+            );
+
+        const result =
+            await response.json();
+
+        if (!response.ok) {
+            alert(
+                result.message ||
+                result.error ||
+                "The order could not be marked as dispatched."
+            );
+
+            button.disabled =
+                false;
+
+            button.textContent =
+                "Mark as Dispatched";
+
+            return;
+        }
+
+        button.textContent =
+            "Dispatched";
+
+        setTimeout(
+            () => {
+                window.location.reload();
+            },
+            800
+        );
+    } catch (error) {
+        alert(
+            "BIDBASH could not update the order. Please try again."
+        );
+
+        button.disabled =
+            false;
+
+        button.textContent =
+            "Mark as Dispatched";
+    }
+}
+
+//handles seller dispatch clicks
+
+dispatchOrderButtons.forEach(
+    button => {
+        button.addEventListener(
+            "click",
+            () => {
+                dispatchOrder(
+                    button
+                );
+            }
+        );
+    }
+);
+
 //finds the bidding controls
 
 const placeBidButton =
@@ -710,6 +941,44 @@ const bidHelp =
 
 let pendingBidAmount =
     null;
+
+let expectedCurrentBid =
+    null;
+
+//reads a displayed currency amount
+
+function readCurrencyValue(
+    element
+) {
+    if (!element) {
+        return null;
+    }
+
+    const value =
+        Number(
+            element
+                .textContent
+                .replace(
+                    "£",
+                    ""
+                )
+                .replace(
+                    /,/g,
+                    ""
+                )
+                .trim()
+        );
+
+    if (
+        !Number.isFinite(
+            value
+        )
+    ) {
+        return null;
+    }
+
+    return value;
+}
 
 //opens the bid modal
 
@@ -999,7 +1268,9 @@ function updateAuctionValues(
 ) {
     if (
         Number.isFinite(
-            Number(currentBid)
+            Number(
+                currentBid
+            )
         ) &&
         auctionCurrentBid
     ) {
@@ -1011,7 +1282,9 @@ function updateAuctionValues(
 
     if (
         Number.isFinite(
-            Number(minimumBid)
+            Number(
+                minimumBid
+            )
         ) &&
         auctionMinimumBid
     ) {
@@ -1023,7 +1296,9 @@ function updateAuctionValues(
 
     if (
         Number.isFinite(
-            Number(currentBid)
+            Number(
+                currentBid
+            )
         ) &&
         confirmationCurrentBid
     ) {
@@ -1036,7 +1311,9 @@ function updateAuctionValues(
 
     if (
         Number.isFinite(
-            Number(minimumBid)
+            Number(
+                minimumBid
+            )
         ) &&
         confirmationMinimumBid
     ) {
@@ -1049,7 +1326,9 @@ function updateAuctionValues(
 
     if (
         Number.isFinite(
-            Number(minimumBid)
+            Number(
+                minimumBid
+            )
         ) &&
         bidAmountInput
     ) {
@@ -1061,7 +1340,9 @@ function updateAuctionValues(
 
     if (
         Number.isFinite(
-            Number(minimumBid)
+            Number(
+                minimumBid
+            )
         ) &&
         bidHelp
     ) {
@@ -1104,6 +1385,11 @@ function prepareBidConfirmation() {
 
     pendingBidAmount =
         amount;
+
+    expectedCurrentBid =
+        readCurrencyValue(
+            auctionCurrentBid
+        );
 
     resetBidModal();
 
@@ -1154,8 +1440,11 @@ async function submitBid() {
                     body:
                         JSON.stringify({
                             auctionId,
+
                             amount:
-                                pendingBidAmount
+                                pendingBidAmount,
+
+                            expectedCurrentBid
                         })
                 }
             );
@@ -1166,7 +1455,7 @@ async function submitBid() {
         if (!response.ok) {
             if (
                 result.status ===
-                    "too-low" &&
+                    "outbid" &&
                 Number.isFinite(
                     Number(
                         result.currentBid
@@ -1209,13 +1498,13 @@ async function submitBid() {
         }
 
         //refreshes the page after a successful bid
+
         setTimeout(
             () => {
                 window.location.reload();
             },
             1500
         );
-
     } catch (error) {
         showBidRejected(
             "BIDBASH could not process the bid. Please try again."

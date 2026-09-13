@@ -96,6 +96,26 @@ function formatCompletedDate(
     );
 }
 
+//formats dashboard status text
+
+function formatStatus(
+    status
+) {
+    if (!status) {
+        return null;
+    }
+
+    return status
+        .split("-")
+        .map(
+            word =>
+                word.charAt(0)
+                    .toUpperCase() +
+                word.slice(1)
+        )
+        .join(" ");
+}
+
 //maps database listings for the dashboard
 
 function mapSellerListing(
@@ -107,12 +127,29 @@ function mapSellerListing(
             row.starting_price
         );
 
+    const finalAmount =
+        row.final_amount === null ||
+        row.final_amount === undefined
+            ? (
+                row.auction_status ===
+                "ended"
+                    ? currentBid
+                    : null
+            )
+            : Number(
+                row.final_amount
+            );
+
     return {
         id:
             row.listing_id,
 
         auctionId:
             row.auction_id,
+
+        orderId:
+            row.order_id ||
+            null,
 
         sellerId:
             row.seller_id,
@@ -152,25 +189,37 @@ function mapSellerListing(
                 : "Ended",
 
         finalAmount:
-            row.final_amount === null ||
-            row.final_amount === undefined
-                ? (
-                    row.auction_status ===
-                    "ended"
-                        ? currentBid
-                        : null
-                )
-                : Number(
-                    row.final_amount
-                ),
+            finalAmount,
 
         buyer:
             row.buyer ||
             null,
 
+        paymentStatus:
+            row.payment_status
+                ? formatStatus(
+                    row.payment_status
+                )
+                : "Awaiting Payment",
+
         fulfilmentStatus:
+            row.fulfilment_status
+                ? formatStatus(
+                    row.fulfilment_status
+                )
+                : "Awaiting Payment",
+
+        rawPaymentStatus:
+            row.payment_status ||
+            null,
+
+        rawFulfilmentStatus:
             row.fulfilment_status ||
-            "Awaiting Payment",
+            null,
+
+        trackingReference:
+            row.tracking_reference ||
+            null,
 
         outcome:
             row.order_id
@@ -191,6 +240,9 @@ function mapSellerListing(
                 : null,
 
         status:
+            row.listing_status,
+
+        listingStatus:
             row.listing_status,
 
         auctionStatus:
@@ -231,10 +283,14 @@ function getBySellerId(
 
                 orders.order_id,
                 orders.final_amount,
+                orders.status AS order_status,
+
+                payments.status AS payment_status,
 
                 buyer.username AS buyer,
 
                 fulfilments.status AS fulfilment_status,
+                fulfilments.tracking_reference,
 
                 (
                     SELECT
@@ -271,6 +327,10 @@ function getBySellerId(
                 ON orders.auction_id =
                     auctions.auction_id
 
+            LEFT JOIN payments
+                ON payments.order_id =
+                    orders.order_id
+
             LEFT JOIN users AS buyer
                 ON buyer.user_id =
                     orders.buyer_id
@@ -286,7 +346,9 @@ function getBySellerId(
                 listings.created_at DESC,
                 listings.listing_id DESC
         `).all(
-            Number(sellerId)
+            Number(
+                sellerId
+            )
         );
 
     return rows.map(
@@ -411,7 +473,9 @@ const createListingTransaction =
                         'active'
                     )
                 `).run(
-                    Number(sellerId),
+                    Number(
+                        sellerId
+                    ),
                     categoryRecord.category_id,
                     title,
                     description,
@@ -491,7 +555,9 @@ const createListingTransaction =
 
             return {
                 success: true,
+
                 listingId,
+
                 auctionId:
                     Number(
                         auctionResult

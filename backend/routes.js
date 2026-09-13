@@ -290,4 +290,20 @@ router.get(
     }
 );
 
+//pays a won auction order
+
+router.post(
+    "/api/orders/:id/pay",
+    requireLogin,
+    bidder.payOrder
+);
+
+//dispatches a paid seller order
+
+router.post(
+    "/api/orders/:id/dispatch",
+    requireLogin,
+    seller.dispatchOrder
+);
+
 module.exports = router;

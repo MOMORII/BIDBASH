@@ -123,6 +123,13 @@ block content
                                 href=`/auction/${bid.auctionId}`
                             ) View Auction
 
+                            if bid.orderId && bid.paymentStatus !== "paid"
+
+                                button.primary-button.pay-order-button(
+                                    type="button"
+                                    data-order-id=bid.orderId
+                                ) Pay Now
+
         else
 
             p.dashboard-empty
