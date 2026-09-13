@@ -20,15 +20,21 @@ block content
                     .auth-brand-points
 
                         .auth-brand-point
+
                             span.auth-brand-icon ✓
+
                             p Discover active auctions and the latest listings
 
                         .auth-brand-point
+
                             span.auth-brand-icon ✓
+
                             p Place and monitor your bids and receive real-time feedback
 
                         .auth-brand-point
+
                             span.auth-brand-icon ✓
+
                             p Create and manage your listings from a single dashboard
 
 
@@ -45,6 +51,7 @@ block content
                 if error
 
                     .auth-message.auth-message-error
+
                         p= error
 
                 form.auth-form(
@@ -70,6 +77,21 @@ block content
                     .auth-field
 
                         label(
+                            for="email"
+                        ) Email Address
+
+                        input(
+                            type="email"
+                            id="email"
+                            name="email"
+                            placeholder="Enter your email address"
+                            autocomplete="email"
+                            required
+                        )
+
+                    .auth-field
+
+                        label(
                             for="password"
                         ) Password
 
@@ -79,6 +101,7 @@ block content
                             name="password"
                             placeholder="Create a password"
                             autocomplete="new-password"
+                            minlength="8"
                             required
                         )
 
@@ -94,6 +117,7 @@ block content
                             name="confirmPassword"
                             placeholder="Repeat your password"
                             autocomplete="new-password"
+                            minlength="8"
                             required
                         )
 
