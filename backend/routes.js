@@ -306,4 +306,12 @@ router.post(
     seller.dispatchOrder
 );
 
+//confirms delivery of a dispatched order
+
+router.post(
+    "/api/orders/:id/complete",
+    requireLogin,
+    bidder.completeOrder
+);
+
 module.exports = router;

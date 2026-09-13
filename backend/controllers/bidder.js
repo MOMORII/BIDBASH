@@ -159,10 +159,44 @@ function payOrder(
     );
 }
 
+//confirms delivery of a dispatched order
+
+function completeOrder(
+    req,
+    res
+) {
+    if (!req.session.user) {
+        return res.status(401).json({
+            error:
+                "You must be signed in to confirm delivery."
+        });
+    }
+
+    const result =
+        orderService.completeOrder({
+            orderId:
+                req.params.id,
+
+            buyerId:
+                req.session.user.id
+        });
+
+    if (!result.success) {
+        return res.status(400).json(
+            result
+        );
+    }
+
+    res.json(
+        result
+    );
+}
+
 module.exports = {
     dashboard,
     placeBid,
     getNotifications,
     readNotification,
-    payOrder
+    payOrder,
+    completeOrder
 };

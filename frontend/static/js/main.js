@@ -700,6 +700,118 @@ payOrderButtons.forEach(
     }
 );
 
+//finds buyer delivery controls
+
+const completeOrderButtons =
+    document.querySelectorAll(
+        ".complete-order-button"
+    );
+
+//confirms delivery of a dispatched order
+
+async function completeOrder(
+    button
+) {
+    const orderId =
+        Number(
+            button.dataset
+                .orderId
+        );
+
+    if (
+        !Number.isFinite(
+            orderId
+        )
+    ) {
+        return;
+    }
+
+    const confirmed =
+        window.confirm(
+            "Confirm that you have received this item?"
+        );
+
+    if (!confirmed) {
+        return;
+    }
+
+    button.disabled =
+        true;
+
+    button.textContent =
+        "Completing...";
+
+    try {
+        const response =
+            await fetch(
+                `/api/orders/${orderId}/complete`,
+                {
+                    method:
+                        "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    }
+                }
+            );
+
+        const result =
+            await response.json();
+
+        if (!response.ok) {
+            alert(
+                result.message ||
+                result.error ||
+                "Delivery could not be confirmed."
+            );
+
+            button.disabled =
+                false;
+
+            button.textContent =
+                "Confirm Delivery";
+
+            return;
+        }
+
+        button.textContent =
+            "Completed";
+
+        setTimeout(
+            () => {
+                window.location.reload();
+            },
+            800
+        );
+    } catch (error) {
+        alert(
+            "BIDBASH could not confirm delivery. Please try again."
+        );
+
+        button.disabled =
+            false;
+
+        button.textContent =
+            "Confirm Delivery";
+    }
+}
+
+//handles buyer delivery confirmation
+
+completeOrderButtons.forEach(
+    button => {
+        button.addEventListener(
+            "click",
+            () => {
+                completeOrder(
+                    button
+                );
+            }
+        );
+    }
+);
+
 //finds seller dispatch controls
 
 const dispatchOrderButtons =

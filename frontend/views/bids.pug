@@ -7,7 +7,9 @@ block content
         .bids-header-content
 
             .dashboard-heading
+
                 h1 My Bids
+
                 p Track your active bids, successful auctions, and bid history.
 
             nav.dashboard-tabs
@@ -43,7 +45,17 @@ block content
                     article.dashboard-item
 
                         .dashboard-image
-                            | Product Image
+
+                            if bid.imagePath
+
+                                img(
+                                    src=bid.imagePath
+                                    alt=bid.title
+                                )
+
+                            else
+
+                                | Product Image
 
                         .dashboard-item-content
 
@@ -52,22 +64,27 @@ block content
                                 h3= bid.title
 
                                 if bid.bidStatus === "winning"
+
                                     span.bid-status.bid-status-winning Winning
 
                                 if bid.bidStatus === "outbid"
+
                                     span.bid-status.bid-status-outbid Outbid
 
                             .dashboard-item-details
 
                                 p
+
                                     strong Your Bid:
                                     |  £#{bid.userBid.toFixed(2)}
 
                                 p
+
                                     strong Current Bid:
                                     |  £#{bid.currentBid.toFixed(2)}
 
                                 p
+
                                     strong Time Remaining:
                                     |  #{bid.timeRemaining}
 
@@ -93,7 +110,17 @@ block content
                     article.dashboard-item
 
                         .dashboard-image
-                            | Product Image
+
+                            if bid.imagePath
+
+                                img(
+                                    src=bid.imagePath
+                                    alt=bid.title
+                                )
+
+                            else
+
+                                | Product Image
 
                         .dashboard-item-content
 
@@ -106,16 +133,26 @@ block content
                             .dashboard-item-details
 
                                 p
+
                                     strong Final Amount:
                                     |  £#{bid.finalAmount.toFixed(2)}
 
                                 p
+
                                     strong Payment:
                                     |  #{bid.paymentStatus}
 
                                 p
+
                                     strong Fulfilment:
                                     |  #{bid.fulfilmentStatus}
+
+                                if bid.trackingReference
+
+                                    p
+
+                                        strong Tracking:
+                                        |  #{bid.trackingReference}
 
                         .dashboard-actions
 
@@ -129,6 +166,18 @@ block content
                                     type="button"
                                     data-order-id=bid.orderId
                                 ) Pay Now
+
+                            else if bid.orderId && bid.fulfilmentStatus === "dispatched"
+
+                                button.primary-button.complete-order-button(
+                                    type="button"
+                                    data-order-id=bid.orderId
+                                ) Confirm Delivery
+
+                            else if bid.fulfilmentStatus === "delivered"
+
+                                span.dashboard-status
+                                    | Completed
 
         else
 
@@ -146,7 +195,17 @@ block content
                     article.dashboard-item
 
                         .dashboard-image
-                            | Product Image
+
+                            if bid.imagePath
+
+                                img(
+                                    src=bid.imagePath
+                                    alt=bid.title
+                                )
+
+                            else
+
+                                | Product Image
 
                         .dashboard-item-content
 
@@ -155,22 +214,27 @@ block content
                                 h3= bid.title
 
                                 if bid.outcome === "Won"
+
                                     span.bid-status.bid-status-winning Won
 
                                 if bid.outcome === "Lost"
+
                                     span.bid-status.bid-status-lost Lost
 
                             .dashboard-item-details
 
                                 p
+
                                     strong Your Latest Bid:
                                     |  £#{bid.latestBid.toFixed(2)}
 
                                 p
+
                                     strong Final Bid:
                                     |  £#{bid.finalBid.toFixed(2)}
 
                                 p
+
                                     strong Completed:
                                     |  #{bid.completedAt}
 

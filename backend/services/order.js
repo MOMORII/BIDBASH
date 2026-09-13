@@ -458,9 +458,191 @@ function dispatchOrder({
     });
 }
 
+//completes a delivered buyer order
+
+const completeOrderTransaction =
+    db.transaction(
+        ({
+            orderId,
+            buyerId
+        }) => {
+            const order =
+                getBuyerOrder(
+                    orderId,
+                    buyerId
+                );
+
+            if (!order) {
+                return {
+                    success: false,
+                    status:
+                        "not-found",
+                    message:
+                        "The order could not be found."
+                };
+            }
+
+            if (
+                order.status ===
+                "completed"
+            ) {
+                return {
+                    success: false,
+                    status:
+                        "already-completed",
+                    message:
+                        "This order has already been completed."
+                };
+            }
+
+            if (
+                order.status !==
+                "processing"
+            ) {
+                return {
+                    success: false,
+                    status:
+                        "not-dispatched",
+                    message:
+                        "The order must be dispatched before delivery can be confirmed."
+                };
+            }
+
+            const fulfilment =
+                db.prepare(`
+                    SELECT
+                        fulfilment_id,
+                        status
+
+                    FROM fulfilments
+
+                    WHERE
+                        order_id = ?
+                `).get(
+                    order.order_id
+                );
+
+            if (!fulfilment) {
+                return {
+                    success: false,
+                    status:
+                        "missing-fulfilment",
+                    message:
+                        "Fulfilment information could not be found."
+                };
+            }
+
+            if (
+                fulfilment.status !==
+                "dispatched"
+            ) {
+                return {
+                    success: false,
+                    status:
+                        "not-dispatched",
+                    message:
+                        "This item has not been marked as dispatched."
+                };
+            }
+
+            //marks fulfilment as delivered
+
+            db.prepare(`
+                UPDATE fulfilments
+
+                SET
+                    status = 'delivered',
+                    completed_at =
+                        CURRENT_TIMESTAMP
+
+                WHERE
+                    order_id = ?
+            `).run(
+                order.order_id
+            );
+
+            //completes the order
+
+            db.prepare(`
+                UPDATE orders
+
+                SET
+                    status = 'completed'
+
+                WHERE
+                    order_id = ?
+            `).run(
+                order.order_id
+            );
+
+            //notifies the seller
+
+            notificationService
+                .createNotification({
+                    userId:
+                        order.seller_id,
+
+                    type:
+                        "general",
+
+                    title:
+                        "Delivery Confirmed",
+
+                    message:
+                        `The buyer confirmed delivery of ${order.title}.`,
+
+                    auctionId:
+                        order.auction_id,
+
+                    orderId:
+                        order.order_id
+                });
+
+            return {
+                success: true,
+
+                status:
+                    "completed",
+
+                message:
+                    "Delivery confirmed successfully.",
+
+                order: {
+                    id:
+                        order.order_id,
+
+                    auctionId:
+                        order.auction_id,
+
+                    orderStatus:
+                        "completed",
+
+                    fulfilmentStatus:
+                        "delivered"
+                }
+            };
+        }
+    );
+
+//confirms buyer delivery
+
+function completeOrder({
+    orderId,
+    buyerId
+}) {
+    return completeOrderTransaction({
+        orderId:
+            Number(orderId),
+
+        buyerId:
+            Number(buyerId)
+    });
+}
+
 module.exports = {
     getBuyerOrder,
     getSellerOrder,
     payOrder,
-    dispatchOrder
+    dispatchOrder,
+    completeOrder
 };
