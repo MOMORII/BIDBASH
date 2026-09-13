@@ -1,23 +1,208 @@
 doctype html
+
 html(lang="en")
+
     head
+
         meta(charset="UTF-8")
-        meta(name="viewport" content="width=device-width, initial-scale=1.0")
+
+        meta(
+            name="viewport"
+            content="width=device-width, initial-scale=1.0"
+        )
+
         title= pageTitle
-        link(rel="stylesheet" href="/css/style.css")
 
-    body
-        header.site-header
-            .topbar
-                a.logo(href="/moderation") BIDBASH Moderation
+        link(
+            rel="stylesheet"
+            href="/css/style.css"
+        )
 
-                nav.main-nav
-                    a(href="/moderation") Dashboard
+        link(
+            rel="stylesheet"
+            href="/css/moderator.css"
+        )
 
-                form(method="POST" action="/logout")
-                    button(type="submit") Logout
+    body.moderator-body
 
-        main.page-content
-            block content
+        header.moderator-global-nav
+
+            .moderator-nav-brand
+
+                img.moderator-nav-logo#site-logo(
+                    src="/images/bidbash_logo.png"
+                    alt="BIDBASH"
+                )
+
+            form.moderator-global-search#moderator-search-form
+
+                input#moderator-search(
+                    type="search"
+                    placeholder="Search flagged listings or case IDs..."
+                    aria-label="Search moderation cases"
+                )
+
+                button(
+                    type="submit"
+                    aria-label="Search moderation cases"
+                ) Search
+
+            nav.moderator-nav-links
+
+                button.moderator-nav-filter(
+                    type="button"
+                    data-status-filter="awaiting"
+                ) Awaiting Review
+
+                button.moderator-nav-filter(
+                    type="button"
+                    data-status-filter="appeal"
+                ) Appeals
+
+                button.moderator-nav-filter(
+                    type="button"
+                    data-status-filter="reviewed"
+                ) Reviewed
+
+            .moderator-nav-account
+
+                span
+                    | Moderator: 
+                    strong= user.username
+
+                button#dark-mode-toggle.theme-toggle(
+                    type="button"
+                    aria-label="Switch to dark mode"
+                ) Dark Mode
+
+                form.logout-form(
+                    method="POST"
+                    action="/logout"
+                )
+
+                    button.logout-button(
+                        type="submit"
+                    ) Logout
+
+        main.moderator-layout
+
+            aside.moderator-filter-sidebar
+
+                .moderator-filter-heading
+
+                    h2 Filters
+
+                    button#moderator-clear-filters(
+                        type="button"
+                    ) Clear
+
+                section.moderator-filter-section
+
+                    h3 Risk Level
+
+                    button.moderator-filter-button(
+                        type="button"
+                        data-risk-filter="high"
+                    )
+
+                        span.filter-risk-dot.risk-high
+
+                        | High Risk
+
+                    button.moderator-filter-button(
+                        type="button"
+                        data-risk-filter="medium"
+                    )
+
+                        span.filter-risk-dot.risk-medium
+
+                        | Medium Risk
+
+                    button.moderator-filter-button(
+                        type="button"
+                        data-risk-filter="low"
+                    )
+
+                        span.filter-risk-dot.risk-low
+
+                        | Low Risk
+
+                section.moderator-filter-section
+
+                    h3 Report Type
+
+                    button.moderator-filter-button(
+                        type="button"
+                        data-type-filter="prohibited"
+                    ) Prohibited Item
+
+                    button.moderator-filter-button(
+                        type="button"
+                        data-type-filter="counterfeit"
+                    ) Counterfeit
+
+                    button.moderator-filter-button(
+                        type="button"
+                        data-type-filter="misleading"
+                    ) Misleading Listing
+
+                    button.moderator-filter-button(
+                        type="button"
+                        data-type-filter="unsafe"
+                    ) Unsafe Item
+
+                    button.moderator-filter-button(
+                        type="button"
+                        data-type-filter="restricted"
+                    ) Restricted Listing
+
+                section.moderator-filter-section
+
+                    h3 Case Status
+
+                    button.moderator-filter-button(
+                        type="button"
+                        data-status-filter="awaiting"
+                    ) Awaiting Review
+
+                    button.moderator-filter-button(
+                        type="button"
+                        data-status-filter="appeal"
+                    ) Seller Appeal
+
+                    button.moderator-filter-button(
+                        type="button"
+                        data-status-filter="approved"
+                    ) Approved
+
+                    button.moderator-filter-button(
+                        type="button"
+                        data-status-filter="changes-requested"
+                    ) Changes Requested
+
+                    button.moderator-filter-button(
+                        type="button"
+                        data-status-filter="removed"
+                    ) Removed
+
+            section.moderator-content
+
+                block content
+
+        footer.footer-bottom
+
+            p © 2026 BIDBASH. Moderator Workspace.
+
+            .footer-bottom-links
+
+                a(href="/about") About Us
+
+                a(href="/privacy") Privacy Policy
+
+                a(href="/terms") Terms & Conditions
+
+                a(href="/help") Help
 
         script(src="/js/main.js")
+
+        script(src="/js/moderator.js")

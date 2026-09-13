@@ -45,7 +45,16 @@ router.post("/age-check", (req, res) => {
 router.use(requireAgeConfirmation);
 
 //renders the homepage with temporary auction data
+//renders the homepage with temporary auction data
+
 router.get("/", (req, res) => {
+    if (
+        req.session.user &&
+        req.session.user.role === "moderator"
+    ) {
+        return res.redirect("/moderation");
+    }
+
     res.render("index", {
         pageTitle: "BIDBASH",
         featuredAuctions: auctionService.getFeatured(),
@@ -143,6 +152,14 @@ router.get(
     "/moderation",
     requireModerator,
     moderator.dashboard
+);
+
+//handles moderator case decisions
+
+router.post(
+    "/moderation/:id/action",
+    requireModerator,
+    moderator.updateCase
 );
 
 //renders the help page

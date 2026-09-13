@@ -1,0 +1,191 @@
+extends moderator-layout
+
+block content
+
+    section.moderation-dashboard
+
+        .moderation-dashboard-heading
+
+            span MODERATOR WORKSPACE
+
+            h1 MODERATION DASHBOARD
+
+            p
+                | Review reported and automatically flagged listings requiring moderator attention.
+
+        .moderation-workspace
+
+            section.flagged-listings-panel
+
+                .moderation-panel-header
+
+                    h2 FLAGGED LISTINGS
+
+                    span RISK / STATUS
+
+                .flagged-listings#flagged-listings
+
+                    each moderationCase in cases
+
+                        button.flagged-listing-card(
+                            type="button"
+                            data-case-id=moderationCase.id
+                            data-listing-id=moderationCase.listingId
+                            data-title=moderationCase.title
+                            data-category=moderationCase.category
+                            data-seller=moderationCase.seller
+                            data-member-since=moderationCase.memberSince
+                            data-seller-listings=moderationCase.sellerListings
+                            data-feedback=moderationCase.feedbackScore
+                            data-flag-reason=moderationCase.flagReason
+                            data-reported-by=moderationCase.reportedBy
+                            data-reported-at=moderationCase.reportedAt
+                            data-risk=moderationCase.riskLevel
+                            data-report-type=moderationCase.reportType
+                            data-status=moderationCase.status
+                            data-notes=moderationCase.additionalNotes
+                        )
+
+                            .flagged-listing-image
+
+                                | Product Image
+
+                            .flagged-listing-info
+
+                                h3= moderationCase.title
+
+                                p
+
+                                    strong Category:
+
+                                    |  #{moderationCase.category}
+
+                                p= moderationCase.seller
+
+                            .flagged-listing-status
+
+                                span(
+                                    class=`flagged-risk flagged-risk-${moderationCase.riskLevel}`
+                                )= moderationCase.riskLevel.toUpperCase()
+
+                                span(
+                                    class=`moderation-status moderation-status-${moderationCase.status}`
+                                )= moderationCase.status.replace("-", " ").toUpperCase()
+
+            section.moderation-case-panel
+
+                .moderation-case-header
+
+                    span CASE ID:
+
+                    strong#case-id
+
+                .moderation-case-content#moderation-case-content
+
+                    section.moderation-product-section
+
+                        .moderation-product-image
+
+                            | Product Image
+
+                        .moderation-product-info
+
+                            h2#case-title
+
+                            p
+
+                                strong Seller:
+
+                                |  
+
+                                span#case-seller
+
+                            p
+
+                                strong Member Since:
+
+                                |  
+
+                                span#case-member-since
+
+                            p
+
+                                strong Listings:
+
+                                |  
+
+                                span#case-seller-listings
+
+                            p
+
+                                strong Feedback Score:
+
+                                |  
+
+                                span#case-feedback
+
+                    section.moderation-detail-section
+
+                        h2 FLAG DETAILS
+
+                        .moderation-detail-row
+
+                            span Flag Reason
+
+                            strong#case-flag-reason
+
+                        .moderation-detail-row
+
+                            span Reported By
+
+                            strong#case-reported-by
+
+                        .moderation-detail-row
+
+                            span Reported On
+
+                            strong#case-reported-at
+
+                        .moderation-detail-row
+
+                            span Risk Level
+
+                            strong#case-risk
+
+                        .moderation-detail-row
+
+                            span Category
+
+                            strong#case-category
+
+                    section.moderation-notes-section
+
+                        h2 ADDITIONAL NOTES
+
+                        p#case-notes
+
+                    section.moderation-actions-section
+
+                        h2 MODERATION ACTIONS
+
+                        form.moderation-action-form#moderation-action-form(
+                            method="POST"
+                        )
+
+                            button.moderation-action-button.approve-action(
+                                type="submit"
+                                name="action"
+                                value="approve"
+                            ) APPROVE
+
+                            button.moderation-action-button.change-action(
+                                type="submit"
+                                name="action"
+                                value="request-change"
+                            ) REQUEST CHANGE
+
+                            button.moderation-action-button.remove-action(
+                                type="submit"
+                                name="action"
+                                value="remove"
+                            ) REMOVE

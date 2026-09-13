@@ -1,8 +1,9 @@
 //validates whether a moderation decision is recognised
+
 function validateDecision(decision) {
     const allowedDecisions = [
         "approve",
-        "changes_required",
+        "request-change",
         "remove"
     ];
 

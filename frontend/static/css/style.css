@@ -2,7 +2,7 @@
 
 html {
     min-width: 1200px;
-    zoom: 0.5;
+    zoom: 0.45;
 }
 
 * {
@@ -2281,8 +2281,7 @@ body.dark-mode .header-search-button {
     display: flex;
     justify-content: center;
     align-items: flex-start;
-
-    padding: 48px 24px 100px;
+    padding-bottom: 0px
 }
 
 /*creates the shared authentication card */
@@ -2799,9 +2798,7 @@ body.dark-mode .header-search-button {
     }
 
     .auth-shell {
-        grid-template-columns:
-            minmax(0, 0.9fr)
-            minmax(0, 1.1fr);
+        grid-template-columns: 1fr;
     }
 
     .auth-brand-panel {
@@ -2809,7 +2806,11 @@ body.dark-mode .header-search-button {
     }
 
     .auth-form-panel {
-        padding: 36px 38px;
+        padding: 40px;
+    }
+
+    .auth-brand-content {
+        max-width: none;
     }
 
     .auth-brand-content h1 {
@@ -2835,6 +2836,726 @@ body.dark-mode .header-search-button {
 
 .footer-bottom-links a:hover {
     color: white;
+}
+
+/*styles the moderator-only page */
+
+.moderator-body {
+    padding-bottom: 0;
+
+    background: #F3EAFB;
+}
+
+/*creates the moderator global navigation */
+
+.moderator-global-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+
+    z-index: 1100;
+
+    height: 68px;
+
+    display: flex;
+    align-items: center;
+    gap: 18px;
+
+    padding: 0 18px;
+
+    background: white;
+
+    border-bottom: 1px solid #D8D3DC;
+}
+
+/*styles the moderator logo */
+
+.moderator-nav-logo {
+    display: block;
+
+    width: auto;
+    height: 56px;
+}
+
+/*keeps moderator branding fixed */
+
+.moderator-nav-brand {
+    flex-shrink: 0;
+}
+
+/*creates the moderator search */
+
+.moderator-global-search {
+    min-width: 260px;
+    max-width: 620px;
+
+    flex: 1;
+
+    display: flex;
+}
+
+/*styles the moderator search field */
+
+.moderator-global-search input {
+    width: 100%;
+    min-width: 0;
+    height: 42px;
+
+    padding: 0 14px;
+
+    border: 1px solid #D8D3DC;
+    border-right: 0;
+    border-radius: 8px 0 0 8px;
+
+    background: #F7F4F9;
+    color: #24202A;
+
+    font: inherit;
+
+    outline: none;
+}
+
+/*styles the moderator search button */
+
+.moderator-global-search button {
+    height: 42px;
+
+    padding: 0 18px;
+
+    border: 1px solid #8E45DD;
+    border-radius: 0 8px 8px 0;
+
+    background: #8E45DD;
+    color: white;
+
+    cursor: pointer;
+}
+
+/*groups moderator navigation links */
+
+.moderator-nav-links {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    flex-shrink: 0;
+}
+
+/*styles moderator navigation filters */
+
+.moderator-nav-filter {
+    padding: 9px 12px;
+
+    border: 1px solid transparent;
+    border-radius: 8px;
+
+    background: transparent;
+    color: #24202A;
+
+    font: inherit;
+
+    cursor: pointer;
+}
+
+/*highlights moderator navigation filters */
+
+.moderator-nav-filter:hover,
+.moderator-nav-filter.active {
+    background: #F3EAFB;
+    color: #8E45DD;
+
+    border-color: #DEC9F4;
+}
+
+/*groups moderator account controls */
+
+.moderator-nav-account {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    margin-left: auto;
+
+    flex-shrink: 0;
+}
+
+/*creates the main moderator layout */
+
+.moderator-layout {
+    min-height: calc(100vh - 58px);
+
+    display: grid;
+    grid-template-columns: 260px minmax(0, 1fr);
+
+    padding-top: 68px;
+    padding-bottom: 0;
+
+    background: #F3EAFB;
+}
+
+/*creates the persistent moderation filter sidebar */
+
+.moderator-filter-sidebar {
+    position: fixed;
+
+    top: 68px;
+    bottom: 58px;
+    left: 0;
+
+    width: 260px;
+
+    padding: 24px 18px;
+
+    background: white;
+
+    border-right: 1px solid #D8D3DC;
+
+    overflow-y: auto;
+
+    z-index: 900;
+}
+
+/*styles the moderator filter heading */
+
+.moderator-filter-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+
+    margin-bottom: 26px;
+}
+
+.moderator-filter-heading h2 {
+    margin: 0;
+}
+
+/*styles the clear filter action */
+
+.moderator-filter-heading button {
+    padding: 6px 9px;
+
+    border: 0;
+    border-radius: 6px;
+
+    background: #F3EAFB;
+    color: #8E45DD;
+
+    cursor: pointer;
+}
+
+/*spaces moderation filter sections */
+
+.moderator-filter-section {
+    margin-bottom: 30px;
+}
+
+/*styles moderation filter headings */
+
+.moderator-filter-section h3 {
+    margin: 0 0 10px;
+
+    color: #625A66;
+
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.7px;
+}
+
+/*stacks moderation filters */
+
+.moderator-filter-button {
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    gap: 9px;
+
+    margin-bottom: 4px;
+    padding: 10px;
+
+    border: 0;
+    border-radius: 7px;
+
+    background: transparent;
+    color: #24202A;
+
+    text-align: left;
+    font: inherit;
+
+    cursor: pointer;
+}
+
+/*highlights moderation filters */
+
+.moderator-filter-button:hover,
+.moderator-filter-button.active {
+    background: #F3EAFB;
+    color: #8E45DD;
+}
+
+/*styles risk filter indicators */
+
+.filter-risk-dot {
+    width: 9px;
+    height: 9px;
+
+    display: inline-block;
+
+    border-radius: 50%;
+}
+
+.filter-risk-dot.risk-high {
+    background: #C84E4E;
+}
+
+.filter-risk-dot.risk-medium {
+    background: #C58B2B;
+}
+
+.filter-risk-dot.risk-low {
+    background: #5B9A57;
+}
+
+/*positions moderation page content */
+
+.moderator-content {
+    grid-column: 2;
+
+    min-width: 0;
+    min-height: calc(100vh - 68px - 58px);
+
+    display: flex;
+    flex-direction: column;
+
+    padding: 32px 24px 24px;
+}
+
+/*lets the moderation dashboard fill available height */
+
+.moderation-dashboard {
+    min-height: 0;
+
+    flex: 1;
+
+    display: flex;
+    flex-direction: column;
+}
+
+/*styles the moderation dashboard heading */
+
+.moderation-dashboard-heading {
+    flex-shrink: 0;
+
+    margin-bottom: 24px;
+}
+
+/*styles the moderator workspace label */
+
+.moderation-dashboard-heading > span {
+    color: #8E45DD;
+
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1.3px;
+}
+
+/*styles the moderator page heading */
+
+.moderation-dashboard-heading h1 {
+    margin: 7px 0;
+
+    font-size: 38px;
+    letter-spacing: 2px;
+}
+
+/*styles moderator page guidance */
+
+.moderation-dashboard-heading p {
+    margin: 0;
+
+    color: #706875;
+}
+
+/*creates the master-detail moderation workspace */
+
+.moderation-workspace {
+    min-height: 0;
+
+    flex: 1;
+
+    display: grid;
+    grid-template-columns:
+        minmax(420px, 0.9fr)
+        minmax(520px, 1.1fr);
+
+    overflow: hidden;
+
+    background: white;
+
+    border: 1px solid #D8D3DC;
+    border-radius: 16px;
+}
+
+/*creates the flagged listings panel */
+
+.flagged-listings-panel {
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    border-right: 1px solid #D8D3DC;
+}
+
+/*styles moderation panel headings */
+
+.moderation-panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 18px 20px;
+
+    border-bottom: 1px solid #D8D3DC;
+}
+
+.moderation-panel-header h2 {
+    margin: 0;
+
+    font-size: 16px;
+}
+
+/*creates the independently scrolling listing queue */
+
+.flagged-listings {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+
+    padding: 18px;
+
+    overflow-y: auto;
+}
+
+/*styles flagged listing entries */
+
+.flagged-listing-card {
+    width: 100%;
+
+    display: grid;
+    grid-template-columns: 92px minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 14px;
+
+    padding: 14px;
+
+    background: white;
+    color: #24202A;
+
+    border: 1px solid #CFC8D4;
+    border-radius: 12px;
+
+    text-align: left;
+
+    cursor: pointer;
+}
+
+/*hides filtered moderation cases */
+
+.flagged-listing-card[hidden] {
+    display: none;
+}
+
+/*highlights the selected moderation case */
+
+.flagged-listing-card:hover,
+.flagged-listing-card.active {
+    border-color: #8E45DD;
+
+    box-shadow: 0 0 0 2px rgba(142, 69, 221, 0.1);
+}
+
+/*styles moderation product placeholders */
+
+.flagged-listing-image {
+    height: 78px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #F3EAFB;
+
+    border-radius: 8px;
+
+    font-size: 12px;
+    color: #706875;
+}
+
+/*styles flagged listing text */
+
+.flagged-listing-info {
+    min-width: 0;
+}
+
+.flagged-listing-info h3 {
+    margin: 0 0 7px;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.flagged-listing-info p {
+    margin: 4px 0;
+
+    font-size: 13px;
+}
+
+/*stacks moderation listing statuses */
+
+.flagged-listing-status {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 7px;
+}
+
+/*styles moderation risk labels */
+
+.flagged-risk {
+    padding: 6px 9px;
+
+    border-radius: 999px;
+
+    font-size: 12px;
+    font-weight: 700;
+}
+
+/*styles high risk labels */
+
+.flagged-risk-high {
+    background: #FBE7E7;
+    color: #8B2929;
+}
+
+/*styles medium risk labels */
+
+.flagged-risk-medium {
+    background: #FFF3D6;
+    color: #775800;
+}
+
+/*styles low risk labels */
+
+.flagged-risk-low {
+    background: #E7F6EC;
+    color: #236B3A;
+}
+
+/*styles moderation case statuses */
+
+.moderation-status {
+    padding: 6px 9px;
+
+    border-radius: 999px;
+
+    font-size: 11px;
+    font-weight: 700;
+}
+
+/*styles awaiting moderation cases */
+
+.moderation-status-awaiting {
+    background: #FFF3D6;
+    color: #775800;
+}
+
+/*styles seller appeals */
+
+.moderation-status-appeal {
+    background: #F0E4FA;
+    color: #6A2DA8;
+}
+
+/*styles approved moderation cases */
+
+.moderation-status-approved {
+    background: #E7F6EC;
+    color: #236B3A;
+}
+
+/*styles requested changes */
+
+.moderation-status-changes-requested {
+    background: #FFF3D6;
+    color: #775800;
+}
+
+/*styles removed moderation cases */
+
+.moderation-status-removed {
+    background: #FBE7E7;
+    color: #8B2929;
+}
+
+/*creates the selected moderation case panel */
+
+.moderation-case-panel {
+    min-width: 0;
+
+    overflow-y: auto;
+}
+
+/*styles the selected case heading */
+
+.moderation-case-header {
+    display: flex;
+    justify-content: flex-end;
+    gap: 6px;
+
+    padding: 18px 20px;
+
+    border-bottom: 1px solid #D8D3DC;
+}
+
+/*styles selected product information */
+
+.moderation-product-section {
+    display: grid;
+    grid-template-columns: 190px minmax(0, 1fr);
+    gap: 24px;
+
+    padding: 24px;
+
+    border-bottom: 1px solid #D8D3DC;
+}
+
+/*styles selected product image */
+
+.moderation-product-image {
+    min-height: 170px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #F3EAFB;
+
+    border-radius: 10px;
+
+    color: #706875;
+}
+
+/*styles selected product heading */
+
+.moderation-product-info h2 {
+    margin: 0 0 16px;
+
+    font-size: 26px;
+}
+
+/*styles seller metadata */
+
+.moderation-product-info p {
+    margin: 8px 0;
+}
+
+/*styles moderation detail areas */
+
+.moderation-detail-section,
+.moderation-notes-section,
+.moderation-actions-section {
+    padding: 22px 24px;
+
+    border-bottom: 1px solid #D8D3DC;
+}
+
+/*styles moderation section headings */
+
+.moderation-detail-section h2,
+.moderation-notes-section h2,
+.moderation-actions-section h2 {
+    margin: 0 0 16px;
+
+    font-size: 18px;
+}
+
+/*lays out moderation evidence */
+
+.moderation-detail-row {
+    display: grid;
+    grid-template-columns: 150px minmax(0, 1fr);
+    gap: 18px;
+
+    margin-bottom: 11px;
+}
+
+/*styles moderation evidence labels */
+
+.moderation-detail-row span {
+    color: #706875;
+}
+
+/*styles moderation notes */
+
+.moderation-notes-section p {
+    margin: 0;
+
+    line-height: 1.6;
+}
+
+/*groups moderation actions */
+
+.moderation-action-form {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+}
+
+/*styles moderation actions */
+
+.moderation-action-button {
+    min-height: 58px;
+
+    padding: 12px;
+
+    background: white;
+
+    border: 1px solid #AFA8B3;
+    border-radius: 10px;
+
+    font: inherit;
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+/*styles moderation approval */
+
+.approve-action {
+    color: #347B31;
+}
+
+/*styles requested changes */
+
+.change-action {
+    color: #A66B14;
+}
+
+/*styles removal actions */
+
+.remove-action {
+    color: #B23D3D;
+}
+
+/*highlights moderation actions */
+
+.moderation-action-button:hover {
+    background: #F7F4F9;
 }
 
 /*applies the original wireframe dark theme */
@@ -3559,4 +4280,142 @@ body.dark-mode .age-choice-title {
 
 body.dark-mode .age-choice-description {
     color: #B4A8B9;
+}
+
+/*darkens the moderator navigation */
+
+body.dark-mode .moderator-global-nav {
+    background: #101010;
+
+    border-bottom-color: #4B4450;
+}
+
+/*darkens moderator search */
+
+body.dark-mode .moderator-global-search input {
+    background: #181818;
+    color: #F5F5F5;
+
+    border-color: #6E6472;
+}
+
+/*darkens moderator navigation filters */
+
+body.dark-mode .moderator-nav-filter {
+    color: #F5F5F5;
+}
+
+body.dark-mode .moderator-nav-filter:hover,
+body.dark-mode .moderator-nav-filter.active {
+    background: #30253A;
+    color: #D7B8EA;
+
+    border-color: #775B83;
+}
+
+/*darkens the moderator page */
+
+body.dark-mode .moderator-layout,
+body.dark-mode.moderator-body {
+    background: #121212;
+}
+
+/*darkens the moderation sidebar */
+
+body.dark-mode .moderator-filter-sidebar {
+    background: #151515;
+    color: #F5F5F5;
+
+    border-right-color: #4B4450;
+}
+
+/*darkens moderation filter headings */
+
+body.dark-mode .moderator-filter-section h3 {
+    color: #B4A8B9;
+}
+
+/*darkens moderator filter buttons */
+
+body.dark-mode .moderator-filter-button {
+    color: #F5F5F5;
+}
+
+body.dark-mode .moderator-filter-button:hover,
+body.dark-mode .moderator-filter-button.active {
+    background: #30253A;
+    color: #D7B8EA;
+}
+
+/*darkens the moderation workspace */
+
+body.dark-mode .moderation-workspace {
+    background: #181818;
+
+    border-color: #6E6472;
+}
+
+/*darkens the flagged listing panel */
+
+body.dark-mode .flagged-listings-panel {
+    border-right-color: #6E6472;
+}
+
+/*darkens moderation panel headings */
+
+body.dark-mode .moderation-panel-header,
+body.dark-mode .moderation-case-header {
+    border-bottom-color: #6E6472;
+}
+
+/*darkens flagged listing cards */
+
+body.dark-mode .flagged-listing-card {
+    background: #181818;
+    color: #F5F5F5;
+
+    border-color: #6E6472;
+}
+
+body.dark-mode .flagged-listing-card:hover,
+body.dark-mode .flagged-listing-card.active {
+    background: #222222;
+
+    border-color: #A393AB;
+}
+
+/*darkens moderation image placeholders */
+
+body.dark-mode .flagged-listing-image,
+body.dark-mode .moderation-product-image {
+    background: #292929;
+    color: #B4A8B9;
+}
+
+/*darkens moderation detail separators */
+
+body.dark-mode .moderation-product-section,
+body.dark-mode .moderation-detail-section,
+body.dark-mode .moderation-notes-section,
+body.dark-mode .moderation-actions-section {
+    border-bottom-color: #6E6472;
+}
+
+/*styles dark moderation metadata */
+
+body.dark-mode .moderation-dashboard-heading p,
+body.dark-mode .moderation-detail-row span {
+    color: #B4A8B9;
+}
+
+/*darkens moderation action buttons */
+
+body.dark-mode .moderation-action-button {
+    background: #181818;
+
+    border-color: #6E6472;
+}
+
+body.dark-mode .moderation-action-button:hover {
+    background: #292929;
 }
