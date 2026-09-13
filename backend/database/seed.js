@@ -1,7 +1,51 @@
-//loads the bidbash database
+//loads database and password services
+
+const bcrypt =
+    require("bcrypt");
 
 const db =
     require("./db");
+
+//formats javascript dates for sqlite
+
+function formatDate(
+    date
+) {
+    return date
+        .toISOString()
+        .replace(
+            "T",
+            " "
+        )
+        .slice(
+            0,
+            19
+        );
+}
+
+//creates relative development dates
+
+function daysFromNow(
+    days,
+    hours = 0
+) {
+    const date =
+        new Date();
+
+    date.setDate(
+        date.getDate() +
+        days
+    );
+
+    date.setHours(
+        date.getHours() +
+        hours
+    );
+
+    return formatDate(
+        date
+    );
+}
 
 //clears development data
 
@@ -20,13 +64,6 @@ function clearDatabase() {
         DELETE FROM categories;
         DELETE FROM user_sessions;
         DELETE FROM users;
-    `);
-}
-
-//resets autoincrement values
-
-function resetSequences() {
-    db.exec(`
         DELETE FROM sqlite_sequence;
     `);
 }
@@ -79,7 +116,7 @@ const insertListing =
 
 //inserts listing images
 
-const insertListingImage =
+const insertImage =
     db.prepare(`
         INSERT INTO listing_images (
             listing_id,
@@ -130,11 +167,9 @@ const insertModerationCase =
             evidence,
             additional_notes,
             status,
-            created_at,
-            reviewed_at,
-            decision_notes
+            created_at
         )
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
     `);
 
 //inserts reports
@@ -212,672 +247,1136 @@ const insertFulfilment =
         VALUES (?, ?, ?, ?, ?, ?)
     `);
 
-//seeds the complete development database
+//populates the development database
 
 const seedDatabase =
     db.transaction(() => {
         clearDatabase();
-        resetSequences();
 
-        //creates development users
+        //creates reusable password hashes
 
-        const standardUser =
-            insertUser.run(
-                "user",
-                "user@bidbash.test",
+        const userPassword =
+            bcrypt.hashSync(
                 "test123",
-                "user",
-                1,
-                "active"
+                12
             );
 
-        const moderatorUser =
-            insertUser.run(
-                "moderator",
-                "moderator@bidbash.test",
+        const moderatorPassword =
+            bcrypt.hashSync(
                 "mod123",
-                "moderator",
-                1,
-                "active"
+                12
             );
 
-        const retroCollector =
-            insertUser.run(
-                "retrocollector",
-                "retrocollector@bidbash.test",
-                "password",
-                "user",
-                1,
-                "active"
+        const testPassword =
+            bcrypt.hashSync(
+                "password123",
+                12
             );
 
-        const designerFinds =
-            insertUser.run(
-                "designerfinds",
-                "designerfinds@bidbash.test",
-                "password",
-                "user",
-                1,
-                "active"
+        //creates users
+
+        const users = {};
+
+        users.user =
+            Number(
+                insertUser.run(
+                    "user",
+                    "user@bidbash.test",
+                    userPassword,
+                    "user",
+                    1,
+                    "active"
+                ).lastInsertRowid
             );
 
-        const oldSchoolToys =
-            insertUser.run(
-                "oldschooltoys",
-                "oldschooltoys@bidbash.test",
-                "password",
-                "user",
-                1,
-                "active"
+        users.moderator =
+            Number(
+                insertUser.run(
+                    "moderator",
+                    "moderator@bidbash.test",
+                    moderatorPassword,
+                    "moderator",
+                    1,
+                    "active"
+                ).lastInsertRowid
             );
 
-        const techWarehouse =
-            insertUser.run(
-                "techwarehouse",
-                "techwarehouse@bidbash.test",
-                "password",
-                "user",
-                1,
-                "active"
-            );
+        const testUsers = [
+            "retrocollector",
+            "designerfinds",
+            "oldschooltoys",
+            "techwarehouse",
+            "historymarket",
+            "bidder92",
+            "collector77",
+            "homefinds",
+            "sportsvault",
+            "musicmerchant",
+            "bookcorner",
+            "pixeltrader"
+        ];
 
-        const historyMarket =
-            insertUser.run(
-                "historymarket",
-                "historymarket@bidbash.test",
-                "password",
-                "user",
-                1,
-                "active"
-            );
-
-        const bidderTwo =
-            insertUser.run(
-                "bidder92",
-                "bidder92@bidbash.test",
-                "password",
-                "user",
-                1,
-                "active"
-            );
-
-        const bidderThree =
-            insertUser.run(
-                "collector77",
-                "collector77@bidbash.test",
-                "password",
-                "user",
-                1,
-                "active"
-            );
+        testUsers.forEach(
+            username => {
+                users[username] =
+                    Number(
+                        insertUser.run(
+                            username,
+                            `${username}@bidbash.test`,
+                            testPassword,
+                            "user",
+                            1,
+                            "active"
+                        ).lastInsertRowid
+                    );
+            }
+        );
 
         //creates categories
 
-        const electronics =
-            insertCategory.run(
+        const categories = {};
+
+        const categoryData = [
+            [
                 "Electronics",
-                "Consumer electronics and technology."
-            );
-
-        const collectibles =
-            insertCategory.run(
+                "Technology, cameras, computers and electronic devices."
+            ],
+            [
                 "Collectibles",
-                "Collectible and specialist items."
-            );
-
-        const fashion =
-            insertCategory.run(
+                "Collectible, rare and specialist items."
+            ],
+            [
                 "Fashion",
-                "Clothing, accessories and fashion items."
-            );
-
-        const home =
-            insertCategory.run(
+                "Clothing, footwear and accessories."
+            ],
+            [
                 "Home",
-                "Home and household items."
-            );
-
-        const gaming =
-            insertCategory.run(
+                "Furniture, decoration and household items."
+            ],
+            [
                 "Gaming",
-                "Gaming hardware, software and accessories."
-            );
+                "Games, consoles and gaming accessories."
+            ],
+            [
+                "Sports",
+                "Sports equipment and memorabilia."
+            ],
+            [
+                "Books",
+                "Books, signed editions and printed material."
+            ],
+            [
+                "Music",
+                "Records, instruments and music equipment."
+            ]
+        ];
 
-        //creates active listings
+        categoryData.forEach(
+            category => {
+                categories[
+                    category[0]
+                ] =
+                    Number(
+                        insertCategory.run(
+                            category[0],
+                            category[1]
+                        ).lastInsertRowid
+                    );
+            }
+        );
 
-        const retroConsole =
-            insertListing.run(
-                retroCollector.lastInsertRowid,
-                gaming.lastInsertRowid,
-                "Retro Handheld Console",
-                "Classic handheld gaming console in working condition.",
-                "Used",
-                "RetroTech",
-                75,
-                5,
-                "Standard UK delivery available.",
-                "Returns accepted within 14 days where applicable.",
-                "active"
-            );
+        //defines active development listings
 
-        const vintageCamera =
-            insertListing.run(
-                standardUser.lastInsertRowid,
-                electronics.lastInsertRowid,
-                "Vintage Camera",
-                "Vintage film camera with original carrying case.",
-                "Used",
-                "Kodak",
-                95,
-                5,
-                "Tracked UK delivery.",
-                "Returns accepted within 14 days.",
-                "active"
-            );
+        const activeListings = [
+            {
+                key: "user-camera",
+                seller: "user",
+                category: "Electronics",
+                title: "Vintage 35mm Camera",
+                description: "Classic 35mm film camera supplied with lens, strap and protective case.",
+                condition: "Used",
+                brand: "Canon",
+                startingPrice: 85,
+                increment: 5,
+                delivery: "Tracked UK delivery available.",
+                returns: "Returns accepted within 14 days."
+            },
+            {
+                key: "user-keyboard",
+                seller: "user",
+                category: "Electronics",
+                title: "RGB Mechanical Keyboard",
+                description: "Full-size mechanical keyboard with tactile switches and programmable RGB lighting.",
+                condition: "Used",
+                brand: "KeyForge",
+                startingPrice: 45,
+                increment: 2,
+                delivery: "Standard UK delivery available.",
+                returns: "Returns accepted within 14 days."
+            },
+            {
+                key: "user-lamp",
+                seller: "user",
+                category: "Home",
+                title: "Art Deco Table Lamp",
+                description: "Decorative brass-effect table lamp inspired by Art Deco interiors.",
+                condition: "Used",
+                brand: "Maison",
+                startingPrice: 35,
+                increment: 5,
+                delivery: "Carefully packed UK delivery.",
+                returns: "Returns accepted within 14 days."
+            },
+            {
+                key: "user-book",
+                seller: "user",
+                category: "Books",
+                title: "Signed Fantasy Novel",
+                description: "Signed first-edition fantasy novel with dust jacket.",
+                condition: "Very Good",
+                brand: null,
+                startingPrice: 30,
+                increment: 2,
+                delivery: "Tracked letter delivery.",
+                returns: "Returns accepted within 14 days."
+            },
 
-        const mechanicalKeyboard =
-            insertListing.run(
-                techWarehouse.lastInsertRowid,
-                electronics.lastInsertRowid,
-                "Mechanical Keyboard",
-                "Mechanical keyboard with tactile switches and backlighting.",
-                "Used",
-                "KeyForge",
-                70,
-                2,
-                "Standard UK delivery.",
-                "Returns accepted within 14 days.",
-                "sold"
-            );
+            {
+                key: "retro-console",
+                seller: "retrocollector",
+                category: "Gaming",
+                title: "Retro Handheld Console",
+                description: "Classic handheld gaming console in working condition with battery cover intact.",
+                condition: "Used",
+                brand: "RetroTech",
+                startingPrice: 75,
+                increment: 5,
+                delivery: "Standard UK delivery available.",
+                returns: "Returns accepted within 14 days."
+            },
+            {
+                key: "gaming-laptop",
+                seller: "techwarehouse",
+                category: "Electronics",
+                title: "15-inch Gaming Laptop",
+                description: "Gaming laptop with dedicated graphics, 16GB RAM and 512GB SSD.",
+                condition: "Used",
+                brand: "Acer",
+                startingPrice: 350,
+                increment: 10,
+                delivery: "Insured tracked delivery.",
+                returns: "Returns accepted within 14 days."
+            },
+            {
+                key: "vinyl-record",
+                seller: "musicmerchant",
+                category: "Music",
+                title: "Limited Edition Vinyl Record",
+                description: "Limited pressing on coloured vinyl supplied in original sleeve.",
+                condition: "Very Good",
+                brand: null,
+                startingPrice: 40,
+                increment: 5,
+                delivery: "Vinyl mailer with tracked delivery.",
+                returns: "Returns accepted within 14 days."
+            },
+            {
+                key: "collectible-figure",
+                seller: "historymarket",
+                category: "Collectibles",
+                title: "Limited Collectible Figure",
+                description: "Numbered collectible display figure with original presentation box.",
+                condition: "Used",
+                brand: "Heritage Works",
+                startingPrice: 35,
+                increment: 5,
+                delivery: "Standard tracked delivery.",
+                returns: "Returns accepted within 14 days."
+            },
 
-        const collectibleFigure =
-            insertListing.run(
-                historyMarket.lastInsertRowid,
-                collectibles.lastInsertRowid,
-                "Collectible Figure",
-                "Limited-edition collectible display figure.",
-                "Used",
-                null,
-                40,
-                1,
-                "Standard UK delivery.",
-                "Returns accepted within 14 days.",
-                "ended"
-            );
+            {
+                key: "designer-jacket",
+                seller: "designerfinds",
+                category: "Fashion",
+                title: "Designer Denim Jacket",
+                description: "Premium denim jacket with embroidered rear detailing.",
+                condition: "Used",
+                brand: "North & Row",
+                startingPrice: 60,
+                increment: 5,
+                delivery: "Tracked UK delivery.",
+                returns: "Returns accepted within 14 days."
+            },
+            {
+                key: "train-set",
+                seller: "oldschooltoys",
+                category: "Collectibles",
+                title: "Vintage Model Train Set",
+                description: "Boxed model railway starter set with locomotive, carriages and track.",
+                condition: "Used",
+                brand: "Hornby",
+                startingPrice: 90,
+                increment: 5,
+                delivery: "Large parcel tracked delivery.",
+                returns: "Returns accepted within 14 days."
+            },
+            {
+                key: "smartwatch",
+                seller: "techwarehouse",
+                category: "Electronics",
+                title: "GPS Smartwatch",
+                description: "GPS smartwatch with heart-rate monitoring and charging cable.",
+                condition: "Used",
+                brand: "Garmin",
+                startingPrice: 95,
+                increment: 5,
+                delivery: "Tracked UK delivery.",
+                returns: "Returns accepted within 14 days."
+            },
+            {
+                key: "typewriter",
+                seller: "historymarket",
+                category: "Collectibles",
+                title: "Vintage Portable Typewriter",
+                description: "Portable manual typewriter supplied in original hard carrying case.",
+                condition: "Used",
+                brand: "Olympia",
+                startingPrice: 70,
+                increment: 5,
+                delivery: "Insured courier delivery.",
+                returns: "Returns accepted within 14 days."
+            },
+            {
+                key: "armchair",
+                seller: "homefinds",
+                category: "Home",
+                title: "Mid-Century Accent Chair",
+                description: "Upholstered wooden accent chair inspired by mid-century furniture.",
+                condition: "Used",
+                brand: "Oak & Loom",
+                startingPrice: 110,
+                increment: 10,
+                delivery: "Collection or furniture courier.",
+                returns: "Returns accepted by arrangement."
+            },
+            {
+                key: "coffee-grinder",
+                seller: "homefinds",
+                category: "Home",
+                title: "Electric Coffee Grinder",
+                description: "Stainless-steel burr grinder with adjustable grind settings.",
+                condition: "Used",
+                brand: "Barista Works",
+                startingPrice: 28,
+                increment: 2,
+                delivery: "Standard UK delivery.",
+                returns: "Returns accepted within 14 days."
+            },
+            {
+                key: "football-shirt",
+                seller: "sportsvault",
+                category: "Sports",
+                title: "Signed Football Shirt",
+                description: "Framed football shirt supplied with authenticity documentation.",
+                condition: "Very Good",
+                brand: "Nike",
+                startingPrice: 140,
+                increment: 10,
+                delivery: "Insured tracked delivery.",
+                returns: "Returns accepted subject to condition."
+            },
+            {
+                key: "tennis-racket",
+                seller: "sportsvault",
+                category: "Sports",
+                title: "Professional Tennis Racket",
+                description: "Graphite performance racket with protective carrying sleeve.",
+                condition: "Used",
+                brand: "Wilson",
+                startingPrice: 65,
+                increment: 5,
+                delivery: "Tracked UK delivery.",
+                returns: "Returns accepted within 14 days."
+            },
+            {
+                key: "record-player",
+                seller: "musicmerchant",
+                category: "Music",
+                title: "Bluetooth Record Player",
+                description: "Belt-drive record player with integrated Bluetooth output.",
+                condition: "Used",
+                brand: "Audio House",
+                startingPrice: 80,
+                increment: 5,
+                delivery: "Tracked fragile-item delivery.",
+                returns: "Returns accepted within 14 days."
+            },
+            {
+                key: "electric-guitar",
+                seller: "musicmerchant",
+                category: "Music",
+                title: "Electric Guitar",
+                description: "Solid-body electric guitar with padded gig bag.",
+                condition: "Used",
+                brand: "Squier",
+                startingPrice: 120,
+                increment: 10,
+                delivery: "Insured courier delivery.",
+                returns: "Returns accepted within 14 days."
+            },
+            {
+                key: "history-book",
+                seller: "bookcorner",
+                category: "Books",
+                title: "Illustrated History Collection",
+                description: "Four-volume illustrated history reference collection.",
+                condition: "Very Good",
+                brand: null,
+                startingPrice: 25,
+                increment: 2,
+                delivery: "Tracked parcel delivery.",
+                returns: "Returns accepted within 14 days."
+            },
+            {
+                key: "comic-set",
+                seller: "bookcorner",
+                category: "Books",
+                title: "Classic Comic Collection",
+                description: "Collection of twelve classic comic issues stored in protective sleeves.",
+                condition: "Good",
+                brand: null,
+                startingPrice: 55,
+                increment: 5,
+                delivery: "Tracked parcel delivery.",
+                returns: "Returns accepted within 14 days."
+            },
+            {
+                key: "controller",
+                seller: "pixeltrader",
+                category: "Gaming",
+                title: "Wireless Pro Controller",
+                description: "Wireless controller with programmable rear buttons and charging cable.",
+                condition: "Used",
+                brand: "PowerPlay",
+                startingPrice: 38,
+                increment: 2,
+                delivery: "Standard UK delivery.",
+                returns: "Returns accepted within 14 days."
+            },
+            {
+                key: "console-bundle",
+                seller: "pixeltrader",
+                category: "Gaming",
+                title: "Current-Generation Console Bundle",
+                description: "Home console supplied with controller, HDMI cable and three games.",
+                condition: "Used",
+                brand: "GameBox",
+                startingPrice: 240,
+                increment: 10,
+                delivery: "Insured tracked delivery.",
+                returns: "Returns accepted within 14 days."
+            },
+            {
+                key: "boots",
+                seller: "designerfinds",
+                category: "Fashion",
+                title: "Leather Chelsea Boots",
+                description: "Brown leather Chelsea boots with elasticated side panels.",
+                condition: "Very Good",
+                brand: "Harrington",
+                startingPrice: 50,
+                increment: 5,
+                delivery: "Tracked UK delivery.",
+                returns: "Returns accepted within 14 days."
+            },
+            {
+                key: "watch",
+                seller: "designerfinds",
+                category: "Fashion",
+                title: "Automatic Wristwatch",
+                description: "Automatic stainless-steel wristwatch with leather strap.",
+                condition: "Used",
+                brand: "Marston",
+                startingPrice: 125,
+                increment: 10,
+                delivery: "Insured tracked delivery.",
+                returns: "Returns accepted within 14 days."
+            }
+        ];
 
-        const wirelessHeadphones =
-            insertListing.run(
-                techWarehouse.lastInsertRowid,
-                electronics.lastInsertRowid,
-                "Wireless Headphones",
-                "Over-ear wireless headphones with charging cable.",
-                "Used",
-                "SoundCore",
-                60,
-                2,
-                "Standard UK delivery.",
-                "Returns accepted within 14 days.",
-                "sold"
-            );
+        const listings = {};
+        const auctions = {};
 
-        //creates moderation listings
+        //creates active listings and auctions
 
-        const antiqueSword =
-            insertListing.run(
-                retroCollector.lastInsertRowid,
-                collectibles.lastInsertRowid,
-                "Antique Display Sword",
-                "Decorative antique-style display sword.",
-                "Used",
-                null,
-                80,
-                5,
-                "Collection preferred.",
-                "Returns subject to review.",
-                "active"
-            );
+        activeListings.forEach(
+            (
+                listing,
+                index
+            ) => {
+                const listingResult =
+                    insertListing.run(
+                        users[
+                            listing.seller
+                        ],
+                        categories[
+                            listing.category
+                        ],
+                        listing.title,
+                        listing.description,
+                        listing.condition,
+                        listing.brand,
+                        listing.startingPrice,
+                        listing.increment,
+                        listing.delivery,
+                        listing.returns,
+                        "active"
+                    );
 
-        const designerHandbag =
-            insertListing.run(
-                designerFinds.lastInsertRowid,
-                fashion.lastInsertRowid,
-                "Designer Handbag",
-                "Pre-owned designer-style handbag.",
-                "Used",
-                "Unknown",
-                120,
-                5,
-                "Tracked UK delivery.",
-                "Returns accepted within 14 days.",
-                "active"
-            );
+                const listingId =
+                    Number(
+                        listingResult
+                            .lastInsertRowid
+                    );
 
-        const vintageToys =
-            insertListing.run(
-                oldSchoolToys.lastInsertRowid,
-                collectibles.lastInsertRowid,
-                "Vintage Toy Collection",
-                "Mixed vintage toy collection.",
-                "Used",
-                null,
-                55,
-                2,
-                "Standard UK delivery.",
-                "Returns accepted within 14 days.",
-                "active"
-            );
+                listings[
+                    listing.key
+                ] =
+                    listingId;
 
-        const usbCharger =
-            insertListing.run(
-                techWarehouse.lastInsertRowid,
-                electronics.lastInsertRowid,
-                "Unbranded USB Charger",
-                "USB wall charger with detachable cable.",
-                "New",
-                null,
-                10,
-                1,
-                "Standard UK delivery.",
-                "Returns accepted within 14 days.",
-                "active"
-            );
-
-        const replicaCollectible =
-            insertListing.run(
-                historyMarket.lastInsertRowid,
-                collectibles.lastInsertRowid,
-                "Replica Collectible",
-                "Replica historical collectible for display purposes.",
-                "Used",
-                null,
-                45,
-                2,
-                "Standard UK delivery.",
-                "Returns accepted within 14 days.",
-                "active"
-            );
-
-        //adds listing image placeholders
-
-        [
-            retroConsole,
-            vintageCamera,
-            mechanicalKeyboard,
-            collectibleFigure,
-            wirelessHeadphones,
-            antiqueSword,
-            designerHandbag,
-            vintageToys,
-            usbCharger,
-            replicaCollectible
-        ].forEach(
-            listing => {
-                insertListingImage.run(
-                    listing.lastInsertRowid,
+                insertImage.run(
+                    listingId,
                     "/images/placeholder.png",
                     1
+                );
+
+                const endDays =
+                    2 +
+                    (
+                        index %
+                        9
+                    );
+
+                const auctionResult =
+                    insertAuction.run(
+                        listingId,
+                        daysFromNow(
+                            -2
+                        ),
+                        daysFromNow(
+                            endDays,
+                            index %
+                                12
+                        ),
+                        null,
+                        "active"
+                    );
+
+                auctions[
+                    listing.key
+                ] =
+                    Number(
+                        auctionResult
+                            .lastInsertRowid
+                    );
+            }
+        );
+
+        //creates user's four active bidding relationships
+
+        insertBid.run(
+            auctions[
+                "retro-console"
+            ],
+            users.bidder92,
+            80,
+            daysFromNow(
+                -1,
+                -3
+            ),
+            "outbid"
+        );
+
+        insertBid.run(
+            auctions[
+                "retro-console"
+            ],
+            users.user,
+            90,
+            daysFromNow(
+                -1,
+                -1
+            ),
+            "winning"
+        );
+
+        db.prepare(`
+            UPDATE auctions
+            SET current_highest_bid = 90
+            WHERE auction_id = ?
+        `).run(
+            auctions[
+                "retro-console"
+            ]
+        );
+
+        insertBid.run(
+            auctions[
+                "gaming-laptop"
+            ],
+            users.user,
+            420,
+            daysFromNow(
+                -1,
+                -4
+            ),
+            "outbid"
+        );
+
+        insertBid.run(
+            auctions[
+                "gaming-laptop"
+            ],
+            users.collector77,
+            450,
+            daysFromNow(
+                -1,
+                -2
+            ),
+            "winning"
+        );
+
+        db.prepare(`
+            UPDATE auctions
+            SET current_highest_bid = 450
+            WHERE auction_id = ?
+        `).run(
+            auctions[
+                "gaming-laptop"
+            ]
+        );
+
+        insertBid.run(
+            auctions[
+                "vinyl-record"
+            ],
+            users.collector77,
+            55,
+            daysFromNow(
+                -1,
+                -5
+            ),
+            "outbid"
+        );
+
+        insertBid.run(
+            auctions[
+                "vinyl-record"
+            ],
+            users.user,
+            65,
+            daysFromNow(
+                -1,
+                -1
+            ),
+            "winning"
+        );
+
+        db.prepare(`
+            UPDATE auctions
+            SET current_highest_bid = 65
+            WHERE auction_id = ?
+        `).run(
+            auctions[
+                "vinyl-record"
+            ]
+        );
+
+        insertBid.run(
+            auctions[
+                "collectible-figure"
+            ],
+            users.user,
+            45,
+            daysFromNow(
+                -2,
+                2
+            ),
+            "outbid"
+        );
+
+        insertBid.run(
+            auctions[
+                "collectible-figure"
+            ],
+            users.bidder92,
+            55,
+            daysFromNow(
+                -1,
+                3
+            ),
+            "winning"
+        );
+
+        db.prepare(`
+            UPDATE auctions
+            SET current_highest_bid = 55
+            WHERE auction_id = ?
+        `).run(
+            auctions[
+                "collectible-figure"
+            ]
+        );
+
+        //creates bids on other active auctions
+
+        const competingBids = [
+            [
+                "designer-jacket",
+                "bidder92",
+                75
+            ],
+            [
+                "train-set",
+                "collector77",
+                110
+            ],
+            [
+                "smartwatch",
+                "retrocollector",
+                115
+            ],
+            [
+                "typewriter",
+                "oldschooltoys",
+                85
+            ],
+            [
+                "armchair",
+                "designerfinds",
+                140
+            ],
+            [
+                "football-shirt",
+                "historymarket",
+                170
+            ],
+            [
+                "record-player",
+                "collector77",
+                95
+            ],
+            [
+                "console-bundle",
+                "sportsvault",
+                280
+            ],
+            [
+                "watch",
+                "retrocollector",
+                145
+            ]
+        ];
+
+        competingBids.forEach(
+            bid => {
+                insertBid.run(
+                    auctions[
+                        bid[0]
+                    ],
+                    users[
+                        bid[1]
+                    ],
+                    bid[2],
+                    daysFromNow(
+                        -1
+                    ),
+                    "winning"
+                );
+
+                db.prepare(`
+                    UPDATE auctions
+                    SET current_highest_bid = ?
+                    WHERE auction_id = ?
+                `).run(
+                    bid[2],
+                    auctions[
+                        bid[0]
+                    ]
                 );
             }
         );
 
-        //creates auctions
+        //creates completed listing one
 
-        const retroAuction =
-            insertAuction.run(
-                retroConsole.lastInsertRowid,
-                "2026-09-13 09:00:00",
-                "2026-09-20 18:00:00",
-                90,
-                "active"
+        const completedKeyboard =
+            Number(
+                insertListing.run(
+                    users.techwarehouse,
+                    categories.Electronics,
+                    "Premium Mechanical Keyboard",
+                    "Premium aluminium mechanical keyboard with tactile switches.",
+                    "Used",
+                    "KeyForge",
+                    70,
+                    5,
+                    "Tracked UK delivery.",
+                    "Returns accepted within 14 days.",
+                    "sold"
+                ).lastInsertRowid
             );
 
-        const cameraAuction =
-            insertAuction.run(
-                vintageCamera.lastInsertRowid,
-                "2026-09-12 09:00:00",
-                "2026-09-19 20:00:00",
-                120,
-                "active"
+        insertImage.run(
+            completedKeyboard,
+            "/images/placeholder.png",
+            1
+        );
+
+        const completedKeyboardAuction =
+            Number(
+                insertAuction.run(
+                    completedKeyboard,
+                    daysFromNow(
+                        -14
+                    ),
+                    daysFromNow(
+                        -7
+                    ),
+                    105,
+                    "ended"
+                ).lastInsertRowid
             );
 
-        const keyboardAuction =
-            insertAuction.run(
-                mechanicalKeyboard.lastInsertRowid,
-                "2026-09-01 09:00:00",
-                "2026-09-10 18:00:00",
-                96,
-                "ended"
-            );
-
-        const figureAuction =
-            insertAuction.run(
-                collectibleFigure.lastInsertRowid,
-                "2026-08-28 09:00:00",
-                "2026-09-06 18:00:00",
-                58,
-                "ended"
-            );
-
-        const headphonesAuction =
-            insertAuction.run(
-                wirelessHeadphones.lastInsertRowid,
-                "2026-08-24 09:00:00",
-                "2026-09-02 18:00:00",
-                76,
-                "ended"
-            );
-
-        //creates current and historical bids
-
         insertBid.run(
-            retroAuction.lastInsertRowid,
-            standardUser.lastInsertRowid,
-            90,
-            "2026-09-13 10:15:00",
-            "winning"
-        );
-
-        insertBid.run(
-            retroAuction.lastInsertRowid,
-            bidderTwo.lastInsertRowid,
-            85,
-            "2026-09-13 10:00:00",
-            "outbid"
-        );
-
-        insertBid.run(
-            cameraAuction.lastInsertRowid,
-            standardUser.lastInsertRowid,
-            115,
-            "2026-09-12 14:00:00",
-            "outbid"
-        );
-
-        insertBid.run(
-            cameraAuction.lastInsertRowid,
-            bidderThree.lastInsertRowid,
-            120,
-            "2026-09-12 14:10:00",
-            "winning"
-        );
-
-        insertBid.run(
-            keyboardAuction.lastInsertRowid,
-            standardUser.lastInsertRowid,
-            96,
-            "2026-09-09 17:30:00",
-            "won"
-        );
-
-        insertBid.run(
-            figureAuction.lastInsertRowid,
-            standardUser.lastInsertRowid,
-            49,
-            "2026-09-06 16:00:00",
+            completedKeyboardAuction,
+            users.bidder92,
+            95,
+            daysFromNow(
+                -8,
+                -4
+            ),
             "lost"
         );
 
         insertBid.run(
-            figureAuction.lastInsertRowid,
-            bidderTwo.lastInsertRowid,
-            58,
-            "2026-09-06 17:50:00",
+            completedKeyboardAuction,
+            users.user,
+            105,
+            daysFromNow(
+                -8,
+                -1
+            ),
             "won"
+        );
+
+        //creates completed listing two
+
+        const completedHeadphones =
+            Number(
+                insertListing.run(
+                    users.techwarehouse,
+                    categories.Electronics,
+                    "Wireless Studio Headphones",
+                    "Wireless over-ear headphones supplied with charging cable and case.",
+                    "Used",
+                    "SoundCore",
+                    55,
+                    5,
+                    "Tracked UK delivery.",
+                    "Returns accepted within 14 days.",
+                    "ended"
+                ).lastInsertRowid
+            );
+
+        insertImage.run(
+            completedHeadphones,
+            "/images/placeholder.png",
+            1
+        );
+
+        const completedHeadphonesAuction =
+            Number(
+                insertAuction.run(
+                    completedHeadphones,
+                    daysFromNow(
+                        -12
+                    ),
+                    daysFromNow(
+                        -5
+                    ),
+                    80,
+                    "ended"
+                ).lastInsertRowid
+            );
+
+        insertBid.run(
+            completedHeadphonesAuction,
+            users.user,
+            70,
+            daysFromNow(
+                -6,
+                -5
+            ),
+            "lost"
         );
 
         insertBid.run(
-            headphonesAuction.lastInsertRowid,
-            standardUser.lastInsertRowid,
-            76,
-            "2026-09-02 17:40:00",
+            completedHeadphonesAuction,
+            users.collector77,
+            80,
+            daysFromNow(
+                -6,
+                -2
+            ),
             "won"
         );
 
-        //creates completed order for keyboard auction
+        //creates completed listing three
+
+        const completedChair =
+            Number(
+                insertListing.run(
+                    users.homefinds,
+                    categories.Home,
+                    "Vintage Reading Chair",
+                    "Upholstered vintage reading chair with wooden arms.",
+                    "Used",
+                    null,
+                    80,
+                    10,
+                    "Furniture courier or collection.",
+                    "Returns accepted by arrangement.",
+                    "sold"
+                ).lastInsertRowid
+            );
+
+        insertImage.run(
+            completedChair,
+            "/images/placeholder.png",
+            1
+        );
+
+        const completedChairAuction =
+            Number(
+                insertAuction.run(
+                    completedChair,
+                    daysFromNow(
+                        -16
+                    ),
+                    daysFromNow(
+                        -9
+                    ),
+                    130,
+                    "ended"
+                ).lastInsertRowid
+            );
+
+        insertBid.run(
+            completedChairAuction,
+            users.bidder92,
+            130,
+            daysFromNow(
+                -10
+            ),
+            "won"
+        );
+
+        //creates order for user's won auction
 
         const keyboardOrder =
-            insertOrder.run(
-                keyboardAuction.lastInsertRowid,
-                standardUser.lastInsertRowid,
-                techWarehouse.lastInsertRowid,
-                96,
-                "2026-09-13 18:00:00",
-                "paid"
+            Number(
+                insertOrder.run(
+                    completedKeyboardAuction,
+                    users.user,
+                    users.techwarehouse,
+                    105,
+                    daysFromNow(
+                        -5
+                    ),
+                    "paid"
+                ).lastInsertRowid
             );
 
         insertPayment.run(
-            keyboardOrder.lastInsertRowid,
-            96,
-            "2026-09-10 19:15:00",
+            keyboardOrder,
+            105,
+            daysFromNow(
+                -6
+            ),
             "paid"
         );
 
         insertFulfilment.run(
-            keyboardOrder.lastInsertRowid,
+            keyboardOrder,
             "Development Address, London, UK",
-            null,
-            null,
-            null,
-            "awaiting-dispatch"
-        );
-
-        //creates completed order for headphones auction
-
-        const headphonesOrder =
-            insertOrder.run(
-                headphonesAuction.lastInsertRowid,
-                standardUser.lastInsertRowid,
-                techWarehouse.lastInsertRowid,
-                76,
-                "2026-09-05 18:00:00",
-                "paid"
-            );
-
-        insertPayment.run(
-            headphonesOrder.lastInsertRowid,
-            76,
-            "2026-09-02 19:00:00",
-            "paid"
-        );
-
-        insertFulfilment.run(
-            headphonesOrder.lastInsertRowid,
-            "Development Address, London, UK",
-            "BID123456789",
-            "2026-09-03 10:30:00",
+            "BID-KB-105",
+            daysFromNow(
+                -5
+            ),
             null,
             "dispatched"
         );
 
-        //creates moderation cases
-
-        const swordCase =
-            insertModerationCase.run(
-                antiqueSword.lastInsertRowid,
-                null,
-                "Potential prohibited weapon classification.",
-                "prohibited",
-                "high",
-                "Automated listing detection.",
-                "Automated detection identified features requiring human review.",
-                "awaiting",
-                "2026-09-12 14:32:00",
-                null,
-                null
-            );
-
-        const handbagCase =
-            insertModerationCase.run(
-                designerHandbag.lastInsertRowid,
-                null,
-                "Listing reported as potentially counterfeit.",
-                "counterfeit",
-                "medium",
-                "Multiple user reports.",
-                "Multiple reports reference inconsistent branding information.",
-                "awaiting",
-                "2026-09-12 13:18:00",
-                null,
-                null
-            );
-
-        const toysCase =
-            insertModerationCase.run(
-                vintageToys.lastInsertRowid,
-                null,
-                "Listing description may contain misleading information.",
-                "misleading",
-                "low",
-                "Reported listing description.",
-                "Review item description against the photographs supplied.",
-                "awaiting",
-                "2026-09-11 19:44:00",
-                null,
-                null
-            );
-
-        const chargerCase =
-            insertModerationCase.run(
-                usbCharger.lastInsertRowid,
-                null,
-                "Possible product safety concern.",
-                "unsafe",
-                "low",
-                "Missing safety certification.",
-                "Safety certification information has not been supplied.",
-                "awaiting",
-                "2026-09-11 16:09:00",
-                null,
-                null
-            );
-
-        const replicaCase =
-            insertModerationCase.run(
-                replicaCollectible.lastInsertRowid,
-                moderatorUser.lastInsertRowid,
-                "Seller has appealed a previous moderation restriction.",
-                "restricted",
-                "medium",
-                "Seller-submitted supporting evidence.",
-                "Seller supplied additional photographs and supporting information.",
-                "appeal",
-                "2026-09-10 11:21:00",
-                null,
-                null
-            );
-
-        //creates reports
-
-        insertReport.run(
-            antiqueSword.lastInsertRowid,
-            bidderTwo.lastInsertRowid,
-            swordCase.lastInsertRowid,
-            "Potential prohibited item",
-            "Item may fall within a restricted weapon category.",
-            "2026-09-12 14:32:00",
-            "reviewing"
-        );
-
-        insertReport.run(
-            designerHandbag.lastInsertRowid,
-            bidderTwo.lastInsertRowid,
-            handbagCase.lastInsertRowid,
-            "Possible counterfeit",
-            "Branding appears inconsistent with expected product details.",
-            "2026-09-12 13:18:00",
-            "reviewing"
-        );
-
-        insertReport.run(
-            vintageToys.lastInsertRowid,
-            bidderThree.lastInsertRowid,
-            toysCase.lastInsertRowid,
-            "Misleading description",
-            "Description may not accurately represent all items shown.",
-            "2026-09-11 19:44:00",
-            "reviewing"
-        );
-
-        insertReport.run(
-            usbCharger.lastInsertRowid,
-            standardUser.lastInsertRowid,
-            chargerCase.lastInsertRowid,
-            "Product safety concern",
-            "No visible certification information was supplied.",
-            "2026-09-11 16:09:00",
-            "reviewing"
-        );
-
-        insertReport.run(
-            replicaCollectible.lastInsertRowid,
-            historyMarket.lastInsertRowid,
-            replicaCase.lastInsertRowid,
-            "Seller appeal",
-            "Additional evidence supplied for moderator review.",
-            "2026-09-10 11:21:00",
-            "reviewing"
-        );
-
-        //creates notifications
+        //creates initial notifications
 
         insertNotification.run(
-            standardUser.lastInsertRowid,
-            retroAuction.lastInsertRowid,
+            users.user,
+            auctions[
+                "retro-console"
+            ],
             null,
             "Bid Accepted",
             "Your £90.00 bid on Retro Handheld Console was accepted.",
             "bid_accepted",
-            0
+            1
         );
 
         insertNotification.run(
-            standardUser.lastInsertRowid,
-            cameraAuction.lastInsertRowid,
+            users.user,
+            auctions[
+                "gaming-laptop"
+            ],
             null,
             "You've Been Outbid",
-            "A higher bid has been placed on Vintage Camera.",
+            "A higher bid has been placed on 15-inch Gaming Laptop.",
             "outbid",
             0
         );
 
         insertNotification.run(
-            standardUser.lastInsertRowid,
-            keyboardAuction.lastInsertRowid,
-            keyboardOrder.lastInsertRowid,
+            users.user,
+            auctions[
+                "vinyl-record"
+            ],
+            null,
+            "Bid Accepted",
+            "Your £65.00 bid on Limited Edition Vinyl Record was accepted.",
+            "bid_accepted",
+            1
+        );
+
+        insertNotification.run(
+            users.user,
+            auctions[
+                "collectible-figure"
+            ],
+            null,
+            "You've Been Outbid",
+            "A higher bid has been placed on Limited Collectible Figure.",
+            "outbid",
+            0
+        );
+
+        insertNotification.run(
+            users.user,
+            completedKeyboardAuction,
+            keyboardOrder,
             "You Won!",
-            "You won Mechanical Keyboard for £96.00.",
+            "You won Premium Mechanical Keyboard for £105.00.",
             "auction_won",
             0
         );
 
         insertNotification.run(
-            standardUser.lastInsertRowid,
-            figureAuction.lastInsertRowid,
+            users.user,
+            completedHeadphonesAuction,
             null,
             "Auction Ended",
-            "Collectible Figure has ended. Another bidder won the auction.",
+            "Wireless Studio Headphones ended with another bidder winning.",
             "auction_lost",
             1
         );
 
-        insertNotification.run(
-            standardUser.lastInsertRowid,
-            headphonesAuction.lastInsertRowid,
-            headphonesOrder.lastInsertRowid,
-            "Payment Received",
-            "Payment for Wireless Headphones has been received.",
-            "payment_received",
-            1
-        );
+        //creates moderation cases
 
-        insertNotification.run(
-            standardUser.lastInsertRowid,
-            headphonesAuction.lastInsertRowid,
-            headphonesOrder.lastInsertRowid,
-            "Item Dispatched",
-            "Wireless Headphones has been dispatched.",
-            "item_dispatched",
-            0
+        const moderationTargets = [
+            {
+                listing:
+                    listings[
+                        "designer-jacket"
+                    ],
+                reporter:
+                    users.collector77,
+                reason:
+                    "Potentially misleading branding information.",
+                type:
+                    "misleading",
+                risk:
+                    "medium",
+                evidence:
+                    "User-submitted report.",
+                notes:
+                    "Review description and supplied product imagery."
+            },
+            {
+                listing:
+                    listings[
+                        "smartwatch"
+                    ],
+                reporter:
+                    users.bidder92,
+                reason:
+                    "Possible product authenticity concern.",
+                type:
+                    "counterfeit",
+                risk:
+                    "medium",
+                evidence:
+                    "User-submitted report.",
+                notes:
+                    "Check serial information and seller evidence."
+            },
+            {
+                listing:
+                    listings[
+                        "coffee-grinder"
+                    ],
+                reporter:
+                    users.retrocollector,
+                reason:
+                    "Possible electrical safety concern.",
+                type:
+                    "unsafe",
+                risk:
+                    "low",
+                evidence:
+                    "User-submitted report.",
+                notes:
+                    "Review electrical condition and listing description."
+            }
+        ];
+
+        moderationTargets.forEach(
+            target => {
+                const moderationCase =
+                    Number(
+                        insertModerationCase.run(
+                            target.listing,
+                            null,
+                            target.reason,
+                            target.type,
+                            target.risk,
+                            target.evidence,
+                            target.notes,
+                            "awaiting",
+                            daysFromNow(
+                                -1
+                            )
+                        ).lastInsertRowid
+                    );
+
+                insertReport.run(
+                    target.listing,
+                    target.reporter,
+                    moderationCase,
+                    target.reason,
+                    target.notes,
+                    daysFromNow(
+                        -1
+                    ),
+                    "reviewing"
+                );
+            }
         );
     });
 
@@ -886,7 +1385,19 @@ const seedDatabase =
 seedDatabase();
 
 console.log(
-    "BIDBASH development database populated successfully."
+    "BIDBASH development database repopulated successfully."
+);
+
+console.log(
+    "Active auctions: 24"
+);
+
+console.log(
+    "User-owned active listings: 4"
+);
+
+console.log(
+    "User active bid auctions: 4"
 );
 
 db.close();

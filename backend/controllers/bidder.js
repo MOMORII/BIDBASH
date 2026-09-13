@@ -1,7 +1,4 @@
-//loads temporary bid data
-
-const mockBids =
-    require("../data/mockBids");
+//loads bidding services
 
 const biddingService =
     require("../services/bidding");
@@ -11,50 +8,35 @@ const notificationService =
 
 //renders the user's bidding dashboard
 
-function dashboard(req, res) {
+function dashboard(
+    req,
+    res
+) {
     const userId =
-        Number(req.params.id);
-
-    const userBids =
-        mockBids.filter(
-            bid =>
-                Number(bid.userId) ===
-                userId
+        Number(
+            req.params.id
         );
 
-    const bids = {
-        active:
-            userBids.filter(
-                bid =>
-                    bid.status ===
-                    "active"
-            ),
-
-        successful:
-            userBids.filter(
-                bid =>
-                    bid.status ===
-                    "successful"
-            ),
-
-        history:
-            userBids.filter(
-                bid =>
-                    bid.status ===
-                    "history"
-            )
-    };
+    const bids =
+        biddingService
+            .getUserBids(
+                userId
+            );
 
     res.render("bids", {
         pageTitle:
             "My Bids - BIDBASH",
+
         bids
     });
 }
 
 //places a bid
 
-function placeBid(req, res) {
+function placeBid(
+    req,
+    res
+) {
     if (!req.session.user) {
         return res.status(401).json({
             error:
@@ -66,10 +48,15 @@ function placeBid(req, res) {
         biddingService.placeBid({
             userId:
                 req.session.user.id,
+
             auctionId:
                 req.body.auctionId,
+
             amount:
-                req.body.amount
+                req.body.amount,
+
+            expectedCurrentBid:
+                req.body.expectedCurrentBid
         });
 
     if (!result.success) {
@@ -78,7 +65,9 @@ function placeBid(req, res) {
         );
     }
 
-    res.json(result);
+    res.json(
+        result
+    );
 }
 
 //returns unread notifications
@@ -111,7 +100,9 @@ function readNotification(
     res
 ) {
     if (!req.session.user) {
-        return res.sendStatus(401);
+        return res.sendStatus(
+            401
+        );
     }
 
     const notification =
@@ -122,7 +113,9 @@ function readNotification(
             );
 
     if (!notification) {
-        return res.sendStatus(404);
+        return res.sendStatus(
+            404
+        );
     }
 
     res.json({

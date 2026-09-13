@@ -757,6 +757,12 @@ body.sidebar-open .page-content {
 
     margin-top: 24px;
 }
+/*hides inactive modal content*/
+.modal-actions[hidden],
+.bid-confirmation-summary[hidden],
+.bid-confirmation-note[hidden] {
+    display: none !important;
+}
 
 .modal-actions button {
     border: 0;
@@ -805,6 +811,80 @@ body.sidebar-open .page-content {
     line-height: 1;
 
     cursor: pointer;
+}
+
+/*hides inactive elements*/
+[hidden] {
+    display: none !important;
+}
+
+/*styles bid result content*/
+.bid-result-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+    padding: 18px 0 8px;
+    text-align: center;
+}
+
+/*styles bid result detail*/
+.bid-result-detail {
+    margin: 0;
+    font-size: 1.05rem;
+    font-weight: 600;
+}
+
+/*styles bid result highlight*/
+.bid-result-highlight {
+    width: 100%;
+    padding: 16px 20px;
+    border: 1px solid currentColor;
+    border-radius: 4px;
+    font-size: 1.15rem;
+    font-weight: 800;
+    text-align: center;
+}
+
+/*centres bid result feedback*/
+.bid-modal-card.bid-accepted,
+.bid-modal-card.bid-rejected,
+.bid-modal-card.bid-outbid {
+    text-align: center;
+}
+
+/*emphasises bid result headings*/
+.bid-modal-card.bid-accepted #bid-modal-title,
+.bid-modal-card.bid-rejected #bid-modal-title,
+.bid-modal-card.bid-outbid #bid-modal-title {
+    font-size: 2.3rem;
+    font-weight: 900;
+    letter-spacing: 0.04em;
+}
+
+/*styles accepted bid feedback*/
+.bid-modal-card.bid-accepted #bid-modal-title {
+    color: #8dde73;
+}
+
+/*styles rejected bid feedback*/
+.bid-modal-card.bid-rejected #bid-modal-title {
+    color: #ff858e;
+}
+
+/*styles outbid feedback*/
+.bid-modal-card.bid-outbid #bid-modal-title {
+    color: #ffb466;
+}
+
+/*centres bid result actions*/
+#bid-result-actions {
+    justify-content: center;
+}
+
+/*limits bid result button width*/
+#bid-result-actions .primary-button {
+    min-width: 180px;
 }
 
 /*styles the create listing form */

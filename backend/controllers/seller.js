@@ -1,41 +1,67 @@
-const listingService = require("../services/listing");
+//loads listing services
 
-//redirects the seller shortcut to the current user's dashboard
-function redirectToDashboard(req, res) {
+const listingService =
+    require("../services/listing");
+
+//redirects the seller shortcut
+
+function redirectToDashboard(
+    req,
+    res
+) {
     res.redirect(
         `/users/${req.session.user.id}/listings`
     );
 }
 
-//renders the user-specific my listings dashboard
-function dashboard(req, res) {
+//renders the user's listings dashboard
+
+function dashboard(
+    req,
+    res
+) {
     const groupedListings =
-        listingService.groupSellerListings(req.params.id);
+        listingService
+            .groupSellerListings(
+                req.params.id
+            );
 
     res.render("listings", {
-        pageTitle: "My Listings - BIDBASH",
-        listings: groupedListings,
-        openCreateListing: false,
-        listingError: null,
-        listingMessage: null
+        pageTitle:
+            "My Listings - BIDBASH",
+
+        listings:
+            groupedListings,
+
+        openCreateListing:
+            false,
+
+        listingError:
+            null,
+
+        listingMessage:
+            null
     });
 }
 
-//validates temporary listing input before database storage exists
-function create(req, res) {
-    const groupedListings =
-        listingService.groupSellerListings(req.session.user.id);
+//creates a new listing
 
+function create(
+    req,
+    res
+) {
     const {
         title,
         category,
         condition,
         description,
+        brand,
         startingPrice,
-        bidIncrement
+        bidIncrement,
+        deliveryInfo,
+        returnInfo
     } = req.body;
 
-    //rejects incomplete listing submissions
     if (
         !title ||
         !category ||
@@ -44,23 +70,195 @@ function create(req, res) {
         !startingPrice ||
         !bidIncrement
     ) {
-        return res.status(400).render("listings", {
-            pageTitle: "My Listings - BIDBASH",
-            listings: groupedListings,
-            openCreateListing: true,
-            listingError: "Please complete all required listing fields.",
-            listingMessage: null
-        });
+        const groupedListings =
+            listingService
+                .groupSellerListings(
+                    req.session.user.id
+                );
+
+        return res.status(400).render(
+            "listings",
+            {
+                pageTitle:
+                    "My Listings - BIDBASH",
+
+                listings:
+                    groupedListings,
+
+                openCreateListing:
+                    true,
+
+                listingError:
+                    "Please complete all required listing fields.",
+
+                listingMessage:
+                    null
+            }
+        );
     }
 
-    //confirms validation without saving before sqlite exists
+    const numericStartingPrice =
+        Number(
+            startingPrice
+        );
+
+    const numericBidIncrement =
+        Number(
+            bidIncrement
+        );
+
+    if (
+        !Number.isFinite(
+            numericStartingPrice
+        ) ||
+        numericStartingPrice <= 0
+    ) {
+        const groupedListings =
+            listingService
+                .groupSellerListings(
+                    req.session.user.id
+                );
+
+        return res.status(400).render(
+            "listings",
+            {
+                pageTitle:
+                    "My Listings - BIDBASH",
+
+                listings:
+                    groupedListings,
+
+                openCreateListing:
+                    true,
+
+                listingError:
+                    "Starting price must be greater than £0.",
+
+                listingMessage:
+                    null
+            }
+        );
+    }
+
+    if (
+        !Number.isFinite(
+            numericBidIncrement
+        ) ||
+        numericBidIncrement <= 0
+    ) {
+        const groupedListings =
+            listingService
+                .groupSellerListings(
+                    req.session.user.id
+                );
+
+        return res.status(400).render(
+            "listings",
+            {
+                pageTitle:
+                    "My Listings - BIDBASH",
+
+                listings:
+                    groupedListings,
+
+                openCreateListing:
+                    true,
+
+                listingError:
+                    "Bid increment must be greater than £0.",
+
+                listingMessage:
+                    null
+            }
+        );
+    }
+
+    const result =
+        listingService.create({
+            sellerId:
+                req.session.user.id,
+
+            title:
+                title.trim(),
+
+            category,
+
+            condition,
+
+            description:
+                description.trim(),
+
+            brand:
+                brand
+                    ? brand.trim()
+                    : null,
+
+            startingPrice:
+                numericStartingPrice,
+
+            bidIncrement:
+                numericBidIncrement,
+
+            deliveryInfo:
+                deliveryInfo
+                    ? deliveryInfo.trim()
+                    : null,
+
+            returnInfo:
+                returnInfo
+                    ? returnInfo.trim()
+                    : null
+        });
+
+    if (!result.success) {
+        const groupedListings =
+            listingService
+                .groupSellerListings(
+                    req.session.user.id
+                );
+
+        return res.status(400).render(
+            "listings",
+            {
+                pageTitle:
+                    "My Listings - BIDBASH",
+
+                listings:
+                    groupedListings,
+
+                openCreateListing:
+                    true,
+
+                listingError:
+                    result.message,
+
+                listingMessage:
+                    null
+            }
+        );
+    }
+
+    const groupedListings =
+        listingService
+            .groupSellerListings(
+                req.session.user.id
+            );
+
     res.render("listings", {
-        pageTitle: "My Listings - BIDBASH",
-        listings: groupedListings,
-        openCreateListing: true,
-        listingError: null,
+        pageTitle:
+            "My Listings - BIDBASH",
+
+        listings:
+            groupedListings,
+
+        openCreateListing:
+            false,
+
+        listingError:
+            null,
+
         listingMessage:
-            "Listing details are valid. Database storage will be enabled when SQLite is connected."
+            "Your listing has been created successfully."
     });
 }
 

@@ -1,7 +1,7 @@
-//loads temporary notification data
+//loads the bidbash database
 
-const notifications =
-    require("../data/mockNotifications");
+const db =
+    require("../database/db");
 
 //creates a notification
 
@@ -13,26 +13,47 @@ function createNotification({
     auctionId = null,
     orderId = null
 }) {
-    const notification = {
-        id:
-            notifications.length + 1,
-        userId:
+    const result =
+        db.prepare(`
+            INSERT INTO notifications (
+                user_id,
+                auction_id,
+                order_id,
+                title,
+                message,
+                notification_type,
+                is_read
+            )
+
+            VALUES (
+                ?,
+                ?,
+                ?,
+                ?,
+                ?,
+                ?,
+                0
+            )
+        `).run(
             Number(userId),
-        type,
-        title,
-        message,
-        auctionId,
-        orderId,
-        read: false,
-        createdAt:
-            new Date()
-    };
+            auctionId === null
+                ? null
+                : Number(
+                    auctionId
+                ),
+            orderId === null
+                ? null
+                : Number(
+                    orderId
+                ),
+            title,
+            message,
+            type
+        );
 
-    notifications.push(
-        notification
+    return getNotificationById(
+        result.lastInsertRowid
     );
-
-    return notification;
 }
 
 //returns unread notifications
@@ -40,11 +61,31 @@ function createNotification({
 function getUnreadNotifications(
     userId
 ) {
-    return notifications.filter(
-        notification =>
-            notification.userId ===
-                Number(userId) &&
-            !notification.read
+    return db.prepare(`
+        SELECT
+            notification_id,
+            user_id,
+            auction_id,
+            order_id,
+            title,
+            message,
+            notification_type,
+            created_at,
+            is_read
+
+        FROM notifications
+
+        WHERE
+            user_id = ?
+            AND is_read = 0
+
+        ORDER BY
+            created_at DESC,
+            notification_id DESC
+    `).all(
+        Number(userId)
+    ).map(
+        mapNotification
     );
 }
 
@@ -53,10 +94,29 @@ function getUnreadNotifications(
 function getNotificationById(
     id
 ) {
-    return notifications.find(
-        notification =>
-            notification.id ===
+    const row =
+        db.prepare(`
+            SELECT
+                notification_id,
+                user_id,
+                auction_id,
+                order_id,
+                title,
+                message,
+                notification_type,
+                created_at,
+                is_read
+
+            FROM notifications
+
+            WHERE
+                notification_id = ?
+        `).get(
             Number(id)
+        );
+
+    return mapNotification(
+        row
     );
 }
 
@@ -66,20 +126,71 @@ function markAsRead(
     id,
     userId
 ) {
-    const notification =
-        getNotificationById(id);
+    const result =
+        db.prepare(`
+            UPDATE notifications
+
+            SET
+                is_read = 1
+
+            WHERE
+                notification_id = ?
+                AND user_id = ?
+        `).run(
+            Number(id),
+            Number(userId)
+        );
 
     if (
-        !notification ||
-        notification.userId !==
-            Number(userId)
+        result.changes === 0
     ) {
         return null;
     }
 
-    notification.read = true;
+    return getNotificationById(
+        id
+    );
+}
 
-    return notification;
+//maps database notifications
+
+function mapNotification(
+    row
+) {
+    if (!row) {
+        return null;
+    }
+
+    return {
+        id:
+            row.notification_id,
+
+        userId:
+            row.user_id,
+
+        auctionId:
+            row.auction_id,
+
+        orderId:
+            row.order_id,
+
+        title:
+            row.title,
+
+        message:
+            row.message,
+
+        type:
+            row.notification_type,
+
+        read:
+            Boolean(
+                row.is_read
+            ),
+
+        createdAt:
+            row.created_at
+    };
 }
 
 module.exports = {
