@@ -570,17 +570,32 @@ const placeBidTransaction =
                     };
                 }
 
+                if (
+                    numericAmount <=
+                    currentBid
+                ) {
+                    return {
+                        success: false,
+                        status:
+                            "below-current",
+                        message:
+                            `Your bid must be higher than the current bid of £${currentBid.toFixed(2)}.`,
+                        currentBid,
+                        minimumBid
+                    };
+                }
+
                 return {
                     success: false,
                     status:
-                        "too-low",
+                        "increment-too-low",
                     message:
-                        `Your bid must be at least £${minimumBid.toFixed(2)}.`,
+                        `Your bid is higher than the current bid, but does not meet the required £${bidIncrement.toFixed(2)} increment.`,
                     currentBid,
-                    minimumBid
+                    minimumBid,
+                    bidIncrement
                 };
             }
-
             const previousHighestBid =
                 getHighestBid(
                     auctionId
