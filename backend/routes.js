@@ -20,6 +20,109 @@ const {
 
 const router = express.Router();
 
+const multer =
+    require("multer");
+
+const path =
+    require("path");
+
+//stores uploaded listing images
+
+const listingImageStorage =
+    multer.diskStorage({
+        destination: (
+            req,
+            file,
+            callback
+        ) => {
+            callback(
+                null,
+                path.join(
+                    __dirname,
+                    "../frontend/static/uploads"
+                )
+            );
+        },
+
+        filename: (
+            req,
+            file,
+            callback
+        ) => {
+            const extension =
+                path.extname(
+                    file.originalname
+                )
+                    .toLowerCase();
+
+            const filename =
+                `listing-${Date.now()}-${Math.round(
+                    Math.random() *
+                    1000000
+                )}${extension}`;
+
+            callback(
+                null,
+                filename
+            );
+        }
+    });
+
+//validates uploaded listing images
+
+function listingImageFilter(
+    req,
+    file,
+    callback
+) {
+    const allowedExtensions = [
+        ".jpg",
+        ".jpeg",
+        ".png",
+        ".webp"
+    ];
+
+    const extension =
+        path.extname(
+            file.originalname
+        )
+            .toLowerCase();
+
+    if (
+        !allowedExtensions.includes(
+            extension
+        )
+    ) {
+        return callback(
+            new Error(
+                "Only JPG, JPEG, PNG and WEBP images are allowed."
+            )
+        );
+    }
+
+    callback(
+        null,
+        true
+    );
+}
+
+//handles listing image uploads
+
+const uploadListingImage =
+    multer({
+        storage:
+            listingImageStorage,
+
+        fileFilter:
+            listingImageFilter,
+
+        limits: {
+            fileSize:
+                5 *
+                1024 *
+                1024
+        }
+    });
 //renders the age confirmation page
 
 router.get(
@@ -190,8 +293,19 @@ router.get(
 router.post(
     "/listings/new",
     requireLogin,
+    uploadListingImage.single(
+        "listingImage"
+    ),
     seller.create
 );
+
+/*
+router.post(
+    "/listings/new",
+    requireLogin,
+    seller.create
+);
+*/
 
 //renders the user-specific my bids dashboard
 
@@ -312,6 +426,14 @@ router.post(
     "/api/orders/:id/complete",
     requireLogin,
     bidder.completeOrder
+);
+
+//reports a listing for moderator review
+
+router.post(
+    "/api/listings/:id/report",
+    requireLogin,
+    auction.reportListing
 );
 
 module.exports = router;

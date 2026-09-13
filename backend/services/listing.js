@@ -171,8 +171,7 @@ function mapSellerListing(
                 row.starting_price
             ),
 
-        currentBid:
-            currentBid,
+        currentBid,
 
         bidCount:
             Number(
@@ -188,8 +187,7 @@ function mapSellerListing(
                 )
                 : "Ended",
 
-        finalAmount:
-            finalAmount,
+        finalAmount,
 
         buyer:
             row.buyer ||
@@ -295,7 +293,9 @@ function getBySellerId(
                 (
                     SELECT
                         COUNT(*)
+
                     FROM bids
+
                     WHERE
                         bids.auction_id =
                             auctions.auction_id
@@ -304,12 +304,16 @@ function getBySellerId(
                 (
                     SELECT
                         listing_images.file_path
+
                     FROM listing_images
+
                     WHERE
                         listing_images.listing_id =
                             listings.listing_id
+
                     ORDER BY
                         listing_images.display_order ASC
+
                     LIMIT 1
                 ) AS image_path
 
@@ -428,7 +432,8 @@ const createListingTransaction =
             startingPrice,
             bidIncrement,
             deliveryInfo,
-            returnInfo
+            returnInfo,
+            imagePath
         }) => {
             const categoryRecord =
                 getCategoryByName(
@@ -553,6 +558,27 @@ const createListingTransaction =
                     )
                 );
 
+            //stores the uploaded image path
+
+            if (imagePath) {
+                db.prepare(`
+                    INSERT INTO listing_images (
+                        listing_id,
+                        file_path,
+                        display_order
+                    )
+
+                    VALUES (
+                        ?,
+                        ?,
+                        1
+                    )
+                `).run(
+                    listingId,
+                    imagePath
+                );
+            }
+
             return {
                 success: true,
 
@@ -562,7 +588,11 @@ const createListingTransaction =
                     Number(
                         auctionResult
                             .lastInsertRowid
-                    )
+                    ),
+
+                imagePath:
+                    imagePath ||
+                    null
             };
         }
     );
@@ -579,7 +609,8 @@ function create({
     startingPrice,
     bidIncrement,
     deliveryInfo = null,
-    returnInfo = null
+    returnInfo = null,
+    imagePath = null
 }) {
     return createListingTransaction({
         sellerId,
@@ -591,7 +622,8 @@ function create({
         startingPrice,
         bidIncrement,
         deliveryInfo,
-        returnInfo
+        returnInfo,
+        imagePath
     });
 }
 

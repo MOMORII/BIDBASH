@@ -49,6 +49,60 @@ function validateDecision(
     );
 }
 
+//validates report types
+
+function validateReportType(
+    reportType
+) {
+    const allowedTypes = [
+        "prohibited",
+        "counterfeit",
+        "misleading",
+        "unsafe",
+        "restricted"
+    ];
+
+    return allowedTypes.includes(
+        reportType
+    );
+}
+
+//assigns risk based on report type
+
+function getRiskLevel(
+    reportType
+) {
+    if (
+        reportType ===
+        "prohibited"
+    ) {
+        return "high";
+    }
+
+    if (
+        reportType ===
+        "restricted"
+    ) {
+        return "high";
+    }
+
+    if (
+        reportType ===
+        "counterfeit"
+    ) {
+        return "medium";
+    }
+
+    if (
+        reportType ===
+        "unsafe"
+    ) {
+        return "medium";
+    }
+
+    return "low";
+}
+
 //maps a moderation case for the dashboard
 
 function mapModerationCase(
@@ -275,6 +329,318 @@ function getCaseById(
             caseId
         )
     );
+}
+
+//loads a listing for reporting
+
+function getListingForReport(
+    listingId
+) {
+    return db.prepare(`
+        SELECT
+            listing_id,
+            seller_id,
+            title,
+            status
+
+        FROM listings
+
+        WHERE
+            listing_id = ?
+    `).get(
+        Number(
+            listingId
+        )
+    );
+}
+
+//checks whether the user already has an open report
+
+function getExistingReport(
+    listingId,
+    reporterId
+) {
+    return db.prepare(`
+        SELECT
+            report_id,
+            moderation_case_id,
+            status
+
+        FROM reports
+
+        WHERE
+            listing_id = ?
+            AND reporter_id = ?
+            AND status IN (
+                'submitted',
+                'reviewing'
+            )
+
+        ORDER BY
+            submitted_at DESC
+
+        LIMIT 1
+    `).get(
+        Number(
+            listingId
+        ),
+        Number(
+            reporterId
+        )
+    );
+}
+
+//creates a report and moderation case
+
+const createReportTransaction =
+    db.transaction(
+        ({
+            listingId,
+            reporterId,
+            reportType,
+            reason,
+            description
+        }) => {
+            const listing =
+                getListingForReport(
+                    listingId
+                );
+
+            if (!listing) {
+                return {
+                    success: false,
+                    status:
+                        "not-found",
+                    message:
+                        "The listing could not be found."
+                };
+            }
+
+            if (
+                listing.status ===
+                    "removed"
+            ) {
+                return {
+                    success: false,
+                    status:
+                        "unavailable",
+                    message:
+                        "This listing is no longer available for reporting."
+                };
+            }
+
+            if (
+                Number(
+                    listing.seller_id
+                ) ===
+                Number(
+                    reporterId
+                )
+            ) {
+                return {
+                    success: false,
+                    status:
+                        "own-listing",
+                    message:
+                        "You cannot report your own listing."
+                };
+            }
+
+            if (
+                !validateReportType(
+                    reportType
+                )
+            ) {
+                return {
+                    success: false,
+                    status:
+                        "invalid-type",
+                    message:
+                        "Please select a valid report type."
+                };
+            }
+
+            const cleanReason =
+                String(
+                    reason ||
+                    ""
+                )
+                    .trim();
+
+            const cleanDescription =
+                String(
+                    description ||
+                    ""
+                )
+                    .trim();
+
+            if (!cleanReason) {
+                return {
+                    success: false,
+                    status:
+                        "missing-reason",
+                    message:
+                        "Please provide a reason for the report."
+                };
+            }
+
+            const existingReport =
+                getExistingReport(
+                    listingId,
+                    reporterId
+                );
+
+            if (existingReport) {
+                return {
+                    success: false,
+                    status:
+                        "already-reported",
+                    message:
+                        "You already have an active report for this listing."
+                };
+            }
+
+            const riskLevel =
+                getRiskLevel(
+                    reportType
+                );
+
+            //creates the moderation case
+
+            const caseResult =
+                db.prepare(`
+                    INSERT INTO moderation_cases (
+                        listing_id,
+                        moderator_id,
+                        flag_reason,
+                        report_type,
+                        risk_level,
+                        evidence,
+                        additional_notes,
+                        status
+                    )
+
+                    VALUES (
+                        ?,
+                        NULL,
+                        ?,
+                        ?,
+                        ?,
+                        ?,
+                        ?,
+                        'awaiting'
+                    )
+                `).run(
+                    Number(
+                        listingId
+                    ),
+                    cleanReason,
+                    reportType,
+                    riskLevel,
+                    "User-submitted report.",
+                    cleanDescription ||
+                        null
+                );
+
+            const caseId =
+                Number(
+                    caseResult
+                        .lastInsertRowid
+                );
+
+            //creates the linked user report
+
+            const reportResult =
+                db.prepare(`
+                    INSERT INTO reports (
+                        listing_id,
+                        reporter_id,
+                        moderation_case_id,
+                        reason,
+                        description,
+                        status
+                    )
+
+                    VALUES (
+                        ?,
+                        ?,
+                        ?,
+                        ?,
+                        ?,
+                        'reviewing'
+                    )
+                `).run(
+                    Number(
+                        listingId
+                    ),
+                    Number(
+                        reporterId
+                    ),
+                    caseId,
+                    cleanReason,
+                    cleanDescription ||
+                        null
+                );
+
+            return {
+                success: true,
+
+                status:
+                    "reported",
+
+                message:
+                    "The listing has been reported for moderator review.",
+
+                reportId:
+                    Number(
+                        reportResult
+                            .lastInsertRowid
+                    ),
+
+                caseId,
+
+                listingId:
+                    Number(
+                        listingId
+                    ),
+
+                riskLevel
+            };
+        }
+    );
+
+//submits a listing report
+
+function createReport({
+    listingId,
+    reporterId,
+    reportType,
+    reason,
+    description = null
+}) {
+    return createReportTransaction({
+        listingId:
+            Number(
+                listingId
+            ),
+
+        reporterId:
+            Number(
+                reporterId
+            ),
+
+        reportType:
+            String(
+                reportType ||
+                ""
+            )
+                .trim()
+                .toLowerCase(),
+
+        reason,
+
+        description
+    });
 }
 
 //updates a moderation decision
@@ -517,7 +883,9 @@ function updateCase({
 
 module.exports = {
     validateDecision,
+    validateReportType,
     getCases,
     getCaseById,
+    createReport,
     updateCase
 };

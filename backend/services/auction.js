@@ -67,7 +67,9 @@ function formatTimeRemaining(
 
 //maps database rows for the frontend
 
-function mapAuction(row) {
+function mapAuction(
+    row
+) {
     if (!row) {
         return null;
     }
@@ -89,6 +91,9 @@ function mapAuction(row) {
 
         listingId:
             row.listing_id,
+
+        sellerId:
+            row.seller_id,
 
         title:
             row.title,
@@ -130,12 +135,14 @@ function mapAuction(row) {
 
         bidCount:
             Number(
-                row.bid_count || 0
+                row.bid_count ||
+                0
             ),
 
         activeBidders:
             Number(
-                row.active_bidders || 0
+                row.active_bidders ||
+                0
             ),
 
         status:
@@ -171,6 +178,7 @@ function getAuctionQuery() {
             auctions.current_highest_bid,
             auctions.status AS auction_status,
 
+            listings.seller_id,
             listings.title,
             listings.description,
             listings.condition,
@@ -187,33 +195,43 @@ function getAuctionQuery() {
             users.username AS seller,
 
             (
-                SELECT COUNT(*)
+                SELECT
+                    COUNT(*)
+
                 FROM bids
+
                 WHERE
                     bids.auction_id =
-                    auctions.auction_id
+                        auctions.auction_id
             ) AS bid_count,
 
             (
-                SELECT COUNT(
-                    DISTINCT bids.bidder_id
-                )
+                SELECT
+                    COUNT(
+                        DISTINCT bids.bidder_id
+                    )
+
                 FROM bids
+
                 WHERE
                     bids.auction_id =
-                    auctions.auction_id
+                        auctions.auction_id
             ) AS active_bidders,
 
             (
                 SELECT
                     listing_images.file_path
+
                 FROM listing_images
+
                 WHERE
                     listing_images.listing_id =
-                    listings.listing_id
+                        listings.listing_id
+
                 ORDER BY
                     listing_images.display_order
                     ASC
+
                 LIMIT 1
             ) AS image_path
 
@@ -235,7 +253,9 @@ function getAuctionQuery() {
 
 //returns one auction
 
-function getById(id) {
+function getById(
+    id
+) {
     const row =
         db.prepare(`
             ${getAuctionQuery()}
@@ -243,7 +263,9 @@ function getById(id) {
             WHERE
                 auctions.auction_id = ?
         `).get(
-            Number(id)
+            Number(
+                id
+            )
         );
 
     return mapAuction(
@@ -324,7 +346,9 @@ function browse({
         );
     }
 
-    if (search.trim()) {
+    if (
+        search.trim()
+    ) {
         const searchValue =
             `%${search
                 .trim()
@@ -336,7 +360,12 @@ function browse({
                     LIKE ?
                 OR LOWER(listings.description)
                     LIKE ?
-                OR LOWER(COALESCE(listings.brand, ''))
+                OR LOWER(
+                    COALESCE(
+                        listings.brand,
+                        ''
+                    )
+                )
                     LIKE ?
                 OR LOWER(categories.name)
                     LIKE ?
@@ -356,7 +385,9 @@ function browse({
 
     let orderBy;
 
-    switch (sort) {
+    switch (
+        sort
+    ) {
         case "featured":
             orderBy = `
                 bid_count DESC,

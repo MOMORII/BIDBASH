@@ -9,11 +9,14 @@ block content
             .auction-image-panel
 
                 if auction.imagePath
+
                     img.auction-product-image(
                         src=auction.imagePath
                         alt=auction.title
                     )
+
                 else
+
                     .image-placeholder.large
                         | Product Image
 
@@ -26,14 +29,17 @@ block content
                 .product-meta
 
                     p
+
                         strong Condition:
                         |  #{auction.condition}
 
                     p
+
                         strong Brand:
                         |  #{auction.brand}
 
                     p
+
                         strong Seller:
                         |  #{auction.seller}
 
@@ -42,17 +48,23 @@ block content
                 .auction-status-panel
 
                     .status-item
+
                         span.label Current Bid
+
                         strong#auction-current-bid
                             | £#{auction.currentBid.toFixed(2)}
 
                     .status-item
+
                         span.label Minimum Next Bid
+
                         strong#auction-minimum-bid
                             | £#{auction.minimumBid.toFixed(2)}
 
                     .status-item
+
                         span.label Time Remaining
+
                         strong= auction.timeRemaining
 
                 if user
@@ -86,8 +98,18 @@ block content
                     .auction-message
 
                         p
+
                             strong Status:
                             |  Place a valid bid to enter this auction.
+
+                    if Number(user.id) !== Number(auction.sellerId)
+
+                        .auction-report-section
+
+                            button.secondary-button#report-listing-button(
+                                type="button"
+                            )
+                                | Report Listing
 
                 else
 
@@ -104,6 +126,12 @@ block content
                         )
                             | Login to Bid
 
+                    .auction-report-section
+
+                        a.secondary-button(
+                            href="/login"
+                        )
+                            | Login to Report Listing
 
         section.auction-support
 
@@ -136,7 +164,6 @@ block content
                 p
                     | #{auction.activeBidders} active bidders
 
-
     if user
 
         //-displays bid confirmation and bid result feedback
@@ -162,7 +189,6 @@ block content
                         aria-label="Close bid confirmation"
                     )
                         | ×
-
 
                 .bid-confirmation-summary#bid-confirmation-summary
 
@@ -198,10 +224,8 @@ block content
                         strong#confirmation-minimum-bid
                             | £#{auction.minimumBid.toFixed(2)}
 
-
                 p.bid-confirmation-note#bid-confirmation-note
-                    | All bids are binding. By confirming, you agree to BIDBASH's Terms & Conditions.
-
+                    | All bids are binding. By confirming, you agree to BIDBASH's Terms *&* Conditions.
 
                 .modal-actions#bid-confirmation-actions
 
@@ -216,7 +240,6 @@ block content
                     )
                         | Confirm Bid
 
-
                 .bid-result-content#bid-result-content(
                     hidden
                 )
@@ -227,7 +250,6 @@ block content
                         hidden
                     )
 
-
                 .modal-actions#bid-result-actions(
                     hidden
                 )
@@ -237,4 +259,120 @@ block content
                     )
                         | Continue
 
+        if Number(user.id) !== Number(auction.sellerId)
 
+            //-displays listing report form
+
+            .modal-overlay#report-listing-modal(
+                hidden
+            )
+
+                .modal-card.listing-modal-card
+
+                    .listing-modal-header
+
+                        div
+
+                            h2 Report Listing
+
+                            p
+                                | Tell us why this listing should be reviewed by a moderator.
+
+                        button.modal-close#report-listing-close(
+                            type="button"
+                            aria-label="Close report listing form"
+                        )
+                            | ×
+
+                    form#report-listing-form(
+                        data-listing-id=auction.listingId
+                    )
+
+                        .form-group
+
+                            label(
+                                for="report-type"
+                            )
+                                | Report Type
+
+                            select#report-type(
+                                name="reportType"
+                                required
+                            )
+
+                                option(
+                                    value=""
+                                )
+                                    | Select Report Type
+
+                                option(
+                                    value="prohibited"
+                                )
+                                    | Prohibited Item
+
+                                option(
+                                    value="counterfeit"
+                                )
+                                    | Counterfeit
+
+                                option(
+                                    value="misleading"
+                                )
+                                    | Misleading Listing
+
+                                option(
+                                    value="unsafe"
+                                )
+                                    | Unsafe Item
+
+                                option(
+                                    value="restricted"
+                                )
+                                    | Restricted Listing
+
+                        .form-group
+
+                            label(
+                                for="report-reason"
+                            )
+                                | Reason
+
+                            input#report-reason(
+                                type="text"
+                                name="reason"
+                                placeholder="Briefly explain the issue"
+                                required
+                            )
+
+                        .form-group
+
+                            label(
+                                for="report-description"
+                            )
+                                | Additional Details
+
+                            textarea#report-description(
+                                name="description"
+                                rows="5"
+                                placeholder="Add any useful details for the moderator"
+                            )
+
+                        p.form-message.form-error#report-listing-error(
+                            hidden
+                        )
+
+                        p.form-message.form-success#report-listing-success(
+                            hidden
+                        )
+
+                        .modal-actions
+
+                            button.secondary-button#report-listing-cancel(
+                                type="button"
+                            )
+                                | Cancel
+
+                            button.primary-button#submit-report-button(
+                                type="submit"
+                            )
+                                | Submit Report

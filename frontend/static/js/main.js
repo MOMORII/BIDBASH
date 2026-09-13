@@ -463,6 +463,342 @@ if (createListingModal) {
         );
 }
 
+//finds listing report controls
+
+const reportListingButton =
+    document.getElementById(
+        "report-listing-button"
+    );
+
+const reportListingModal =
+    document.getElementById(
+        "report-listing-modal"
+    );
+
+const reportListingClose =
+    document.getElementById(
+        "report-listing-close"
+    );
+
+const reportListingCancel =
+    document.getElementById(
+        "report-listing-cancel"
+    );
+
+const reportListingForm =
+    document.getElementById(
+        "report-listing-form"
+    );
+
+const reportType =
+    document.getElementById(
+        "report-type"
+    );
+
+const reportReason =
+    document.getElementById(
+        "report-reason"
+    );
+
+const reportDescription =
+    document.getElementById(
+        "report-description"
+    );
+
+const reportListingError =
+    document.getElementById(
+        "report-listing-error"
+    );
+
+const reportListingSuccess =
+    document.getElementById(
+        "report-listing-success"
+    );
+
+const submitReportButton =
+    document.getElementById(
+        "submit-report-button"
+    );
+
+//clears report form feedback
+
+function clearReportFeedback() {
+    if (reportListingError) {
+        reportListingError.hidden =
+            true;
+
+        reportListingError.textContent =
+            "";
+    }
+
+    if (reportListingSuccess) {
+        reportListingSuccess.hidden =
+            true;
+
+        reportListingSuccess.textContent =
+            "";
+    }
+}
+
+//opens the report listing overlay
+
+function openReportListing() {
+    if (!reportListingModal) {
+        return;
+    }
+
+    clearReportFeedback();
+
+    reportListingModal.hidden =
+        false;
+}
+
+//closes the report listing overlay
+
+function closeReportListing() {
+    if (!reportListingModal) {
+        return;
+    }
+
+    reportListingModal.hidden =
+        true;
+
+    clearReportFeedback();
+}
+
+//opens the report form
+
+if (
+    reportListingButton &&
+    reportListingModal
+) {
+    reportListingButton
+        .addEventListener(
+            "click",
+            openReportListing
+        );
+}
+
+//closes the report form using close
+
+if (reportListingClose) {
+    reportListingClose
+        .addEventListener(
+            "click",
+            closeReportListing
+        );
+}
+
+//closes the report form using cancel
+
+if (reportListingCancel) {
+    reportListingCancel
+        .addEventListener(
+            "click",
+            closeReportListing
+        );
+}
+
+//closes the report form using background
+
+if (reportListingModal) {
+    reportListingModal
+        .addEventListener(
+            "click",
+            event => {
+                if (
+                    event.target ===
+                    reportListingModal
+                ) {
+                    closeReportListing();
+                }
+            }
+        );
+}
+
+//submits a listing report
+
+async function submitListingReport(
+    event
+) {
+    event.preventDefault();
+
+    if (
+        !reportListingForm ||
+        !reportType ||
+        !reportReason ||
+        !submitReportButton
+    ) {
+        return;
+    }
+
+    clearReportFeedback();
+
+    const listingId =
+        Number(
+            reportListingForm
+                .dataset
+                .listingId
+        );
+
+    const selectedType =
+        reportType
+            .value
+            .trim();
+
+    const reason =
+        reportReason
+            .value
+            .trim();
+
+    const description =
+        reportDescription
+            ? reportDescription
+                .value
+                .trim()
+            : "";
+
+    if (
+        !Number.isFinite(
+            listingId
+        )
+    ) {
+        if (reportListingError) {
+            reportListingError.textContent =
+                "The listing could not be identified.";
+
+            reportListingError.hidden =
+                false;
+        }
+
+        return;
+    }
+
+    if (!selectedType) {
+        if (reportListingError) {
+            reportListingError.textContent =
+                "Please select a report type.";
+
+            reportListingError.hidden =
+                false;
+        }
+
+        return;
+    }
+
+    if (!reason) {
+        if (reportListingError) {
+            reportListingError.textContent =
+                "Please provide a reason for the report.";
+
+            reportListingError.hidden =
+                false;
+        }
+
+        return;
+    }
+
+    submitReportButton.disabled =
+        true;
+
+    submitReportButton.textContent =
+        "Submitting...";
+
+    try {
+        const response =
+            await fetch(
+                `/api/listings/${listingId}/report`,
+                {
+                    method:
+                        "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body:
+                        JSON.stringify({
+                            reportType:
+                                selectedType,
+
+                            reason,
+
+                            description
+                        })
+                }
+            );
+
+        const result =
+            await response.json();
+
+        if (!response.ok) {
+            if (reportListingError) {
+                reportListingError.textContent =
+                    result.message ||
+                    result.error ||
+                    "The listing could not be reported.";
+
+                reportListingError.hidden =
+                    false;
+            }
+
+            submitReportButton.disabled =
+                false;
+
+            submitReportButton.textContent =
+                "Submit Report";
+
+            return;
+        }
+
+        if (reportListingSuccess) {
+            reportListingSuccess.textContent =
+                result.message ||
+                "The listing has been reported for moderator review.";
+
+            reportListingSuccess.hidden =
+                false;
+        }
+
+        reportListingForm.reset();
+
+        submitReportButton.textContent =
+            "Report Submitted";
+
+        if (reportListingButton) {
+            reportListingButton.disabled =
+                true;
+
+            reportListingButton.textContent =
+                "Report Submitted";
+        }
+    } catch (error) {
+        if (reportListingError) {
+            reportListingError.textContent =
+                "BIDBASH could not submit the report. Please try again.";
+
+            reportListingError.hidden =
+                false;
+        }
+
+        submitReportButton.disabled =
+            false;
+
+        submitReportButton.textContent =
+            "Submit Report";
+    }
+}
+
+//handles report form submission
+
+if (reportListingForm) {
+    reportListingForm.addEventListener(
+        "submit",
+        submitListingReport
+    );
+}
+
 //finds the colour theme controls
 
 const darkModeToggle =
@@ -1686,7 +2022,7 @@ if (bidModal) {
         event => {
             if (
                 event.target ===
-                bidModal
+                    bidModal
             ) {
                 closeBidModal();
             }
@@ -1700,12 +2036,42 @@ document.addEventListener(
     "keydown",
     event => {
         if (
-            event.key ===
-                "Escape" &&
+            event.key !==
+            "Escape"
+        ) {
+            return;
+        }
+
+        if (
             bidModal &&
             !bidModal.hidden
         ) {
             closeBidModal();
+        }
+
+        if (
+            reportListingModal &&
+            !reportListingModal.hidden
+        ) {
+            closeReportListing();
+        }
+
+        if (
+            createListingModal &&
+            !createListingModal.hidden
+        ) {
+            closeCreateListing();
+        }
+
+        if (
+            sidebarDrawer &&
+            sidebarDrawer
+                .classList
+                .contains(
+                    "open"
+                )
+        ) {
+            closeSidebar();
         }
     }
 );

@@ -51,11 +51,14 @@ block content
                         .dashboard-image
 
                             if listing.imagePath
+
                                 img(
                                     src=listing.imagePath
                                     alt=listing.title
                                 )
+
                             else
+
                                 | Product Image
 
                         .dashboard-item-content
@@ -79,6 +82,7 @@ block content
                         .dashboard-actions
 
                             if listing.auctionId
+
                                 a.secondary-button(
                                     href=`/auction/${listing.auctionId}`
                                 ) View Auction
@@ -92,7 +96,9 @@ block content
             p.dashboard-empty
                 | You currently have no active listings.
 
-    section.dashboard-section.dashboard-panel#successful-sales(hidden)
+    section.dashboard-section.dashboard-panel#successful-sales(
+        hidden
+    )
 
         if listings.successful.length
 
@@ -105,11 +111,14 @@ block content
                         .dashboard-image
 
                             if listing.imagePath
+
                                 img(
                                     src=listing.imagePath
                                     alt=listing.title
                                 )
+
                             else
+
                                 | Product Image
 
                         .dashboard-item-content
@@ -158,6 +167,7 @@ block content
                         .dashboard-actions
 
                             if listing.auctionId
+
                                 a.secondary-button(
                                     href=`/auction/${listing.auctionId}`
                                 ) View Auction
@@ -189,7 +199,9 @@ block content
             p.dashboard-empty
                 | You currently have no successful sales.
 
-    section.dashboard-section.dashboard-panel#listing-history(hidden)
+    section.dashboard-section.dashboard-panel#listing-history(
+        hidden
+    )
 
         if listings.history.length
 
@@ -202,11 +214,14 @@ block content
                         .dashboard-image
 
                             if listing.imagePath
+
                                 img(
                                     src=listing.imagePath
                                     alt=listing.title
                                 )
+
                             else
+
                                 | Product Image
 
                         .dashboard-item-content
@@ -232,6 +247,7 @@ block content
                         .dashboard-actions
 
                             if listing.auctionId
+
                                 a.secondary-button(
                                     href=`/auction/${listing.auctionId}`
                                 ) View Details
@@ -273,11 +289,14 @@ block content
             form.listing-form(
                 method="POST"
                 action="/listings/new"
+                enctype="multipart/form-data"
             )
 
                 .form-group
 
-                    label(for="title") Listing Title
+                    label(
+                        for="title"
+                    ) Listing Title
 
                     input#title(
                         type="text"
@@ -290,42 +309,91 @@ block content
 
                     .form-group
 
-                        label(for="category") Category
+                        label(
+                            for="category"
+                        ) Category
 
                         select#category(
                             name="category"
                             required
                         )
 
-                            option(value="") Select Category
-                            option(value="Electronics") Electronics
-                            option(value="Collectibles") Collectibles
-                            option(value="Fashion") Fashion
-                            option(value="Home") Home
-                            option(value="Gaming") Gaming
-                            option(value="Sports") Sports
-                            option(value="Books") Books
-                            option(value="Music") Music
+                            option(
+                                value=""
+                            ) Select Category
+
+                            option(
+                                value="Electronics"
+                            ) Electronics
+
+                            option(
+                                value="Collectibles"
+                            ) Collectibles
+
+                            option(
+                                value="Fashion"
+                            ) Fashion
+
+                            option(
+                                value="Home"
+                            ) Home
+
+                            option(
+                                value="Gaming"
+                            ) Gaming
+
+                            option(
+                                value="Sports"
+                            ) Sports
+
+                            option(
+                                value="Books"
+                            ) Books
+
+                            option(
+                                value="Music"
+                            ) Music
 
                     .form-group
 
-                        label(for="condition") Condition
+                        label(
+                            for="condition"
+                        ) Condition
 
                         select#condition(
                             name="condition"
                             required
                         )
 
-                            option(value="") Select Condition
-                            option(value="New") New
-                            option(value="Like New") Like New
-                            option(value="Very Good") Very Good
-                            option(value="Good") Good
-                            option(value="Used") Used
+                            option(
+                                value=""
+                            ) Select Condition
+
+                            option(
+                                value="New"
+                            ) New
+
+                            option(
+                                value="Like New"
+                            ) Like New
+
+                            option(
+                                value="Very Good"
+                            ) Very Good
+
+                            option(
+                                value="Good"
+                            ) Good
+
+                            option(
+                                value="Used"
+                            ) Used
 
                 .form-group
 
-                    label(for="brand") Brand
+                    label(
+                        for="brand"
+                    ) Brand
 
                     input#brand(
                         type="text"
@@ -335,7 +403,9 @@ block content
 
                 .form-group
 
-                    label(for="description") Description
+                    label(
+                        for="description"
+                    ) Description
 
                     textarea#description(
                         name="description"
@@ -348,7 +418,9 @@ block content
 
                     .form-group
 
-                        label(for="starting-price") Starting Price
+                        label(
+                            for="starting-price"
+                        ) Starting Price
 
                         input#starting-price(
                             type="number"
@@ -361,7 +433,9 @@ block content
 
                     .form-group
 
-                        label(for="bid-increment") Bid Increment
+                        label(
+                            for="bid-increment"
+                        ) Bid Increment
 
                         input#bid-increment(
                             type="number"
@@ -374,10 +448,18 @@ block content
 
                 .form-group
 
-                    label Listing Images
+                    label(
+                        for="listing-image"
+                    ) Listing Image
 
-                    .listing-image-placeholder
-                        | Image upload will be connected during file-storage implementation.
+                    input#listing-image(
+                        type="file"
+                        name="listingImage"
+                        accept=".jpg,.jpeg,.png,.webp"
+                    )
+
+                    p.form-help
+                        | Upload one JPG, JPEG, PNG or WEBP image up to 5 MB.
 
                 .modal-actions
 

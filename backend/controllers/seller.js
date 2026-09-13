@@ -176,6 +176,11 @@ function create(
         );
     }
 
+    const imagePath =
+        req.file
+            ? `/uploads/${req.file.filename}`
+            : null;
+
     const result =
         listingService.create({
             sellerId:
@@ -210,7 +215,9 @@ function create(
             returnInfo:
                 returnInfo
                     ? returnInfo.trim()
-                    : null
+                    : null,
+
+            imagePath
         });
 
     if (!result.success) {
