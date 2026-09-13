@@ -18,11 +18,6 @@ html(lang="en")
             href="/css/style.css"
         )
 
-        link(
-            rel="stylesheet"
-            href="/css/moderator.css"
-        )
-
     body.moderator-body
 
         header.moderator-global-nav
@@ -67,7 +62,8 @@ html(lang="en")
             .moderator-nav-account
 
                 span
-                    | Moderator: 
+                    | Moderator:
+                    |  
                     strong= user.username
 
                 button#dark-mode-toggle.theme-toggle(
@@ -204,5 +200,4 @@ html(lang="en")
                 a(href="/help") Help
 
         script(src="/js/main.js")
-
         script(src="/js/moderator.js")

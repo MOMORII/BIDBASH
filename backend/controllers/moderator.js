@@ -27,7 +27,7 @@ function dashboard(req, res) {
     const cases =
         sortByRisk(moderationCases);
 
-    res.render("mod-dashboard", {
+    res.render("moderator", {
         pageTitle: "Moderation Dashboard - BIDBASH",
         cases
     });

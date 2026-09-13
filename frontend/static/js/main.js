@@ -2,97 +2,296 @@
 console.log("BIDBASH frontend JavaScript loaded");
 
 //finds the bidding controls on the auction page
-const placeBidButton = document.getElementById("place-bid-button");
-const bidAmountInput = document.getElementById("bid-amount");
-const confirmationModal = document.getElementById("bid-confirmation-modal");
-const confirmationBidAmount = document.getElementById("confirmation-bid-amount");
-const confirmBidButton = document.getElementById("confirm-bid-button");
-const cancelBidButton = document.getElementById("cancel-bid-button");
-const closeBidButton = document.getElementById("bid-confirmation-close");
 
-//runs bidding controls only when the authenticated controls exist
+const placeBidButton =
+    document.getElementById(
+        "place-bid-button"
+    );
+
+const bidAmountInput =
+    document.getElementById(
+        "bid-amount"
+    );
+
+const confirmationModal =
+    document.getElementById(
+        "bid-confirmation-modal"
+    );
+
+const confirmationBidAmount =
+    document.getElementById(
+        "confirmation-bid-amount"
+    );
+
+const confirmBidButton =
+    document.getElementById(
+        "confirm-bid-button"
+    );
+
+const cancelBidButton =
+    document.getElementById(
+        "cancel-bid-button"
+    );
+
+const closeBidButton =
+    document.getElementById(
+        "bid-confirmation-close"
+    );
+
+const bidModalTitle =
+    document.getElementById(
+        "bid-modal-title"
+    );
+
+const bidModalMessage =
+    document.getElementById(
+        "bid-modal-message"
+    );
+
+const bidConfirmationSummary =
+    document.getElementById(
+        "bid-confirmation-summary"
+    );
+
+const bidConfirmationNote =
+    document.getElementById(
+        "bid-confirmation-note"
+    );
+
+const bidConfirmationActions =
+    document.getElementById(
+        "bid-confirmation-actions"
+    );
+
+const bidResultActions =
+    document.getElementById(
+        "bid-result-actions"
+    );
+
+const bidResultClose =
+    document.getElementById(
+        "bid-result-close"
+    );
+
+//closes the bid confirmation overlay
+
+function closeBidConfirmation() {
+    if (confirmationModal) {
+        confirmationModal.hidden =
+            true;
+    }
+}
+
+//resets the bid confirmation overlay
+
+function resetBidConfirmation() {
+    if (bidModalTitle) {
+        bidModalTitle.textContent =
+            "Confirm Your Bid";
+    }
+
+    if (bidModalMessage) {
+        bidModalMessage.textContent =
+            "Review your bid before submitting it.";
+    }
+
+    if (bidConfirmationSummary) {
+        bidConfirmationSummary.hidden =
+            false;
+    }
+
+    if (bidConfirmationNote) {
+        bidConfirmationNote.hidden =
+            false;
+    }
+
+    if (bidConfirmationActions) {
+        bidConfirmationActions.hidden =
+            false;
+    }
+
+    if (bidResultActions) {
+        bidResultActions.hidden =
+            true;
+    }
+}
+
+//shows bid result feedback
+
+function showBidResult({
+    success,
+    message
+}) {
+    if (!confirmationModal) {
+        return;
+    }
+
+    if (bidModalTitle) {
+        bidModalTitle.textContent =
+            success
+                ? "Bid Accepted"
+                : "Bid Could Not Be Placed";
+    }
+
+    if (bidModalMessage) {
+        bidModalMessage.textContent =
+            message;
+    }
+
+    if (bidConfirmationSummary) {
+        bidConfirmationSummary.hidden =
+            true;
+    }
+
+    if (bidConfirmationNote) {
+        bidConfirmationNote.hidden =
+            true;
+    }
+
+    if (bidConfirmationActions) {
+        bidConfirmationActions.hidden =
+            true;
+    }
+
+    if (bidResultActions) {
+        bidResultActions.hidden =
+            false;
+    }
+}
+
+//runs bidding controls only when available
+
 if (
     placeBidButton &&
     bidAmountInput &&
     confirmationModal &&
     confirmationBidAmount &&
-    confirmBidButton &&
-    cancelBidButton
+    confirmBidButton
 ) {
-    //opens the confirmation overlay using the entered bid
-    placeBidButton.addEventListener("click", () => {
-        const bidAmount = Number(bidAmountInput.value);
-
-        //rejects empty or invalid bid input
-        if (!Number.isFinite(bidAmount) || bidAmount <= 0) {
-            alert("Please enter a valid bid amount.");
-            return;
-        }
-
-        confirmationBidAmount.textContent =
-            `£${bidAmount.toFixed(2)}`;
-
-        confirmationModal.hidden = false;
-    });
-
-    //closes the bid confirmation overlay
-    function closeBidConfirmation() {
-        confirmationModal.hidden = true;
-    }
-
-    //closes the overlay using cancel
-    cancelBidButton.addEventListener(
+    placeBidButton.addEventListener(
         "click",
-        closeBidConfirmation
+        () => {
+            const bidAmount =
+                Number(
+                    bidAmountInput.value
+                );
+
+            if (
+                !Number.isFinite(
+                    bidAmount
+                ) ||
+                bidAmount <= 0
+            ) {
+                showBidResult({
+                    success: false,
+                    message:
+                        "Please enter a valid bid amount."
+                });
+
+                confirmationModal.hidden =
+                    false;
+
+                return;
+            }
+
+            resetBidConfirmation();
+
+            confirmationBidAmount
+                .textContent =
+                `£${bidAmount.toFixed(2)}`;
+
+            confirmationModal.hidden =
+                false;
+        }
     );
 
-    //closes the overlay using the close icon
-    if (closeBidButton) {
-        closeBidButton.addEventListener(
+    confirmBidButton
+        .addEventListener(
+            "click",
+            async () => {
+                const auctionId =
+                    confirmBidButton
+                        .dataset
+                        .auctionId;
+
+                const response =
+                    await fetch(
+                        "/api/bids",
+                        {
+                            method: "POST",
+                            headers: {
+                                "Content-Type":
+                                    "application/json"
+                            },
+                            body:
+                                JSON.stringify({
+                                    auctionId,
+                                    amount:
+                                        bidAmountInput.value
+                                })
+                        }
+                    );
+
+                const data =
+                    await response.json();
+
+                showBidResult({
+                    success:
+                        response.ok,
+                    message:
+                        data.message ||
+                        data.error ||
+                        "The bid could not be processed."
+                });
+            }
+        );
+}
+
+//closes using cancel
+
+if (cancelBidButton) {
+    cancelBidButton
+        .addEventListener(
             "click",
             closeBidConfirmation
         );
-    }
+}
 
-    //closes the overlay when its background is selected
-    confirmationModal.addEventListener("click", event => {
-        if (event.target === confirmationModal) {
-            closeBidConfirmation();
-        }
-    });
+//closes using the close icon
 
-    //submits the confirmed bid to the protected backend route
-    confirmBidButton.addEventListener("click", async () => {
-        const auctionId =
-            confirmBidButton.dataset.auctionId;
+if (closeBidButton) {
+    closeBidButton
+        .addEventListener(
+            "click",
+            closeBidConfirmation
+        );
+}
 
-        const response = await fetch("/api/bids", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                auctionId,
-                amount: bidAmountInput.value
-            })
-        });
+//closes the result state
 
-        const data = await response.json();
+if (bidResultClose) {
+    bidResultClose
+        .addEventListener(
+            "click",
+            closeBidConfirmation
+        );
+}
 
-        //shows backend validation errors
-        if (!response.ok) {
-            alert(
-                data.error ||
-                "The bid could not be placed."
-            );
+//closes using the modal background
 
-            return;
-        }
-
-        alert(data.message);
-
-        closeBidConfirmation();
-    });
+if (confirmationModal) {
+    confirmationModal
+        .addEventListener(
+            "click",
+            event => {
+                if (
+                    event.target ===
+                    confirmationModal
+                ) {
+                    closeBidConfirmation();
+                }
+            }
+        );
 }
 
 //finds the dashboard tabs and content panels

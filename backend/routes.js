@@ -45,8 +45,6 @@ router.post("/age-check", (req, res) => {
 router.use(requireAgeConfirmation);
 
 //renders the homepage with temporary auction data
-//renders the homepage with temporary auction data
-
 router.get("/", (req, res) => {
     if (
         req.session.user &&
@@ -57,25 +55,34 @@ router.get("/", (req, res) => {
 
     res.render("index", {
         pageTitle: "BIDBASH",
-        featuredAuctions: auctionService.getFeatured(),
-        endingSoonAuctions: auctionService.getEndingSoon()
+        featuredAuctions:
+            auctionService.getFeatured(),
+        endingSoonAuctions:
+            auctionService.getEndingSoon()
     });
 });
 
 //renders filtered and sorted browse auction results
 router.get("/browse", (req, res) => {
-    const sort = req.query.sort || "default";
-    const category = req.query.category || "all";
-    const search = req.query.search || "";
+    const sort =
+        req.query.sort || "default";
 
-    const auctions = auctionService.browse({
-        sort,
-        category,
-        search
-    });
+    const category =
+        req.query.category || "all";
+
+    const search =
+        req.query.search || "";
+
+    const auctions =
+        auctionService.browse({
+            sort,
+            category,
+            search
+        });
 
     res.render("browse", {
-        pageTitle: "Browse Auctions - BIDBASH",
+        pageTitle:
+            "Browse Auctions - BIDBASH",
         auctions,
         activeSort: sort,
         activeCategory: category,
@@ -84,29 +91,44 @@ router.get("/browse", (req, res) => {
 });
 
 //renders the selected auction page
-router.get("/auction/:id", auction.show);
+router.get(
+    "/auction/:id",
+    auction.show
+);
 
 //renders the login page
-router.get("/login", auth.showLogin);
+router.get(
+    "/login",
+    auth.showLogin
+);
 
 //handles login submissions
-router.post("/login", auth.login);
+router.post(
+    "/login",
+    auth.login
+);
 
 //ends the active session
-router.post("/logout", auth.logout);
+router.post(
+    "/logout",
+    auth.logout
+);
 
 //renders the temporary registration page
 router.get("/register", (req, res) => {
     res.render("register", {
-        pageTitle: "Sign Up - BIDBASH"
+        pageTitle:
+            "Sign Up - BIDBASH"
     });
 });
 
 //prevents registration storage before sqlite is connected
 router.post("/register", (req, res) => {
     res.render("register", {
-        pageTitle: "Sign Up - BIDBASH",
-        message: "Registration storage will be enabled when the BIDBASH database is connected."
+        pageTitle:
+            "Sign Up - BIDBASH",
+        message:
+            "Registration storage will be enabled when the BIDBASH database is connected."
     });
 });
 
@@ -140,11 +162,25 @@ router.get(
     bidder.dashboard
 );
 
-//accepts authenticated bid requests
+//places authenticated bids
 router.post(
     "/api/bids",
     requireLogin,
-    auction.placeBid
+    bidder.placeBid
+);
+
+//returns unread notifications
+router.get(
+    "/api/notifications",
+    requireLogin,
+    bidder.getNotifications
+);
+
+//marks notifications as read
+router.post(
+    "/api/notifications/:id/read",
+    requireLogin,
+    bidder.readNotification
 );
 
 //restricts moderation tools to moderators
@@ -155,7 +191,6 @@ router.get(
 );
 
 //handles moderator case decisions
-
 router.post(
     "/moderation/:id/action",
     requireModerator,
@@ -163,34 +198,34 @@ router.post(
 );
 
 //renders the help page
-
 router.get("/help", (req, res) => {
     res.render("help", {
-        pageTitle: "Help | BIDBASH"
+        pageTitle:
+            "Help | BIDBASH"
     });
 });
 
 //renders the about page
-
 router.get("/about", (req, res) => {
     res.render("about", {
-        pageTitle: "About Us | BIDBASH"
+        pageTitle:
+            "About Us | BIDBASH"
     });
 });
 
 //renders the privacy page
-
 router.get("/privacy", (req, res) => {
     res.render("privacy", {
-        pageTitle: "Privacy Policy | BIDBASH"
+        pageTitle:
+            "Privacy Policy | BIDBASH"
     });
 });
 
 //renders the terms page
-
 router.get("/terms", (req, res) => {
     res.render("terms", {
-        pageTitle: "Terms & Conditions | BIDBASH"
+        pageTitle:
+            "Terms & Conditions | BIDBASH"
     });
 });
 

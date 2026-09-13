@@ -1,16 +1,24 @@
 extends layout
 
 block content
+
     section.auction-page
+
         .auction-main
+
             .auction-image-panel
-                .image-placeholder.large Product Image
+
+                .image-placeholder.large
+                    | Product Image
 
             .auction-info
+
                 p.auction-category= auction.category
+
                 h1= auction.title
 
                 .product-meta
+
                     p
                         strong Condition:
                         |  #{auction.condition}
@@ -26,23 +34,36 @@ block content
                 p.product-description= auction.description
 
                 .auction-status-panel
+
                     .status-item
+
                         span.label Current Bid
-                        strong £#{auction.currentBid.toFixed(2)}
+
+                        strong
+                            | £#{auction.currentBid.toFixed(2)}
 
                     .status-item
+
                         span.label Minimum Next Bid
-                        strong £#{auction.minimumBid.toFixed(2)}
+
+                        strong
+                            | £#{auction.minimumBid.toFixed(2)}
 
                     .status-item
+
                         span.label Time Remaining
+
                         strong= auction.timeRemaining
 
                 if user
+
                     form.bid-panel
-                        label(for="bid-amount") Your Bid
+
+                        label(for="bid-amount")
+                            | Your Bid
 
                         .bid-input-row
+
                             input#bid-amount(
                                 type="number"
                                 inputmode="decimal"
@@ -52,85 +73,146 @@ block content
                                 aria-label="Enter bid amount"
                             )
 
-                            button.primary-button(
+                            button.primary-button#place-bid-button(
                                 type="button"
-                                id="place-bid-button"
-                            ) Place Bid
+                            )
+                                | Place Bid
 
                         p.bid-help
                             | Type an amount or use the arrows. Minimum valid bid: £#{auction.minimumBid.toFixed(2)}
 
                     .auction-message
+
                         p
                             strong Status:
                             |  You are not currently bidding on this auction.
 
                 else
+
                     .bid-panel
-                        h3 Want to place a bid?
+
+                        h3
+                            | Want to place a bid?
 
                         p
                             | You must be logged into a registered BIDBASH account before placing a bid.
 
-                        a.primary-button(href="/login")
+                        a.primary-button(
+                            href="/login"
+                        )
                             | Login to Bid
 
         section.auction-support
+
             .auction-support-left
-                section.info-card
-                    h2 Delivery
-                    p Standard UK delivery available.
-                    p Estimated delivery: 3-5 working days.
 
                 section.info-card
-                    h2 Returns
-                    p Returns accepted within 14 days where applicable.
+
+                    h2
+                        | Delivery
+
+                    p
+                        | Standard UK delivery available.
+
+                    p
+                        | Estimated delivery: 3-5 working days.
+
+                section.info-card
+
+                    h2
+                        | Returns
+
+                    p
+                        | Returns accepted within 14 days where applicable.
 
             section.info-card.auction-activity-card
-                h2 Auction Activity
-                p #{auction.bidCount} bids placed
-                p #{auction.activeBidders} active bidders
+
+                h2
+                    | Auction Activity
+
+                p
+                    | #{auction.bidCount} bids placed
+
+                p
+                    | #{auction.activeBidders} active bidders
 
     if user
-        //- displays the bid confirmation overlay for authenticated users
+
+        //- displays the bid confirmation and result overlay
+
         .modal-overlay#bid-confirmation-modal(hidden)
+
             .modal-card.bid-modal-card
+
                 .listing-modal-header
+
                     div
-                        h2 Confirm Bid
-                        p Review your bid before submitting it.
+
+                        h2#bid-modal-title
+                            | Confirm Your Bid
+
+                        p#bid-modal-message
+                            | Review your bid before submitting it.
 
                     button.modal-close#bid-confirmation-close(
                         type="button"
                         aria-label="Close bid confirmation"
-                    ) ×
+                    )
+                        | ×
 
-                .bid-confirmation-summary
-                    .bid-confirmation-item
-                        span Item
-                        strong= auction.title
+                .bid-confirmation-summary#bid-confirmation-summary
 
                     .bid-confirmation-item
-                        span Your Bid
-                        strong#confirmation-bid-amount £0.00
+
+                        span
+                            | Item
+
+                        strong
+                            = auction.title
 
                     .bid-confirmation-item
-                        span Current Highest Bid
-                        strong £#{auction.currentBid.toFixed(2)}
+
+                        span
+                            | Your Bid
+
+                        strong#confirmation-bid-amount
+                            | £0.00
 
                     .bid-confirmation-item
-                        span Minimum Valid Bid
-                        strong £#{auction.minimumBid.toFixed(2)}
 
-                p.bid-confirmation-note
-                    | All bids are binding. By confirming, you agree to our platform's T&Cs.
+                        span
+                            | Current Highest Bid
 
-                .modal-actions
+                        strong
+                            | £#{auction.currentBid.toFixed(2)}
+
+                    .bid-confirmation-item
+
+                        span
+                            | Minimum Valid Bid
+
+                        strong
+                            | £#{auction.minimumBid.toFixed(2)}
+
+                p.bid-confirmation-note#bid-confirmation-note
+                    | All bids are binding. By confirming, you agree to BIDBASH's Terms & Conditions.
+
+                .modal-actions#bid-confirmation-actions
+
                     button.secondary-button#cancel-bid-button(
                         type="button"
-                    ) Cancel
+                    )
+                        | Cancel
 
                     button.primary-button#confirm-bid-button(
                         type="button"
                         data-auction-id=auction.id
-                    ) Confirm Bid
+                    )
+                        | Confirm Bid
+
+                .modal-actions#bid-result-actions(hidden)
+
+                    button.primary-button#bid-result-close(
+                        type="button"
+                    )
+                        | Continue
