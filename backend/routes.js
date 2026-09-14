@@ -94,6 +94,12 @@ function listingImageFilter(
         ".webp"
     ];
 
+    const allowedMimeTypes = [
+        "image/jpeg",
+        "image/png",
+        "image/webp"
+    ];
+
     const extension =
         path.extname(
             file.originalname
@@ -103,6 +109,9 @@ function listingImageFilter(
     if (
         !allowedExtensions.includes(
             extension
+        ) ||
+        !allowedMimeTypes.includes(
+            file.mimetype
         )
     ) {
         return callback(
@@ -329,6 +338,9 @@ router.post(
 router.post(
     "/api/listings/:id/edit",
     requireLogin,
+    uploadListingImage.single(
+        "listingImage"
+    ),
     seller.updateListing
 );
 
@@ -461,4 +473,5 @@ router.post(
     auction.reportListing
 );
 
-module.exports = router;
+module.exports =
+    router;

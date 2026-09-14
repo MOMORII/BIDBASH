@@ -281,6 +281,7 @@ function updateListing(
     if (!req.session.user) {
         return res.status(401).json({
             success: false,
+
             message:
                 "You must be signed in to edit a listing."
         });
@@ -308,6 +309,7 @@ function updateListing(
     ) {
         return res.status(400).json({
             success: false,
+
             message:
                 "Please complete all required listing fields."
         });
@@ -331,6 +333,7 @@ function updateListing(
     ) {
         return res.status(400).json({
             success: false,
+
             message:
                 "Starting price must be greater than £0."
         });
@@ -344,10 +347,16 @@ function updateListing(
     ) {
         return res.status(400).json({
             success: false,
+
             message:
                 "Bid increment must be greater than £0."
         });
     }
+
+    const imagePath =
+        req.file
+            ? `/uploads/${req.file.filename}`
+            : null;
 
     const result =
         listingService.update({
@@ -386,7 +395,9 @@ function updateListing(
             returnInfo:
                 returnInfo
                     ? returnInfo.trim()
-                    : null
+                    : null,
+
+            imagePath
         });
 
     if (!result.success) {

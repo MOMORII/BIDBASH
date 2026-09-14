@@ -501,6 +501,7 @@ const createListingTransaction =
             if (!categoryRecord) {
                 return {
                     success: false,
+
                     message:
                         "Please select a valid listing category."
                 };
@@ -539,20 +540,29 @@ const createListingTransaction =
                     Number(
                         sellerId
                     ),
+
                     categoryRecord.category_id,
+
                     title,
+
                     description,
+
                     condition,
+
                     brand ||
                         null,
+
                     Number(
                         startingPrice
                     ),
+
                     Number(
                         bidIncrement
                     ),
+
                     deliveryInfo ||
                         "Standard UK delivery available.",
+
                     returnInfo ||
                         "Returns accepted within 14 days."
                 );
@@ -608,9 +618,11 @@ const createListingTransaction =
                     )
                 `).run(
                     listingId,
+
                     formatDate(
                         startTime
                     ),
+
                     formatDate(
                         endTime
                     )
@@ -698,7 +710,8 @@ function update({
     startingPrice,
     bidIncrement,
     deliveryInfo = null,
-    returnInfo = null
+    returnInfo = null,
+    imagePath = null
 }) {
     const listing =
         getEditableListing(
@@ -708,8 +721,10 @@ function update({
     if (!listing) {
         return {
             success: false,
+
             status:
                 "not-found",
+
             message:
                 "Listing not found."
         };
@@ -725,8 +740,10 @@ function update({
     ) {
         return {
             success: false,
+
             status:
                 "forbidden",
+
             message:
                 "You cannot edit another user's listing."
         };
@@ -740,8 +757,10 @@ function update({
     ) {
         return {
             success: false,
+
             status:
                 "not-editable",
+
             message:
                 "Only active listings can be edited."
         };
@@ -755,8 +774,10 @@ function update({
     if (!categoryRecord) {
         return {
             success: false,
+
             status:
                 "invalid-category",
+
             message:
                 "Please select a valid listing category."
         };
@@ -793,52 +814,131 @@ function update({
     ) {
         return {
             success: false,
+
             status:
                 "pricing-locked",
+
             message:
                 "Starting price and bid increment cannot be changed after bids have been placed."
         };
     }
 
-    db.prepare(`
-        UPDATE listings
+    const updateListingTransaction =
+        db.transaction(
+            () => {
+                db.prepare(`
+                    UPDATE listings
 
-        SET
-            category_id = ?,
-            title = ?,
-            description = ?,
-            condition = ?,
-            brand = ?,
-            starting_price = ?,
-            bid_increment = ?,
-            delivery_info = ?,
-            return_info = ?,
-            updated_at =
-                CURRENT_TIMESTAMP
+                    SET
+                        category_id = ?,
+                        title = ?,
+                        description = ?,
+                        condition = ?,
+                        brand = ?,
+                        starting_price = ?,
+                        bid_increment = ?,
+                        delivery_info = ?,
+                        return_info = ?,
+                        updated_at =
+                            CURRENT_TIMESTAMP
 
-        WHERE
-            listing_id = ?
-            AND seller_id = ?
-    `).run(
-        categoryRecord.category_id,
-        title,
-        description,
-        condition,
-        brand ||
-            null,
-        numericStartingPrice,
-        numericBidIncrement,
-        deliveryInfo ||
-            "Standard UK delivery available.",
-        returnInfo ||
-            "Returns accepted within 14 days.",
-        Number(
-            listingId
-        ),
-        Number(
-            sellerId
-        )
-    );
+                    WHERE
+                        listing_id = ?
+                        AND seller_id = ?
+                `).run(
+                    categoryRecord.category_id,
+
+                    title,
+
+                    description,
+
+                    condition,
+
+                    brand ||
+                        null,
+
+                    numericStartingPrice,
+
+                    numericBidIncrement,
+
+                    deliveryInfo ||
+                        "Standard UK delivery available.",
+
+                    returnInfo ||
+                        "Returns accepted within 14 days.",
+
+                    Number(
+                        listingId
+                    ),
+
+                    Number(
+                        sellerId
+                    )
+                );
+
+                //updates the listing image when supplied
+
+                if (imagePath) {
+                    const existingImage =
+                        db.prepare(`
+                            SELECT
+                                image_id
+
+                            FROM listing_images
+
+                            WHERE
+                                listing_id = ?
+
+                            ORDER BY
+                                display_order ASC
+
+                            LIMIT 1
+                        `).get(
+                            Number(
+                                listingId
+                            )
+                        );
+
+                    if (existingImage) {
+                        db.prepare(`
+                            UPDATE listing_images
+
+                            SET
+                                file_path = ?
+
+                            WHERE
+                                image_id = ?
+                        `).run(
+                            imagePath,
+
+                            existingImage.image_id
+                        );
+                    } else {
+                        db.prepare(`
+                            INSERT INTO listing_images (
+                                listing_id,
+                                file_path,
+                                display_order
+                            )
+
+                            VALUES (
+                                ?,
+                                ?,
+                                1
+                            )
+                        `).run(
+                            Number(
+                                listingId
+                            ),
+
+                            imagePath
+                        );
+                    }
+                }
+            }
+        );
+
+    updateListingTransaction();
 
     return {
         success: true,
@@ -850,6 +950,10 @@ function update({
             Number(
                 listingId
             ),
+
+        imagePath:
+            imagePath ||
+            null,
 
         message:
             "Listing updated successfully."

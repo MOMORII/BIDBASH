@@ -468,7 +468,9 @@ block content
                 hidden
             )
 
-            form.listing-form#edit-listing-form
+            form.listing-form#edit-listing-form(
+                enctype="multipart/form-data"
+            )
 
                 input#edit-listing-id(
                     type="hidden"
@@ -577,6 +579,19 @@ block content
                     textarea#edit-return-info(
                         rows="3"
                     )
+
+                .form-group
+
+                    label(for="edit-listing-image") Replace Listing Image
+
+                    input#edit-listing-image(
+                        type="file"
+                        name="listingImage"
+                        accept=".jpg,.jpeg,.png,.webp"
+                    )
+
+                    p.form-help
+                        | Leave this empty to keep the current listing image.
 
                 .modal-actions
 

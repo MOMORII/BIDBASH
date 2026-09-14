@@ -2064,6 +2064,13 @@ document.addEventListener(
         }
 
         if (
+            editListingModal &&
+            !editListingModal.hidden
+        ) {
+            closeEditListing();
+        }
+
+        if (
             sidebarDrawer &&
             sidebarDrawer
                 .classList
@@ -2177,6 +2184,11 @@ function openEditListing(
             "edit-return-info"
         );
 
+    const imageInput =
+    document.getElementById(
+        "edit-listing-image"
+    );
+
     listingId.value =
         button.dataset.listingId;
 
@@ -2206,6 +2218,11 @@ function openEditListing(
 
     returnInfo.value =
         button.dataset.returnInfo;
+    
+    if (imageInput) {
+        imageInput.value =
+            "";
+    }
 
     const bidCount =
         Number(
@@ -2301,6 +2318,8 @@ if (editListingModal) {
 
 //saves listing changes
 
+//saves listing changes
+
 async function saveListingChanges(
     event
 ) {
@@ -2332,6 +2351,87 @@ async function saveListingChanges(
             "";
     }
 
+    const formData =
+        new FormData();
+
+    formData.append(
+        "title",
+        document.getElementById(
+            "edit-title"
+        ).value
+    );
+
+    formData.append(
+        "category",
+        document.getElementById(
+            "edit-category"
+        ).value
+    );
+
+    formData.append(
+        "condition",
+        document.getElementById(
+            "edit-condition"
+        ).value
+    );
+
+    formData.append(
+        "brand",
+        document.getElementById(
+            "edit-brand"
+        ).value
+    );
+
+    formData.append(
+        "description",
+        document.getElementById(
+            "edit-description"
+        ).value
+    );
+
+    formData.append(
+        "startingPrice",
+        document.getElementById(
+            "edit-starting-price"
+        ).value
+    );
+
+    formData.append(
+        "bidIncrement",
+        document.getElementById(
+            "edit-bid-increment"
+        ).value
+    );
+
+    formData.append(
+        "deliveryInfo",
+        document.getElementById(
+            "edit-delivery-info"
+        ).value
+    );
+
+    formData.append(
+        "returnInfo",
+        document.getElementById(
+            "edit-return-info"
+        ).value
+    );
+
+    const imageInput =
+        document.getElementById(
+            "edit-listing-image"
+        );
+
+    if (
+        imageInput &&
+        imageInput.files.length
+    ) {
+        formData.append(
+            "listingImage",
+            imageInput.files[0]
+        );
+    }
+
     try {
         const response =
             await fetch(
@@ -2340,58 +2440,8 @@ async function saveListingChanges(
                     method:
                         "POST",
 
-                    headers: {
-                        "Content-Type":
-                            "application/json"
-                    },
-
                     body:
-                        JSON.stringify({
-                            title:
-                                document.getElementById(
-                                    "edit-title"
-                                ).value,
-
-                            category:
-                                document.getElementById(
-                                    "edit-category"
-                                ).value,
-
-                            condition:
-                                document.getElementById(
-                                    "edit-condition"
-                                ).value,
-
-                            brand:
-                                document.getElementById(
-                                    "edit-brand"
-                                ).value,
-
-                            description:
-                                document.getElementById(
-                                    "edit-description"
-                                ).value,
-
-                            startingPrice:
-                                document.getElementById(
-                                    "edit-starting-price"
-                                ).value,
-
-                            bidIncrement:
-                                document.getElementById(
-                                    "edit-bid-increment"
-                                ).value,
-
-                            deliveryInfo:
-                                document.getElementById(
-                                    "edit-delivery-info"
-                                ).value,
-
-                            returnInfo:
-                                document.getElementById(
-                                    "edit-return-info"
-                                ).value
-                        })
+                        formData
                 }
             );
 
@@ -2443,7 +2493,6 @@ async function saveListingChanges(
             "Save Changes";
     }
 }
-
 //handles listing edit submission
 
 if (editListingForm) {
