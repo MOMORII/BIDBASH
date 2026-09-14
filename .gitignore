@@ -6,8 +6,11 @@
 node_modules/
 
 # environment variables and secrets
-.env
-*.env
+node_modules/
+
+#tmp tagged
+#.env
+#*.env
 
 # sqlite databases
 *.db

@@ -5,7 +5,8 @@ const session = require("express-session");
 const routes = require("./routes");
 
 const app = express();
-const PORT = 3000;
+//const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 const {
     processExpiredAuctions
@@ -60,8 +61,7 @@ app.use(
 app.use("/", routes);
 
 //starts the development server
-app.listen(PORT, () => {
-    console.log(
-        `BIDBASH is running at http://localhost:${PORT}`
-    );
+
+app.listen(PORT, "0.0.0.0", () => {
+    console.log(`BIDBASH running on port ${PORT}`);
 });
