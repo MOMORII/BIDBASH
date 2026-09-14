@@ -23,7 +23,13 @@ block content
 
         .hero-copy
 
-            h2 SIGN UP & PLACE YOUR FIRST BID TODAY
+            if user
+
+                h2 WELCOME BACK, #{user.username}!
+
+            else
+
+                h2 SIGN UP & PLACE YOUR FIRST BID TODAY
 
             p
                 | Browse our active listings, find something new, and start bidding on your favorite items. Join our community of bidders and sellers, and experience online auctions like never before.

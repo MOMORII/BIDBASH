@@ -1,13 +1,17 @@
 extends layout
 
 block sidebar
+
     section.sidebar-filters
+
         h2 Filters
 
         .filter-group
+
             label(for="category-filter") Category
 
             select#category-filter
+
                 option(
                     value="all"
                     selected=activeCategory === "all"
@@ -39,18 +43,33 @@ block sidebar
                 ) Fashion
 
         .filter-group
+
             label(for="condition-filter") Condition
 
             select#condition-filter
-                option(value="all") All Conditions
-                option(value="new") New
-                option(value="very-good") Used - Very Good
-                option(value="good") Used - Good
+
+                option(
+                    value="all"
+                ) All Conditions
+
+                option(
+                    value="new"
+                ) New
+
+                option(
+                    value="very-good"
+                ) Used - Very Good
+
+                option(
+                    value="good"
+                ) Used - Good
 
         .filter-group
+
             label Price Range
 
             .price-filter-row
+
                 input(
                     type="number"
                     placeholder="Min"
@@ -68,13 +87,19 @@ block sidebar
         ) Apply Filters
 
 block content
+
     section.dashboard-top.browse-top
+
         .dashboard-header
+
             .dashboard-heading
+
                 h1 Browse Auctions
+
                 p Search, filter, and explore active BIDBASH auction listings.
 
         .browse-header-controls
+
             input#browse-search(
                 type="search"
                 placeholder="Search auctions"
@@ -85,6 +110,7 @@ block content
             select#browse-sort(
                 aria-label="Sort auctions"
             )
+
                 option(
                     value="default"
                     selected=activeSort === "default"
@@ -116,43 +142,69 @@ block content
                 ) Price: High to Low
 
     section.browse-page
+
         section.browse-results
+
             .browse-results-header
+
                 if activeSearch
+
                     p
                         | Search results for "#{activeSearch}"
 
                 else if activeCategory !== "all"
+
                     p
                         | Showing #{activeCategory} auctions
 
                 else if activeSort === "featured"
+
                     p
                         | Showing featured auctions
 
                 else if activeSort === "ending-soon"
+
                     p
                         | Showing auctions ending soon
 
                 else if activeSort === "newest"
+
                     p
                         | Showing newly listed auctions
 
                 else if activeSort === "price-low"
+
                     p
                         | Showing auctions from lowest to highest current bid
 
                 else if activeSort === "price-high"
+
                     p
                         | Showing auctions from highest to lowest current bid
+
             .auction-grid
+
                 if auctions.length
+
                     each auction in auctions
+
                         article.auction-card
+
                             .auction-card-image
-                                | Product Image
+
+                                if auction.imagePath
+
+                                    img(
+                                        src=auction.imagePath
+                                        alt=auction.title
+                                    )
+
+                                else
+
+                                    | Product Image
 
                             .auction-card-content
+
                                 h2= auction.title
 
                                 p
@@ -172,5 +224,6 @@ block content
                                 ) View Auction
 
                 else
+
                     p.dashboard-empty
                         | No auctions match the selected filters.
