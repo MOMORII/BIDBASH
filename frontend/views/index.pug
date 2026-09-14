@@ -1,50 +1,70 @@
 extends layout
 
 block content
+
     section.dashboard-top.home-top
+
         .dashboard-header
+
             .dashboard-heading
+
                 h1 BID, BASH, BATTLE
+
                 p Welcome to BIDBASH, the ultimate online auction platform where you can discover, bid, and win items of all kinds!
+
         .dashboard-visual
+
             img.header-image#home-header-image(
                 src="/images/header-img.png"
                 alt="BIDBASH illustration"
             )
 
     section.hero-section
+
         .hero-copy
+
             h2 SIGN UP & PLACE YOUR FIRST BID TODAY
 
             p
-                | Browse our active listings, find something new, and start bidding on your favorite items. Join our community of  bidders and sellers, and experience online auctions like never before.
+                | Browse our active listings, find something new, and start bidding on your favorite items. Join our community of bidders and sellers, and experience online auctions like never before.
 
             .hero-actions
-                a.primary-button(href="/browse") Browse Auctions
+
+                a.primary-button(
+                    href="/browse"
+                ) Browse Auctions
 
                 if user
+
                     a.secondary-button(
                         href=`/users/${user.id}/bids`
                     ) View My Bids
 
                 else
+
                     a.secondary-button(
                         href="/register"
                     ) Create Account
 
         .hero-visual
+
             img.hero-image#home-hero-image(
                 src="/images/hero-img.png"
-                    alt="Featured auction"
+                alt="Featured auction"
             )
 
     section.home-section
+
         .home-section-heading
+
             .home-section-title
+
                 h2 FEATURED AUCTIONS
+
                 p Here are some of our most popular auctions, handpicked for you!
 
             .home-section-actions
+
                 a.home-view-all(
                     href="/browse?sort=featured"
                 ) VIEW ALL
@@ -64,12 +84,26 @@ block content
                 ) ›
 
         .auction-carousel#featured-carousel
+
             each auction in featuredAuctions
+
                 article.auction-card.carousel-card
+
                     .auction-card-image
-                        | Product Image
+
+                        if auction.imagePath
+
+                            img(
+                                src=auction.imagePath
+                                alt=auction.title
+                            )
+
+                        else
+
+                            | Product Image
 
                     .auction-card-content
+
                         h3= auction.title
 
                         p
@@ -89,12 +123,17 @@ block content
                         ) View Auction
 
     section.home-section
+
         .home-section-heading
+
             .home-section-title
+
                 h2 ENDING SOON
+
                 p Hurry! These auctions are about to close. Place your bids before it's too late!
 
             .home-section-actions
+
                 a.home-view-all(
                     href="/browse?sort=ending-soon"
                 ) VIEW ALL
@@ -114,12 +153,26 @@ block content
                 ) ›
 
         .auction-carousel#ending-soon-carousel
+
             each auction in endingSoonAuctions
+
                 article.auction-card.carousel-card
+
                     .auction-card-image
-                        | Product Image
+
+                        if auction.imagePath
+
+                            img(
+                                src=auction.imagePath
+                                alt=auction.title
+                            )
+
+                        else
+
+                            | Product Image
 
                     .auction-card-content
+
                         h3= auction.title
 
                         p
