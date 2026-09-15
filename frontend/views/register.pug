@@ -37,7 +37,6 @@ block content
 
                             p Create and manage your listings from a single dashboard
 
-
             .auth-form-panel
 
                 .auth-form-header
@@ -69,6 +68,7 @@ block content
                             type="text"
                             id="username"
                             name="username"
+                            value=formData ? formData.username : ""
                             placeholder="Choose a username"
                             autocomplete="username"
                             required
@@ -84,6 +84,7 @@ block content
                             type="email"
                             id="email"
                             name="email"
+                            value=formData ? formData.email : ""
                             placeholder="Enter your email address"
                             autocomplete="email"
                             required
@@ -127,20 +128,30 @@ block content
                             type="checkbox"
                             id="terms"
                             name="terms"
+                            checked=formData && formData.termsAccepted
                             required
                         )
 
                         label(
                             for="terms"
                         )
+
                             | By clicking this, I consent to follow BIDBASH platform policies, including the 
+
                             a(
                                 href="/terms"
+                                target="_blank"
+                                rel="noopener noreferrer"
                             ) Terms & Conditions
+
                             |  and 
+
                             a(
                                 href="/privacy"
+                                target="_blank"
+                                rel="noopener noreferrer"
                             ) Privacy Policy
+
                             | .
 
                     button.auth-primary-button(

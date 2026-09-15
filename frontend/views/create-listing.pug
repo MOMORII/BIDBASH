@@ -1,94 +1,122 @@
 extends layout
 
 block content
+
     section.dashboard-top
+
         .dashboard-header
+
             .dashboard-heading
+
                 h1 Create Listing
+
                 p Add the information required to prepare a new BIDBASH auction listing.
 
     section.dashboard-section
+
         .listing-form-container
+
             if error
+
                 p.form-message.form-error= error
 
             if message
+
                 p.form-message.form-success= message
 
             form.listing-form(
                 method="POST"
                 action="/listings/new"
             )
-                .form-group
-                    label(for="title") Listing Title
-
-                    input#title(
-                        type="text"
-                        name="title"
-                        placeholder="Enter listing title"
-                        required
-                    )
 
                 .form-row
+
                     .form-group
+
+                        label(for="title") Listing Title
+
+                        input#title(
+                            type="text"
+                            name="title"
+                            placeholder="Enter listing title"
+                            required
+                        )
+
+                    .form-group
+
+                        label(for="brand") Brand
+
+                        input#brand(
+                            type="text"
+                            name="brand"
+                            placeholder="Enter brand if applicable"
+                        )
+
+                .form-row
+
+                    .form-group
+
                         label(for="category") Category
 
                         select#category(
                             name="category"
                             required
                         )
+
                             option(value="") Select Category
-                            option(value="electronics") Electronics
-                            option(value="collectibles") Collectibles
-                            option(value="gaming") Gaming
-                            option(value="home") Home & Living
-                            option(value="fashion") Fashion
+                            option(value="Electronics") Electronics
+                            option(value="Collectibles") Collectibles
+                            option(value="Fashion") Fashion
+                            option(value="Home") Home
+                            option(value="Gaming") Gaming
+                            option(value="Sports") Sports
+                            option(value="Books") Books
+                            option(value="Music") Music
 
                     .form-group
+
                         label(for="condition") Condition
 
                         select#condition(
                             name="condition"
                             required
                         )
+
                             option(value="") Select Condition
-                            option(value="new") New
-                            option(value="used-very-good") Used - Very Good
-                            option(value="used-good") Used - Good
+                            option(value="New") New
+                            option(value="Like New") Like New
+                            option(value="Very Good") Very Good
+                            option(value="Good") Good
+                            option(value="Used") Used
 
                 .form-group
-                    label(for="brand") Brand
 
-                    input#brand(
-                        type="text"
-                        name="brand"
-                        placeholder="Enter brand if applicable"
-                    )
-
-                .form-group
                     label(for="description") Description
 
                     textarea#description(
                         name="description"
-                        rows="6"
+                        rows="4"
                         placeholder="Describe the item, condition, and important details"
                         required
                     )
 
                 .form-row
+
                     .form-group
+
                         label(for="starting-price") Starting Price
 
                         input#starting-price(
                             type="number"
                             name="startingPrice"
-                            min="0"
+                            min="0.01"
                             step="0.01"
                             placeholder="0.00"
                             required
                         )
 
                     .form-group
+
                         label(for="bid-increment") Bid Increment
 
                         input#bid-increment(
@@ -100,13 +128,38 @@ block content
                             required
                         )
 
+                .form-row
+
+                    .form-group
+
+                        label(for="delivery-info") Delivery Information
+
+                        textarea#delivery-info(
+                            name="deliveryInfo"
+                            rows="3"
+                            placeholder="Enter delivery information"
+                        )
+
+                    .form-group
+
+                        label(for="return-info") Return Information
+
+                        textarea#return-info(
+                            name="returnInfo"
+                            rows="3"
+                            placeholder="Enter return information"
+                        )
+
                 .form-group
+
                     label Listing Images
 
                     .listing-image-placeholder
+
                         | Image upload will be connected during database/file-storage implementation.
 
                 .form-actions
+
                     a.secondary-button(
                         href=`/users/${user.id}/listings`
                     ) Cancel

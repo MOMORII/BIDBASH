@@ -119,7 +119,15 @@ async function login(req, res) {
 function showRegister(req, res) {
     res.render("register", {
         pageTitle:
-            "Sign Up - BIDBASH"
+            "Sign Up - BIDBASH",
+        formData: {
+            username:
+                "",
+            email:
+                "",
+            termsAccepted:
+                false
+        }
     });
 }
 
@@ -151,6 +159,12 @@ async function register(req, res) {
     const termsAccepted =
         req.body.terms === "on";
 
+    const formData = {
+        username,
+        email,
+        termsAccepted
+    };
+
     if (
         !username ||
         !email ||
@@ -163,7 +177,8 @@ async function register(req, res) {
                 pageTitle:
                     "Sign Up - BIDBASH",
                 error:
-                    "Username, email and password are required."
+                    "Username, email and password are required.",
+                formData
             }
         );
     }
@@ -178,7 +193,8 @@ async function register(req, res) {
                 pageTitle:
                     "Sign Up - BIDBASH",
                 error:
-                    "Username must be between 3 and 50 characters."
+                    "Username must be between 3 and 50 characters.",
+                formData
             }
         );
     }
@@ -190,7 +206,8 @@ async function register(req, res) {
                 pageTitle:
                     "Sign Up - BIDBASH",
                 error:
-                    "Password must contain at least 8 characters."
+                    "Password must contain at least 8 characters.",
+                formData
             }
         );
     }
@@ -205,7 +222,8 @@ async function register(req, res) {
                 pageTitle:
                     "Sign Up - BIDBASH",
                 error:
-                    "Passwords do not match."
+                    "Passwords do not match.",
+                formData
             }
         );
     }
@@ -217,7 +235,8 @@ async function register(req, res) {
                 pageTitle:
                     "Sign Up - BIDBASH",
                 error:
-                    "You must agree to the Terms & Conditions and Privacy Policy."
+                    "You must agree to the Terms & Conditions and Privacy Policy.",
+                formData
             }
         );
     }
@@ -234,7 +253,8 @@ async function register(req, res) {
                 pageTitle:
                     "Sign Up - BIDBASH",
                 error:
-                    "That username is already in use."
+                    "That username is already in use.",
+                formData
             }
         );
     }
@@ -251,7 +271,8 @@ async function register(req, res) {
                 pageTitle:
                     "Sign Up - BIDBASH",
                 error:
-                    "That email address is already registered."
+                    "That email address is already registered.",
+                formData
             }
         );
     }

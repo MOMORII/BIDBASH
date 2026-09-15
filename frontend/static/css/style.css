@@ -940,12 +940,12 @@ body.sidebar-open .page-content {
 /*sizes the create listing overlay */
 
 .listing-modal-card {
-    max-width: 760px;
-    max-height:
-        calc(
-            100vh -
-            100px
-        );
+    width: min(1100px, calc(100vw - 80px));
+    max-width: 1100px;
+
+    max-height: calc(100vh - 80px);
+
+    padding: 24px 28px;
 
     overflow-y: auto;
 }
@@ -1081,7 +1081,7 @@ body.sidebar-open .page-content {
 .listing-form {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 14px;
 }
 
 .form-row {
@@ -1089,15 +1089,16 @@ body.sidebar-open .page-content {
     grid-template-columns:
         repeat(
             2,
-            1fr
+            minmax(0, 1fr)
         );
-    gap: 20px;
+
+    gap: 14px 18px;
 }
 
 .form-group {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 5px;
 }
 
 .form-group label {
@@ -1109,7 +1110,7 @@ body.sidebar-open .page-content {
 .form-group textarea {
     width: 100%;
 
-    padding: 11px 12px;
+    padding: 9px 11px;
 
     border: 1px solid #bbb;
     border-radius: 8px;
@@ -1118,6 +1119,9 @@ body.sidebar-open .page-content {
 }
 
 .form-group textarea {
+    min-height: 80px;
+    max-height: 110px;
+
     resize: vertical;
 }
 
@@ -4052,6 +4056,208 @@ body.dark-mode .header-search-button {
 
 .moderation-action-button:hover {
     background: #F7F4F9;
+}
+
+/*keeps create and edit listing modals fully visible*/
+
+.listing-modal-card {
+    width: min(1180px, calc(100vw - 48px));
+    max-width: 1180px;
+    max-height: none;
+
+    padding: 20px 24px;
+
+    overflow: visible;
+}
+
+/*compacts listing modal headings*/
+
+.listing-modal-card .listing-modal-header {
+    gap: 18px;
+
+    margin-bottom: 14px;
+}
+
+.listing-modal-card .listing-modal-header h2 {
+    margin: 0 0 4px;
+
+    line-height: 1.1;
+}
+
+.listing-modal-card .listing-modal-header p {
+    margin: 0;
+
+    line-height: 1.3;
+}
+
+/*compacts listing modal forms*/
+
+.listing-modal-card .listing-form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+
+    padding: 0;
+
+    background: transparent;
+
+    border: 0;
+}
+
+/*keeps paired listing fields side by side*/
+
+.listing-modal-card .form-row {
+    display: grid;
+    grid-template-columns:
+        repeat(
+            2,
+            minmax(0, 1fr)
+        );
+
+    gap: 14px 18px;
+}
+
+/*spaces labels away from their fields*/
+
+.listing-modal-card .form-group {
+    gap: 9px;
+}
+
+/*adds breathing room below field labels*/
+
+.listing-modal-card .form-group label {
+    display: block;
+
+    margin-bottom: 2px;
+
+    line-height: 1.2;
+}
+
+/*styles listing modal fields*/
+
+.listing-modal-card .form-group input,
+.listing-modal-card .form-group select,
+.listing-modal-card .form-group textarea {
+    width: 100%;
+
+    padding: 7px 10px;
+}
+
+/*keeps large text fields short enough for the popup*/
+
+.listing-modal-card .form-group textarea {
+    min-height: 48px;
+    max-height: 58px;
+
+    resize: none;
+}
+
+/*compacts listing modal helper text*/
+
+.listing-modal-card .form-help {
+    margin: 6px 0 0;
+
+    font-size: 12px;
+    line-height: 1.3;
+}
+
+/*compacts listing modal actions*/
+
+.listing-modal-card .modal-actions {
+    margin-top: 8px;
+}
+
+.listing-modal-card .modal-actions .primary-button,
+.listing-modal-card .modal-actions .secondary-button {
+    margin-top: 0;
+    padding: 8px 14px;
+}
+
+/*fits listing modals inside shorter browser tabs*/
+
+@media (max-height: 760px) {
+    .modal-overlay {
+        padding: 8px 16px;
+    }
+
+    .listing-modal-card {
+        width: min(1240px, calc(100vw - 32px));
+
+        padding: 14px 20px;
+
+        font-size: 14px;
+    }
+
+    .listing-modal-card .listing-modal-header {
+        margin-bottom: 10px;
+    }
+
+    .listing-modal-card .listing-form {
+        gap: 8px;
+    }
+
+    .listing-modal-card .form-row {
+        gap: 10px 16px;
+    }
+
+    .listing-modal-card .form-group {
+        gap: 7px;
+    }
+
+    .listing-modal-card .form-group label {
+        margin-bottom: 1px;
+    }
+
+    .listing-modal-card .form-group input,
+    .listing-modal-card .form-group select,
+    .listing-modal-card .form-group textarea {
+        padding: 6px 9px;
+    }
+
+    .listing-modal-card .form-group textarea {
+        min-height: 40px;
+        max-height: 46px;
+    }
+
+    .listing-modal-card .form-help {
+        margin-top: 4px;
+
+        font-size: 11px;
+    }
+
+    .listing-modal-card .modal-actions {
+        margin-top: 4px;
+    }
+
+    .listing-modal-card .modal-actions .primary-button,
+    .listing-modal-card .modal-actions .secondary-button {
+        padding: 7px 12px;
+    }
+}
+
+.dashboard-actions .secondary-button,
+.dashboard-actions .dashboard-action-button {
+    width: 100%;
+    min-height: 44px;
+
+    margin-top: 0;
+    padding: 10px 14px;
+
+    box-sizing: border-box;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid #8E45DD;
+    border-radius: 8px;
+
+    text-align: center;
+    text-decoration: none;
+
+    font: inherit;
+    font-size: 16px;
+    font-weight: 400;
 }
 
 /*applies the original wireframe dark theme */

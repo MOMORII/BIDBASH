@@ -303,16 +303,28 @@ block content
                 enctype="multipart/form-data"
             )
 
-                .form-group
+                .form-row
 
-                    label(for="title") Listing Title
+                    .form-group
 
-                    input#title(
-                        type="text"
-                        name="title"
-                        placeholder="Enter listing title"
-                        required
-                    )
+                        label(for="title") Listing Title
+
+                        input#title(
+                            type="text"
+                            name="title"
+                            placeholder="Enter listing title"
+                            required
+                        )
+
+                    .form-group
+
+                        label(for="brand") Brand
+
+                        input#brand(
+                            type="text"
+                            name="brand"
+                            placeholder="Enter brand if applicable"
+                        )
 
                 .form-row
 
@@ -353,21 +365,11 @@ block content
 
                 .form-group
 
-                    label(for="brand") Brand
-
-                    input#brand(
-                        type="text"
-                        name="brand"
-                        placeholder="Enter brand if applicable"
-                    )
-
-                .form-group
-
                     label(for="description") Description
 
                     textarea#description(
                         name="description"
-                        rows="5"
+                        rows="3"
                         placeholder="Describe the item, condition, and important details"
                         required
                     )
@@ -400,25 +402,27 @@ block content
                             required
                         )
 
-                .form-group
+                .form-row
 
-                    label(for="delivery-info") Delivery Information
+                    .form-group
 
-                    textarea#delivery-info(
-                        name="deliveryInfo"
-                        rows="3"
-                        placeholder="Enter delivery information"
-                    )
+                        label(for="delivery-info") Delivery Information
 
-                .form-group
+                        textarea#delivery-info(
+                            name="deliveryInfo"
+                            rows="2"
+                            placeholder="Enter delivery information"
+                        )
 
-                    label(for="return-info") Return Information
+                    .form-group
 
-                    textarea#return-info(
-                        name="returnInfo"
-                        rows="3"
-                        placeholder="Enter return information"
-                    )
+                        label(for="return-info") Return Information
+
+                        textarea#return-info(
+                            name="returnInfo"
+                            rows="2"
+                            placeholder="Enter return information"
+                        )
 
                 .form-group
 
@@ -476,14 +480,24 @@ block content
                     type="hidden"
                 )
 
-                .form-group
+                .form-row
 
-                    label(for="edit-title") Listing Title
+                    .form-group
 
-                    input#edit-title(
-                        type="text"
-                        required
-                    )
+                        label(for="edit-title") Listing Title
+
+                        input#edit-title(
+                            type="text"
+                            required
+                        )
+
+                    .form-group
+
+                        label(for="edit-brand") Brand
+
+                        input#edit-brand(
+                            type="text"
+                        )
 
                 .form-row
 
@@ -520,18 +534,10 @@ block content
 
                 .form-group
 
-                    label(for="edit-brand") Brand
-
-                    input#edit-brand(
-                        type="text"
-                    )
-
-                .form-group
-
                     label(for="edit-description") Description
 
                     textarea#edit-description(
-                        rows="5"
+                        rows="3"
                         required
                     )
 
@@ -564,21 +570,23 @@ block content
                 )
                     | Starting price and bid increment are locked because this auction already has bids.
 
-                .form-group
+                .form-row
 
-                    label(for="edit-delivery-info") Delivery Information
+                    .form-group
 
-                    textarea#edit-delivery-info(
-                        rows="3"
-                    )
+                        label(for="edit-delivery-info") Delivery Information
 
-                .form-group
+                        textarea#edit-delivery-info(
+                            rows="2"
+                        )
 
-                    label(for="edit-return-info") Return Information
+                    .form-group
 
-                    textarea#edit-return-info(
-                        rows="3"
-                    )
+                        label(for="edit-return-info") Return Information
+
+                        textarea#edit-return-info(
+                            rows="2"
+                        )
 
                 .form-group
 
