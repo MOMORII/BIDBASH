@@ -465,10 +465,45 @@ function dispatchOrder(
     );
 }
 
+//shows a listing image upload error
+
+function showUploadError(
+    req,
+    res,
+    message
+) {
+    const groupedListings =
+        listingService
+            .groupSellerListings(
+                req.session.user.id
+            );
+
+    return res.status(400).render(
+        "listings",
+        {
+            pageTitle:
+                "My Listings - BIDBASH",
+
+            listings:
+                groupedListings,
+
+            openCreateListing:
+                true,
+
+            listingError:
+                message,
+
+            listingMessage:
+                null
+        }
+    );
+}
+
 module.exports = {
     redirectToDashboard,
     dashboard,
     create,
     updateListing,
-    dispatchOrder
+    dispatchOrder,
+    showUploadError
 };

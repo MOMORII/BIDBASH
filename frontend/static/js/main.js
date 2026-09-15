@@ -2493,11 +2493,48 @@ async function saveListingChanges(
             "Save Changes";
     }
 }
+
 //handles listing edit submission
 
 if (editListingForm) {
     editListingForm.addEventListener(
         "submit",
         saveListingChanges
+    );
+}
+
+//prevents duplicate listing creation submissions
+
+const createListingForm =
+    document.querySelector(
+        "#create-listing-modal .listing-form"
+    );
+
+if (createListingForm) {
+    createListingForm.addEventListener(
+        "submit",
+        event => {
+            const submitButton =
+                createListingForm.querySelector(
+                    'button[type="submit"]'
+                );
+
+            if (
+                submitButton &&
+                submitButton.disabled
+            ) {
+                event.preventDefault();
+
+                return;
+            }
+
+            if (submitButton) {
+                submitButton.disabled =
+                    true;
+
+                submitButton.textContent =
+                    "Creating...";
+            }
+        }
     );
 }

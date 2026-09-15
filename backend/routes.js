@@ -323,7 +323,57 @@ router.get(
 );
 
 //creates authenticated listings
+//accounts for errors when new listings are created
 
+router.post(
+    "/listings/new",
+    requireLogin,
+    (req, res, next) => {
+        uploadListingImage.single(
+            "listingImage"
+        )(
+            req,
+            res,
+            error => {
+                if (error) {
+                    const groupedListings =
+                        require("./services/listing")
+                            .groupSellerListings(
+                                req.session.user.id
+                            );
+
+                    return res.status(400).render(
+                        "listings",
+                        {
+                            pageTitle:
+                                "My Listings - BIDBASH",
+
+                            listings:
+                                groupedListings,
+
+                            openCreateListing:
+                                true,
+
+                            listingError:
+                                error.code ===
+                                "LIMIT_FILE_SIZE"
+                                    ? "The selected image is too large. Please choose an image smaller than 5 MB."
+                                    : error.message ||
+                                      "The selected image could not be uploaded.",
+
+                            listingMessage:
+                                null
+                        }
+                    );
+                }
+
+                next();
+            }
+        );
+    },
+    seller.create
+);
+/* replaced => doesn't account for large img files being submitted
 router.post(
     "/listings/new",
     requireLogin,
@@ -332,6 +382,7 @@ router.post(
     ),
     seller.create
 );
+*/
 
 //updates active seller listings
 
