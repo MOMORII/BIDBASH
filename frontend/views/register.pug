@@ -103,8 +103,20 @@ block content
                             placeholder="Create a password"
                             autocomplete="new-password"
                             minlength="8"
+                            pattern="(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9 ]).{8,}"
+                            title="Password must contain at least 8 characters, one capital letter, one number and one special character."
                             required
                         )
+
+                        ul.password-requirements
+
+                            li A minimum of 8 characters
+
+                            li At least one capital letter
+
+                            li At least one number
+
+                            li At least one special character
 
                     .auth-field
 

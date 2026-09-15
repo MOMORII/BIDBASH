@@ -4260,6 +4260,33 @@ body.dark-mode .header-search-button {
     font-weight: 400;
 }
 
+/*styles the password requirements in signup*/
+
+.auth-field label {
+    font-weight: 600;
+
+    color: #302B35;
+}
+
+/*styles password requirements*/
+
+.password-requirements {
+    margin: 2px 0 0;
+    padding-left: 22px;
+
+    color: #706875;
+
+    font-size: 12px;
+    font-style: italic;
+    line-height: 1.5;
+}
+
+/*spaces password requirements*/
+
+.password-requirements li {
+    margin: 1px 0;
+}
+
 /*applies the original wireframe dark theme */
 
 body.dark-mode {
@@ -5155,5 +5182,11 @@ body.dark-mode .browse-page .auction-card {
 
 body.dark-mode .browse-page .auction-card-image {
     background: #292929;
+    color: #B4A8B9;
+}
+
+/*keeps password requirements readable*/
+
+body.dark-mode .password-requirements {
     color: #B4A8B9;
 }

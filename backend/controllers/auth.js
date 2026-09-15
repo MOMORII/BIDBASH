@@ -199,14 +199,37 @@ async function register(req, res) {
         );
     }
 
-    if (password.length < 8) {
+    const hasMinimumLength =
+        password.length >= 8;
+
+    const hasCapitalLetter =
+        /[A-Z]/.test(
+            password
+        );
+
+    const hasNumber =
+        /[0-9]/.test(
+            password
+        );
+
+    const hasSpecialCharacter =
+        /[^A-Za-z0-9\s]/.test(
+            password
+        );
+
+    if (
+        !hasMinimumLength ||
+        !hasCapitalLetter ||
+        !hasNumber ||
+        !hasSpecialCharacter
+    ) {
         return res.status(400).render(
             "register",
             {
                 pageTitle:
                     "Sign Up - BIDBASH",
                 error:
-                    "Password must contain at least 8 characters.",
+                    "Password must contain at least 8 characters, one capital letter, one number and one special character.",
                 formData
             }
         );
