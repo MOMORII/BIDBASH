@@ -2,7 +2,13 @@
 # FINAL YEAR PROJECT: BIDBASH
 ### Written by. Keisha Marie Geyrozaga (GEY23581805) [GitHub Profile](https://github.com/MOMORII)
 ---
+### LIVE PROTOTYPE
 
+**BIDBASH Prototype:**  https://bidbash-no8o.onrender.com/
+
+> NOTE: The deployed system is an academic prototype intended for demonstration and evaluation purposes.
+
+---
 ### REPOSITORY INFORMATION
 
 This repository contains the source code, development artefacts, supporting documentation, and evaluation materials produced for **BIDBASH**, that is a Final Year Project (FYP) developed as part of an undergraduate (BEng) Software Engineering degree.
