@@ -25,7 +25,7 @@ Whereas, experiential component focuses on how these functions are communicated 
 
 The project's target scope is aimed towards users that are familiar with general online shopping, but possess limited experience with auction-based platforms. It seeks to make online auctions more accessible to a broader audience by challenging perceptions that auction participation is primarily suited to highly experienced bidders or individuals prepared to spend substantial amounts.
 
-Similarly, the project does not assume that gamification inherently improves the user experience. It evaluates which experiential features participants perceive as useful, appropriate, and understandable within an online auction environment.
+Similarly, the project does not assume that gamification inherently improves the user experience. It evaluates which experiential features participants perceive as useful, appropriate, and understandable within an online auction system.
 
 ---
 
