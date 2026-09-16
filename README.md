@@ -3,7 +3,7 @@
 ### Written by. Keisha Marie Geyrozaga (GEY23581805) [GitHub Profile](https://github.com/MOMORII)
 ---
 
-### Repository Information
+### REPOSITORY INFORMATION
 
 This repository contains the source code, development artefacts, supporting documentation, and evaluation materials produced for **BIDBASH**, that is a Final Year Project (FYP) developed as part of an undergraduate (BEng) Software Engineering degree.
 
@@ -15,7 +15,7 @@ BIDBASH is a web-based prototype online auction system created to investigate wh
 
 ## Project Overview
 
-### Project Summary
+### PROJECT SUMMARY
 
 BIDBASH is a user-facing online auction prototype designed around a **hybrid functional-experiential approach**.
 
@@ -29,7 +29,7 @@ Similarly, the project does not assume that gamification inherently improves the
 
 ---
 
-### Research Purpose
+### RESEARCH PURPOSE
 
 The project investigates the extent to which user-centred design and selected gamification principles can improve the usability and perceived engagement of online auction systems.
 
@@ -47,7 +47,7 @@ Consequently, the BIDBASH prototype is intended to function as a **proof-of-conc
 
 ---
 
-## Core Implemented Features
+## Core Features
 
 The final prototype includes the following principal functionality:
 
@@ -136,7 +136,7 @@ A central design principle of BIDBASH is the combination of **functional reliabi
 
 The project distinguishes between these two concerns:
 
-#### Functional Design
+#### FUNCTIONAL DESIGN
 
 Functional design ensures that users can successfully complete the core tasks associated with an online auction system, including:
 
@@ -150,7 +150,7 @@ Functional design ensures that users can successfully complete the core tasks as
 - completing payment and fulfilment workflows
 - reporting inappropriate listings
 
-#### Experiential Design
+#### EXPERIENTIAL DEISGN
 
 Experiential design considers how these interactions are perceived and understood by the user.
 
@@ -253,7 +253,7 @@ Implemented considerations include, but are not strictly limited to...
 
 ## Non-Functional Considerations
 
-### Usability
+### USABILITY
 
 The interface was designed to reduce unnecessary complexity and support users with limited experience of online auction platforms.
 
@@ -273,7 +273,7 @@ This includes:
 
 These design decisions were intended to reduce cognitive load and make auction-related tasks easier to understand for less-experienced users.
 
-### Accessibility
+### ACCESSIBILITY
 
 Accessibility considerations were informed by relevant **Web Content Accessibility Guidelines (WCAG)** principles and established web-design practices.
 
@@ -291,13 +291,13 @@ The prototype incorporates measures including:
 
 Accessibility was considered throughout the interface design and refinement process, although the prototype does not claim full WCAG conformance. The current implementation remains primarily desktop and laptop oriented, and whilst it is adjustable to tab size, it does not represent a fully responsive production implementation across all screen sizes and devices.
 
-### Performance
+### PERFORMANCE
 
 The prototype was developed for small-scale academic evaluation and demonstration.
 
 Performance considerations focused on maintaining responsive interaction during typical prototype usage, incl. auction browsing, bidding, listing management, and dashboard navigation. The system has not been designed or evaluated for the transaction volumes, concurrency requirements, or infrastructure demands associated with a commercial-scale auction platform.
 
-### Maintainability
+### MAINTAINABILITY
 
 The application structure was developed to support maintainability and future extension through the separation of key responsibilities across routes, controllers, services, views, middleware, and database-related functionality.
 
@@ -336,28 +336,26 @@ Git and GitHub were used throughout development for version control, change trac
 
 BIDBASH was evaluated using multiple forms of evidence.
 
-### Baseline Survey
+### BASELINE SURVEY
 
 A baseline questionnaire investigated:
 
-- online marketplace familiarity;
-- previous auction experience;
-- barriers to auction participation;
-- functional priorities;
-- interface preferences;
-- attitudes towards gamification;
-- responsible gamification;
-- and clarity of proposed BIDBASH wireframes.
+- online marketplace familiarity
+- previous auction experience
+- barriers to auction participation
+- functional priorities
+- interface preferences
+- attitudes towards gamification
+- responsible gamification
+- percieved clarity of proposed BIDBASH wireframes
 
 The survey received **21 valid responses**.
 
-### System Testing
+### SYSTEM TESTING
 
-Functional test cases were used to verify the behaviour of core prototype workflows.
+Functional test cases were used to verify the behaviour of core prototype workflows. These included authentication, browsing, bidding, listing management, database persistence, moderation, order progression, and access control.
 
-These included authentication, browsing, bidding, listing management, database persistence, moderation, order progression, and access control.
-
-### Usability Testing
+### USABILITY TESTING
 
 A think-aloud usability testing method was deployed with a small sample of 3 representative users chosen from participants that volunteered to take part via a follow-up interest form attached to the end of the baseline survey presented to them.
 
