@@ -11,7 +11,7 @@
 ---
 ### REPOSITORY INFORMATION
 
-This repository contains the source code, development artefacts, supporting documentation, and evaluation materials produced for **BIDBASH**, that is a Final Year Project (FYP) developed to earn my BEng degree in SoftEng.
+This repository contains the source code, development artefacts, supporting documentation, and evaluation materials produced for the **BIDBASH** artefact/prototype, which is  part of my Final Year Project (FYP) developed in tandem with my thesis.
 
 BIDBASH is a web-based prototype online auction system created to investigate whether a **hybrid functional-experiential design approach** can improve the usability and engagement of online auction platforms, particularly for novice or less-experienced users. The project combines conventional auction functionality with selected user-centred and experiential interface techniques, incl. clear system feedback, progression-oriented interaction, visual status communication, and simplified user workflows. As a result, the repository acts as both (i) a functional software artefact, and (ii) a research prototype used to support the accompanying dissertation and usability evaluation.
 
