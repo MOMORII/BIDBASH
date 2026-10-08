@@ -480,7 +480,7 @@ CREATE INDEX IF NOT EXISTS idx_reports_listing
 CREATE INDEX IF NOT EXISTS idx_reports_case
     ON reports(moderation_case_id);
 
-CREATE INDEX IF NOT EXISTS idx_moderation_listing
+CREATE INDEX.exi IF NOT EXISTS idx_moderation_listing
     ON moderation_cases(listing_id);
 
 CREATE INDEX IF NOT EXISTS idx_notifications_user
