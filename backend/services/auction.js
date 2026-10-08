@@ -3,11 +3,79 @@
 const db =
     require("../database/db");
 
+//sets static demo auction durations
+
+const demoTimes = {
+    1: "2h 14m",
+    2: "5h 40m",
+    3: "1d 3h",
+    4: "18m",
+    5: "29m",
+    6: "42m",
+    7: "1h 10m",
+    8: "3h 25m",
+    9: "11m",
+    10: "56m",
+    11: "7h 20m",
+    12: "24m",
+
+    13: "1d 8h",
+    14: "2d 4h",
+    15: "2d 18h",
+    16: "3d 7h",
+    17: "3d 19h",
+    18: "4d 6h",
+    19: "4d 18h",
+    20: "5d 2h",
+    21: "5d 13h",
+    22: "5d 22h",
+    23: "6d 8h",
+    24: "6d 18h",
+
+    28: "6d 23h"
+};
+
+//stores matching demo durations in minutes for sorting
+
+const demoTimeMinutes = {
+    1: 134,
+    2: 340,
+    3: 1620,
+    4: 18,
+    5: 29,
+    6: 42,
+    7: 70,
+    8: 205,
+    9: 11,
+    10: 56,
+    11: 440,
+    12: 24,
+
+    13: 1920,
+    14: 3120,
+    15: 3960,
+    16: 4740,
+    17: 5460,
+    18: 6120,
+    19: 6840,
+    20: 7320,
+    21: 7980,
+    22: 8520,
+    23: 9120,
+    24: 9720,
+
+    28: 10020
+};
+
 //formats remaining auction time
 
 function formatTimeRemaining(
     endTime
 ) {
+    if (!endTime) {
+        return "Not started";
+    }
+
     const end =
         new Date(
             endTime.replace(
@@ -16,12 +84,9 @@ function formatTimeRemaining(
             )
         );
 
-    const now =
-        new Date();
-
     const difference =
         end.getTime() -
-        now.getTime();
+        Date.now();
 
     if (
         difference <= 0
@@ -63,6 +128,45 @@ function formatTimeRemaining(
     }
 
     return `${minutes}m`;
+}
+
+//returns sortable remaining time in minutes
+
+function getSortMinutes(
+    row
+) {
+    if (
+        demoTimeMinutes[
+            row.auction_id
+        ] !== undefined
+    ) {
+        return demoTimeMinutes[
+            row.auction_id
+        ];
+    }
+
+    if (!row.end_time) {
+        return Number.MAX_SAFE_INTEGER;
+    }
+
+    const end =
+        new Date(
+            row.end_time.replace(
+                " ",
+                "T"
+            )
+        );
+
+    return Math.max(
+        0,
+        Math.floor(
+            (
+                end.getTime() -
+                Date.now()
+            ) /
+            60000
+        )
+    );
 }
 
 //maps database rows for the frontend
@@ -123,9 +227,17 @@ function mapAuction(
         bidIncrement,
 
         timeRemaining:
-            formatTimeRemaining(
-                row.end_time
-            ),
+            row.auction_status ===
+            "active"
+                ? (
+                    demoTimes[
+                        row.auction_id
+                    ] ||
+                    formatTimeRemaining(
+                        row.end_time
+                    )
+                )
+                : "Ended",
 
         startTime:
             row.start_time,
@@ -286,8 +398,7 @@ function getFeatured() {
 
             ORDER BY
                 bid_count DESC,
-                auctions.current_highest_bid DESC,
-                auctions.end_time ASC
+                auctions.current_highest_bid DESC
 
             LIMIT 8
         `).all();
@@ -307,16 +418,22 @@ function getEndingSoon() {
             WHERE
                 auctions.status = 'active'
                 AND listings.status = 'active'
-
-            ORDER BY
-                auctions.end_time ASC
-
-            LIMIT 8
         `).all();
 
-    return rows.map(
-        mapAuction
+    rows.sort(
+        (first, second) =>
+            getSortMinutes(first) -
+            getSortMinutes(second)
     );
+
+    return rows
+        .slice(
+            0,
+            8
+        )
+        .map(
+            mapAuction
+        );
 }
 
 //returns browse auctions
@@ -391,14 +508,13 @@ function browse({
         case "featured":
             orderBy = `
                 bid_count DESC,
-                auctions.current_highest_bid DESC,
-                auctions.end_time ASC
+                auctions.current_highest_bid DESC
             `;
             break;
 
         case "ending-soon":
             orderBy = `
-                auctions.end_time ASC
+                auctions.auction_id ASC
             `;
             break;
 
@@ -446,6 +562,17 @@ function browse({
         `).all(
             ...parameters
         );
+
+    if (
+        sort ===
+        "ending-soon"
+    ) {
+        rows.sort(
+            (first, second) =>
+                getSortMinutes(first) -
+                getSortMinutes(second)
+        );
+    }
 
     return rows.map(
         mapAuction

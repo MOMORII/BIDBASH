@@ -6,6 +6,38 @@ const db =
 const notificationService =
     require("./notification");
 
+//sets static demo auction durations
+
+const demoTimes = {
+    1: "2h 14m",
+    2: "5h 40m",
+    3: "1d 3h",
+    4: "18m",
+    5: "29m",
+    6: "42m",
+    7: "1h 10m",
+    8: "3h 25m",
+    9: "11m",
+    10: "56m",
+    11: "7h 20m",
+    12: "24m",
+
+    13: "1d 8h",
+    14: "2d 4h",
+    15: "2d 18h",
+    16: "3d 7h",
+    17: "3d 19h",
+    18: "4d 6h",
+    19: "4d 18h",
+    20: "5d 2h",
+    21: "5d 13h",
+    22: "5d 22h",
+    23: "6d 8h",
+    24: "6d 18h",
+
+    28: "6d 23h"
+};
+
 //formats remaining auction time
 
 function formatTimeRemaining(
@@ -64,6 +96,7 @@ function formatTimeRemaining(
 
     return `${minutes}m`;
 }
+
 
 //formats completed auction dates
 
@@ -270,11 +303,16 @@ function mapDashboardBid(
         timeRemaining:
             row.auction_status ===
             "active"
-                ? formatTimeRemaining(
-                    row.end_time
+                ? (
+                    demoTimes[
+                        row.auction_id
+                    ] ||
+                    formatTimeRemaining(
+                        row.end_time
+                    )
                 )
                 : "Ended",
-
+                
         completedAt:
             row.auction_status ===
             "ended"
@@ -328,12 +366,16 @@ function getUserBids(
                 (
                     SELECT
                         listing_images.file_path
+
                     FROM listing_images
+
                     WHERE
                         listing_images.listing_id =
                             listings.listing_id
+
                     ORDER BY
                         listing_images.display_order ASC
+
                     LIMIT 1
                 ) AS image_path
 
@@ -379,6 +421,7 @@ function getUserBids(
                     WHERE
                         latest_bid.bidder_id =
                             bids.bidder_id
+
                         AND latest_bid.auction_id =
                             bids.auction_id
 
@@ -451,8 +494,10 @@ const placeBidTransaction =
             if (!auction) {
                 return {
                     success: false,
+
                     status:
                         "not-found",
+
                     message:
                         "The auction could not be found."
                 };
@@ -466,12 +511,16 @@ const placeBidTransaction =
             ) {
                 return {
                     success: false,
+
                     status:
                         "ended",
+
                     message:
                         "This auction is no longer accepting bids."
                 };
             }
+
+            //retains real expiry validation for manually-ended auctions
 
             const endTime =
                 new Date(
@@ -487,8 +536,10 @@ const placeBidTransaction =
             ) {
                 return {
                     success: false,
+
                     status:
                         "ended",
+
                     message:
                         "This auction has ended."
                 };
@@ -502,8 +553,10 @@ const placeBidTransaction =
             ) {
                 return {
                     success: false,
+
                     status:
                         "own-listing",
+
                     message:
                         "You cannot bid on your own listing."
                 };
@@ -522,8 +575,10 @@ const placeBidTransaction =
             ) {
                 return {
                     success: false,
+
                     status:
                         "invalid",
+
                     message:
                         "Enter a valid bid amount."
                 };
@@ -563,11 +618,15 @@ const placeBidTransaction =
                 if (bidChanged) {
                     return {
                         success: false,
+
                         status:
                             "outbid",
+
                         message:
                             "Another bidder placed a higher bid while you were confirming.",
+
                         currentBid,
+
                         minimumBid
                     };
                 }
@@ -578,23 +637,32 @@ const placeBidTransaction =
                 ) {
                     return {
                         success: false,
+
                         status:
                             "below-current",
+
                         message:
                             `Your bid must be higher than the current bid of £${currentBid.toFixed(2)}.`,
+
                         currentBid,
+
                         minimumBid
                     };
                 }
 
                 return {
                     success: false,
+
                     status:
                         "increment-too-low",
+
                     message:
                         `Your bid is higher than the current bid, but does not meet the required £${bidIncrement.toFixed(2)} increment.`,
+
                     currentBid,
+
                     minimumBid,
+
                     bidIncrement
                 };
             }
@@ -703,7 +771,7 @@ const placeBidTransaction =
                         auctionId:
                             Number(
                                 auctionId
-                            ),
+                        ),
 
                         orderId:
                             null

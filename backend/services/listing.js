@@ -3,6 +3,37 @@
 const db =
     require("../database/db");
 
+//sets demo auction durations for testing purposes
+
+const demoTimes = {
+    1: "2h 14m",
+    2: "5h 40m",
+    3: "1d 3h",
+    4: "18m",
+    5: "29m",
+    6: "42m",
+    7: "1h 10m",
+    8: "3h 25m",
+    9: "11m",
+    10: "56m",
+    11: "7h 20m",
+    12: "24m",
+
+    13: "1d 8h",
+    14: "2d 4h",
+    15: "2d 18h",
+    16: "3d 7h",
+    17: "3d 19h",
+    18: "4d 6h",
+    19: "4d 18h",
+    20: "5d 2h",
+    21: "5d 13h",
+    22: "5d 22h",
+    23: "6d 8h",
+    24: "6d 18h",
+
+    28: "6d 23h"
+};
 //formats remaining auction time
 
 function formatTimeRemaining(
@@ -65,6 +96,7 @@ function formatTimeRemaining(
 
     return `${minutes}m`;
 }
+
 
 //formats completed dates
 
@@ -196,8 +228,13 @@ function mapSellerListing(
         timeRemaining:
             row.auction_status ===
             "active"
-                ? formatTimeRemaining(
-                    row.end_time
+                ? (
+                    demoTimes[
+                        row.auction_id
+                    ] ||
+                    formatTimeRemaining(
+                        row.end_time
+                    )
                 )
                 : "Ended",
 
@@ -572,6 +609,11 @@ const createListingTransaction =
                     listingResult
                         .lastInsertRowid
                 );
+
+            //uses a harmless far-future database expiry
+            //while the interface displays static demo time values
+
+            //sets the default seven-day duration for new auctions
 
             const startTime =
                 new Date();

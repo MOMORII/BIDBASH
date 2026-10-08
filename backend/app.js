@@ -8,9 +8,11 @@ const app = express();
 //const PORT = 3000;
 const PORT = process.env.PORT || 3000;
 
-const {
-    processExpiredAuctions
-} = require("./middleware/auctionLifecycle");
+
+//removed to prevent the auction lifecycle from running in the development environment (prototype)
+//const {
+//    processExpiredAuctions
+//} = require("./middleware/auctionLifecycle");
 
 //configures pug templates
 app.set(
@@ -53,9 +55,10 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use(
-    processExpiredAuctions
-);
+//removed, whilst realistic, destroyed the prototype card displays once timer ended   
+//app.use(
+//    processExpiredAuctions
+//);
 
 //registers all bidbash routes
 app.use("/", routes);
