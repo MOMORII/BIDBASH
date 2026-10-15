@@ -296,6 +296,12 @@ router.post(
             UPDATE auctions
 
             SET
+                start_time =
+                    datetime(
+                        'now',
+                        '-2 minutes'
+                    ),
+                                   
                 end_time =
                     datetime(
                         'now',
