@@ -193,6 +193,144 @@ router.post(
     }
 );
 
+//demo-only route for manually ending an auction
+//moved above age confirmation middleware to allow testing without age confirmation
+
+router.post(
+    "/demo/end-auction/:id",
+    async (
+        req,
+        res
+    ) => {
+        const suppliedKey =
+            req.get(
+                "x-demo-key"
+            );
+
+        if (
+            !process.env.DEMO_KEY ||
+            suppliedKey !==
+                process.env.DEMO_KEY
+        ) {
+            return res
+                .status(403)
+                .json({
+                    success:
+                        false,
+
+                    message:
+                        "Demo access denied."
+                });
+        }
+
+        const auctionId =
+            Number(
+                req.params.id
+            );
+
+        if (
+            !Number.isInteger(
+                auctionId
+            )
+        ) {
+            return res
+                .status(400)
+                .json({
+                    success:
+                        false,
+
+                    message:
+                        "Invalid auction ID."
+                });
+        }
+
+        const auction =
+            db.prepare(`
+                SELECT
+                    auctions.auction_id,
+                    auctions.status,
+                    listings.title
+
+                FROM auctions
+
+                JOIN listings
+                    ON listings.listing_id =
+                        auctions.listing_id
+
+                WHERE
+                    auctions.auction_id = ?
+            `).get(
+                auctionId
+            );
+
+        if (!auction) {
+            return res
+                .status(404)
+                .json({
+                    success:
+                        false,
+
+                    message:
+                        "Auction not found."
+                });
+        }
+
+        if (
+            auction.status !==
+            "active"
+        ) {
+            return res
+                .status(400)
+                .json({
+                    success:
+                        false,
+
+                    message:
+                        "Auction is already ended."
+                });
+        }
+
+        //moves the auction expiry into the past
+
+        db.prepare(`
+            UPDATE auctions
+
+            SET
+                end_time =
+                    datetime(
+                        'now',
+                        '-1 minute'
+                    )
+
+            WHERE
+                auction_id = ?
+        `).run(
+            auctionId
+        );
+
+        //uses the existing lifecycle service
+        //to process the auction normally
+
+        await Promise.resolve(
+            auctionLifecycleService
+                .processExpiredAuctions()
+        );
+
+        return res.json({
+            success:
+                true,
+
+            auctionId,
+
+            title:
+                auction.title,
+
+            message:
+                "Auction manually ended for demonstration."
+        });
+    }
+);
+
 //protects normal bidbash pages behind age confirmation
 
 router.use(
@@ -530,143 +668,6 @@ router.post(
     "/api/listings/:id/report",
     requireLogin,
     auction.reportListing
-);
-
-//demo-only route for manually ending an auction
-
-router.post(
-    "/demo/end-auction/:id",
-    async (
-        req,
-        res
-    ) => {
-        const suppliedKey =
-            req.get(
-                "x-demo-key"
-            );
-
-        if (
-            !process.env.DEMO_KEY ||
-            suppliedKey !==
-                process.env.DEMO_KEY
-        ) {
-            return res
-                .status(403)
-                .json({
-                    success:
-                        false,
-
-                    message:
-                        "Demo access denied."
-                });
-        }
-
-        const auctionId =
-            Number(
-                req.params.id
-            );
-
-        if (
-            !Number.isInteger(
-                auctionId
-            )
-        ) {
-            return res
-                .status(400)
-                .json({
-                    success:
-                        false,
-
-                    message:
-                        "Invalid auction ID."
-                });
-        }
-
-        const auction =
-            db.prepare(`
-                SELECT
-                    auctions.auction_id,
-                    auctions.status,
-                    listings.title
-
-                FROM auctions
-
-                JOIN listings
-                    ON listings.listing_id =
-                        auctions.listing_id
-
-                WHERE
-                    auctions.auction_id = ?
-            `).get(
-                auctionId
-            );
-
-        if (!auction) {
-            return res
-                .status(404)
-                .json({
-                    success:
-                        false,
-
-                    message:
-                        "Auction not found."
-                });
-        }
-
-        if (
-            auction.status !==
-            "active"
-        ) {
-            return res
-                .status(400)
-                .json({
-                    success:
-                        false,
-
-                    message:
-                        "Auction is already ended."
-                });
-        }
-
-        //moves the auction expiry into the past
-
-        db.prepare(`
-            UPDATE auctions
-
-            SET
-                end_time =
-                    datetime(
-                        'now',
-                        '-1 minute'
-                    )
-
-            WHERE
-                auction_id = ?
-        `).run(
-            auctionId
-        );
-
-        //uses the existing lifecycle service
-        //to process the auction normally
-
-        await Promise.resolve(
-            auctionLifecycleService
-                .processExpiredAuctions()
-        );
-
-        return res.json({
-            success:
-                true,
-
-            auctionId,
-
-            title:
-                auction.title,
-
-            message:
-                "Auction manually ended for demonstration."
-        });
-    }
 );
 
 module.exports =
