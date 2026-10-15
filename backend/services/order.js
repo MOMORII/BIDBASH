@@ -6,6 +6,19 @@ const db =
 const notificationService =
     require("./notification");
 
+//generates a tracking reference for dispatched orders
+
+function generateTrackingReference() {
+    const randomNumber =
+        Math.floor(
+            1000000000 +
+            Math.random() *
+            9000000000
+        );
+
+    return `BID${randomNumber}`;
+}
+
 //loads an order for its buyer
 
 function getBuyerOrder(
@@ -277,8 +290,7 @@ const dispatchOrderTransaction =
     db.transaction(
         ({
             orderId,
-            sellerId,
-            trackingReference
+            sellerId
         }) => {
             const order =
                 getSellerOrder(
@@ -342,6 +354,8 @@ const dispatchOrderTransaction =
                         "This order has already been dispatched."
                 };
             }
+
+            const trackingReference = generateTrackingReference();
 
             //updates fulfilment details
 
@@ -441,8 +455,7 @@ const dispatchOrderTransaction =
 
 function dispatchOrder({
     orderId,
-    sellerId,
-    trackingReference
+    sellerId
 }) {
     return dispatchOrderTransaction({
         orderId:
@@ -450,11 +463,6 @@ function dispatchOrder({
 
         sellerId:
             Number(sellerId),
-
-        trackingReference:
-            trackingReference
-                ? trackingReference.trim()
-                : null
     });
 }
 

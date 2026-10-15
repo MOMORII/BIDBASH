@@ -1174,18 +1174,6 @@ async function dispatchOrder(
         return;
     }
 
-    const trackingInput =
-        document.querySelector(
-            `.dispatch-tracking-input[data-order-id="${orderId}"]`
-        );
-
-    const trackingReference =
-        trackingInput
-            ? trackingInput
-                .value
-                .trim()
-            : "";
-
     button.disabled =
         true;
 
@@ -1206,9 +1194,7 @@ async function dispatchOrder(
                     },
 
                     body:
-                        JSON.stringify({
-                            trackingReference
-                        })
+                        JSON.stringify({})
                 }
             );
 

@@ -155,21 +155,6 @@ block content
                                         strong Tracking:
                                         |  #{listing.trackingReference}
 
-                                if listing.rawPaymentStatus === "paid" && listing.rawFulfilmentStatus === "awaiting-dispatch"
-
-                                    .dispatch-order-controls
-
-                                        label(
-                                            for=`tracking-reference-${listing.orderId}`
-                                        ) Tracking Reference
-
-                                        input.dispatch-tracking-input(
-                                            id=`tracking-reference-${listing.orderId}`
-                                            type="text"
-                                            placeholder="Enter tracking reference"
-                                            data-order-id=listing.orderId
-                                        )
-
                         .dashboard-actions
 
                             if listing.auctionId
