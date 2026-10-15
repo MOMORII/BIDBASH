@@ -44,11 +44,21 @@ block content
                             data-report-type=moderationCase.reportType
                             data-status=moderationCase.status
                             data-notes=moderationCase.additionalNotes
+                            data-image-path=moderationCase.imagePath || ""
                         )
 
                             .flagged-listing-image
 
-                                | Product Image
+                                    if moderationCase.imagePath
+
+                                        img(
+                                            src=moderationCase.imagePath
+                                            alt=moderationCase.title
+                                        )
+
+                                    else
+
+                                        | Product Image
 
                             .flagged-listing-info
 
@@ -84,7 +94,13 @@ block content
 
                         .moderation-product-image
 
-                            | Product Image
+                            span#case-product-image-placeholder
+                                | Product Image
+
+                            img#case-product-image-img(
+                                alt=""
+                                hidden
+                            )
 
                         .moderation-product-info
 

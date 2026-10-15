@@ -109,6 +109,16 @@ function showModerationCase(card) {
             "case-notes"
         );
 
+    const caseProductImage =
+        document.getElementById(
+            "case-product-image-img"
+        );
+
+    const caseProductImagePlaceholder =
+        document.getElementById(
+            "case-product-image-placeholder"
+        );
+
     if (caseId) {
         caseId.textContent =
             card.dataset.caseId;
@@ -169,6 +179,37 @@ function showModerationCase(card) {
             card.dataset.notes;
     }
 
+    const imagePath =
+        card.dataset.imagePath;
+
+    if (
+        caseProductImage &&
+        caseProductImagePlaceholder
+    ) {
+        if (imagePath) {
+            caseProductImage.src =
+                imagePath;
+
+            caseProductImage.alt =
+                card.dataset.title;
+
+            caseProductImage.hidden =
+                false;
+
+            caseProductImagePlaceholder.hidden =
+                true;
+        } else {
+            caseProductImage.removeAttribute(
+                "src"
+            );
+
+            caseProductImage.hidden =
+                true;
+
+            caseProductImagePlaceholder.hidden =
+                false;
+        }
+    }
     if (caseActionForm) {
         caseActionForm.action =
             `/moderation/${card.dataset.caseId}/action`;
